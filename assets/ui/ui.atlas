@@ -1,0 +1,139 @@
+
+ui.png
+size: 1024, 512
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Background
+  rotate: false
+  xy: 396, 239
+  size: 175, 264
+  orig: 175, 264
+  offset: 0, 0
+  index: -1
+Background_shadow
+  rotate: false
+  xy: 573, 239
+  size: 175, 264
+  orig: 175, 264
+  offset: 0, 0
+  index: -1
+background_element_color1
+  rotate: false
+  xy: 927, 249
+  size: 26, 254
+  orig: 26, 254
+  offset: 0, 0
+  index: 1
+background_element_color1
+  rotate: false
+  xy: 955, 249
+  size: 26, 254
+  orig: 26, 254
+  offset: 0, 0
+  index: 2
+background_element_color2
+  rotate: false
+  xy: 750, 383
+  size: 175, 120
+  orig: 175, 120
+  offset: 0, 0
+  index: 3
+background_element_color2
+  rotate: false
+  xy: 2, 46
+  size: 71, 25
+  orig: 71, 25
+  offset: 0, 0
+  index: 1
+background_element_color2
+  rotate: false
+  xy: 750, 248
+  size: 71, 25
+  orig: 71, 25
+  offset: 0, 0
+  index: 2
+borders
+  rotate: false
+  xy: 2, 219
+  size: 195, 284
+  orig: 195, 284
+  offset: 0, 0
+  index: -1
+main_border
+  rotate: false
+  xy: 199, 219
+  size: 195, 284
+  orig: 195, 284
+  offset: 0, 0
+  index: -1
+paper
+  rotate: false
+  xy: 159, 111
+  size: 173, 106
+  orig: 173, 106
+  offset: 0, 0
+  index: -1
+paper_shadow
+  rotate: false
+  xy: 750, 275
+  size: 173, 106
+  orig: 173, 106
+  offset: 0, 0
+  index: -1
+picture_border
+  rotate: false
+  xy: 2, 73
+  size: 155, 144
+  orig: 155, 144
+  offset: 0, 0
+  index: -1
+small_curl1
+  rotate: false
+  xy: 334, 120
+  size: 22, 15
+  orig: 22, 15
+  offset: 0, 0
+  index: -1
+small_curl2
+  rotate: false
+  xy: 983, 406
+  size: 22, 15
+  orig: 22, 15
+  offset: 0, 0
+  index: -1
+tape_element1
+  rotate: false
+  xy: 334, 137
+  size: 22, 80
+  orig: 22, 80
+  offset: 0, 0
+  index: -1
+tape_element2
+  rotate: false
+  xy: 983, 423
+  size: 22, 80
+  orig: 22, 80
+  offset: 0, 0
+  index: -1
+tape_top
+  rotate: false
+  xy: 159, 76
+  size: 179, 33
+  orig: 179, 33
+  offset: 0, 0
+  index: -1
+vignette1
+  rotate: false
+  xy: 2, 2
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1
+vignette2
+  rotate: false
+  xy: 358, 175
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1

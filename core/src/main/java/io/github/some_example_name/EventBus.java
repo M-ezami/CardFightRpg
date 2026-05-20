@@ -1,0 +1,29 @@
+package io.github.some_example_name;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class EventBus {
+
+    private final Map<Class<?>, List<EventListener<?>>> listeners = new HashMap<>();
+
+    public <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
+        listeners.computeIfAbsent((Class<?>) eventType, k -> new ArrayList<>())
+            .add(listener);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> void emit(T event) {
+        Class<?> eventType = event.getClass();
+
+        List<EventListener<?>> eventListeners = listeners.get(eventType);
+
+        if (eventListeners == null) return;
+
+        for (EventListener<?> listener : eventListeners) {
+            ((EventListener<T>) listener).onEvent(event);
+        }
+    }
+}
