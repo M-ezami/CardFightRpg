@@ -1,0 +1,278 @@
+package io.github.some_example_name.ui;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
+
+public class Assets implements Disposable {
+
+
+    private TextureAtlas cardAtlas;
+    private TextureAtlas slimeAtlas;
+    private TextureRegion cardOverlay;
+
+    private TextureRegion textBox;
+    private TextureRegion nameRegion;
+
+    private Animation slimeIdleAnimation;
+    private Animation slimeHurtAnimation;
+    private Animation slimeMoveAnimation;
+    private Animation slimeAttackAnimation;
+
+    private TextureRegionDrawable drawable;
+
+    private Texture buttonSkin;
+    private TextButton.TextButtonStyle textButtonStyle;
+    private Texture barBackgroundTexture;
+    private Texture barForegroundTexture;
+    private Texture barOverlayTexture;
+    private Texture backgroundTexture;
+    private Texture cardTexure;
+
+    private TextureRegion barBackground;
+    private TextureRegion healthBarForeground;
+    private TextureRegion manaBarForeground;
+    private Animation barOverlayIconAnimation;
+    private BitmapFont font;
+    private TextureRegion barOverlayTextureRegion;
+
+
+    AssetManager assetManger = new AssetManager();
+
+
+    public void load() {
+        loadAtlas();
+        loadCardTextures();
+        createFont();
+        loadSlimeAnimations();
+        loadSkins();
+        wrapButtonTexturetoDrawable();
+        loadTextButtonStyle(this.drawable);
+        loadBarAssets();
+
+    }
+
+    private void loadBarAssets() {
+        this.barBackgroundTexture = new Texture(Gdx.files.internal("HUD/HealthBarBackground.png"));
+        this.barForegroundTexture = new Texture(Gdx.files.internal("HUD/HealthBarForeground.png"));
+        this.barOverlayTexture = new Texture(Gdx.files.internal("HUD/HealthBarOverlay.png"));
+        loadOverlayAnimations();
+        this.barBackground = new TextureRegion(this.barBackgroundTexture, 27, 17, 61, 9);
+        this.healthBarForeground = new TextureRegion(this.barForegroundTexture, 27, 5, 61, 9);
+        this.manaBarForeground = new TextureRegion(this.barForegroundTexture, 27, 17, 61, 9);
+        this.barOverlayTextureRegion = new TextureRegion(this.barOverlayTexture, 27, 5, 64, 23);
+
+    }
+
+
+
+    private void loadOverlayAnimations() {
+        Array<TextureRegion> frames = new Array<>();
+        frames.add(new TextureRegion(this.barOverlayTexture, 0, 0, 25, 28));
+        frames.add(new TextureRegion(this.barOverlayTexture, 90, 0, 25, 28));
+        barOverlayIconAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+    }
+
+    private void wrapButtonTexturetoDrawable() {
+        this.drawable =
+            new TextureRegionDrawable(
+                new TextureRegion(
+                    getButtonSkin()));
+    }
+
+
+    public void loadSkins() {
+        this.buttonSkin = new Texture(Gdx.files.internal("UI_Flat_Button01a_3.png"));
+    }
+
+    public void loadTextButtonStyle(TextureRegionDrawable drawable) {
+        this.textButtonStyle = new TextButton.TextButtonStyle();
+        this.textButtonStyle.up = drawable;
+        this.textButtonStyle.down = drawable;
+        this.textButtonStyle.font = getFont();
+
+    }
+
+    public TextButton.TextButtonStyle getTextButtonStyle() {
+        return this.textButtonStyle;
+    }
+
+    public void loadSlimeAnimations(){
+        loadSlimeIdleAnimations();
+        loadSlimeAttackAnimations();
+        loadSlimeHurtAnimations();
+        loadSlimeMoveAnimations();
+    }
+
+    private void loadSlimeIdleAnimations() {
+        Array<TextureRegion> frames = new Array<>();
+        frames.add(slimeAtlas.findRegion("slime-idle-0"));
+        frames.add(slimeAtlas.findRegion("slime-idle-1"));
+        frames.add(slimeAtlas.findRegion("slime-idle-2"));
+        frames.add(slimeAtlas.findRegion("slime-idle-3"));
+        slimeIdleAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+    }
+
+    private void loadSlimeAttackAnimations() {
+        Array<TextureRegion> frames = new Array<>();
+        frames.add(slimeAtlas.findRegion("slime-attack-0"));
+        frames.add(slimeAtlas.findRegion("slime-attack-1"));
+        frames.add(slimeAtlas.findRegion("slime-attack-2"));
+        frames.add(slimeAtlas.findRegion("slime-attack-3"));
+        slimeAttackAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+    }
+    private void loadSlimeHurtAnimations() {
+        Array<TextureRegion> frames = new Array<>();
+        frames.add(slimeAtlas.findRegion("slime-hurt-0"));
+        frames.add(slimeAtlas.findRegion("slime-hurt-1"));
+        frames.add(slimeAtlas.findRegion("slime-hurt-2"));
+        frames.add(slimeAtlas.findRegion("slime-hurt-3"));
+        slimeHurtAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+    }
+    private void loadSlimeMoveAnimations() {
+        Array<TextureRegion> frames = new Array<>();
+        frames.add(slimeAtlas.findRegion("slime-move-0"));
+        frames.add(slimeAtlas.findRegion("slime-move-1"));
+        frames.add(slimeAtlas.findRegion("slime-move-2"));
+        frames.add(slimeAtlas.findRegion("slime-move-3"));
+        slimeMoveAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+    }
+
+
+    public Animation getSlimeIdleAnimation() {
+        return slimeIdleAnimation;
+    }
+
+    public Animation getBarOverlayIconAnimation() {
+        return barOverlayIconAnimation;
+    }
+
+    public void createFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CherryCreamSoda-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 16;
+
+        font = generator.generateFont(parameter);
+        generator.dispose();
+    }
+
+    public BitmapFont getCardFont() {
+        return font;
+    }
+
+    public TextureRegion getNameRegion() {
+        return nameRegion;
+    }
+
+    public void loadAtlas() {
+        this.cardAtlas = new TextureAtlas("ui/ui.atlas");
+        this.slimeAtlas = new TextureAtlas("slime/slime.atlas");
+    }
+
+
+    public void loadCardTextures() {
+        this.cardOverlay = cardAtlas.findRegion("borders");
+        this.textBox = cardAtlas.findRegion("paper");
+        this.nameRegion = cardAtlas.findRegion("tape_top");
+    }
+
+
+    public float calculateTextureAspectRatio(TextureRegion texture) {
+        return (float) texture.getRegionHeight() / texture.getRegionWidth();
+    }
+
+    public Texture getBackgroundTexture() {
+        return backgroundTexture;
+    }
+
+    public Texture getCardTexure() {
+        return cardTexure;
+    }
+
+    public TextureAtlas getCardAtlas() {
+        return cardAtlas;
+    }
+
+    public TextureRegion getCardOverlay() {
+        return cardOverlay;
+    }
+
+    public TextureRegion getTextBox() {
+        return textBox;
+    }
+
+    public AssetManager getAssetManger() {
+        return assetManger;
+    }
+
+    public TextureAtlas getSlimeAtlas() {
+        return slimeAtlas;
+    }
+
+    public TextureRegionDrawable getDrawable() {
+        return drawable;
+    }
+
+    public TextureRegion getBarBackground() {
+        return barBackground;
+    }
+
+    public TextureRegion getHealthBarForeground() {
+        return healthBarForeground;
+    }
+
+    public TextureRegion getBarOverlayTextureRegion() {
+        return barOverlayTextureRegion;
+    }
+
+    public Texture getBarBackgroundTexture() {
+        return barBackgroundTexture;
+    }
+
+    public Texture getBarForegroundTexture() {
+        return barForegroundTexture;
+    }
+
+    public Texture getBarOverlayTexture() {
+        return barOverlayTexture;
+    }
+
+    public TextureRegion getManaBarForeground() {
+        return manaBarForeground;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public Animation getSlimeHurtAnimation() {
+        return slimeHurtAnimation;
+    }
+
+    public Animation getSlimeMoveAnimation() {
+        return slimeMoveAnimation;
+    }
+
+    public Animation getSlimeAttackAnimation() {
+        return slimeAttackAnimation;
+    }
+
+    @Override
+    public void dispose() {
+        this.backgroundTexture.dispose();
+        this.cardAtlas.dispose();
+    }
+
+    public Texture getButtonSkin() {
+        return buttonSkin;
+    }
+}
