@@ -66,7 +66,7 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
 
     private TurnDirector turnDirector;
     private Stage stage;
-    private TextButton endTurnButton;
+
     private Label turnBanner;
     private InputMultiplexer multiplexer;
     private CardView selectedCard = null;
@@ -207,7 +207,6 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
     // ---- Turn lifecycle ----
 
     public void onEnemyTurnBegin() {
-        disableInput();
         showBanner("ENEMY TURN", Color.RED);
     }
 
@@ -217,7 +216,7 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
 
     public void onPlayerTurnReady() {
         hideBanner();
-        enableInput();
+
         refreshHand();
     }
 
@@ -239,42 +238,22 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         turnBanner.setVisible(false);
     }
 
-    private void enableInput() {
-        endTurnButton.setDisabled(false);
-    }
 
-    private void disableInput() {
-        endTurnButton.setDisabled(true);
-    }
+
+
 
     // ---- Setup ----
 
     private void populateScene2d() {
         this.stage = new Stage(uiViewport);
-        setupEndTurnButton();
+
         setupTurnBanner();
         refreshHand();
         createManaAndHealthBar();
     }
 
-    private void setupEndTurnButton() {
-        this.endTurnButton = new TextButton("END TURN", assets.getTextButtonStyle());
-
-        Table table = new Table();
-        table.setFillParent(true);
-        table.right();
-        table.add(endTurnButton).width(200).height(100).padBottom(20).padRight(20);
-
-        endTurnButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                turnDirector.turnSequence();
-            }
-        });
 
 
-        stage.addActor(table);
-    }
 
     private void setupTurnBanner() {
         Label.LabelStyle bannerStyle = new Label.LabelStyle();

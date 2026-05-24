@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="17">
+ <tileset firstgid="1" source="TilesetFloor.tsx"/>
+ <tileset firstgid="573" source="TilesetField.tsx"/>
+ <tileset firstgid="648" source="TilesetHouse.tsx"/>
+ <tileset firstgid="1407" source="TilesetNature.tsx"/>
+ <tileset firstgid="1911" source="SpriteSheet.tsx"/>
+ <layer id="1" name="ground" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzLZ2BgyB8mmBGImaCYmY72igOxBBRLjjB7jZDCnNZhj2wvNkxJGCCnHXRsDMSRUExtewn5CYZlgFgPDetTaC8+P9EqXQ2kvfjCkpwwBZnJQMC9tMijxJhJa3ux5XtYXqGlvTCML/3Qyl56pVldBtzpk9I0O4rpiwEWac9+
+  </data>
+ </layer>
+ <layer id="5" name="decorations" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJyt1slOFEEcx/G/08sM4HZQBw/EJeCSiAsBRaNi3FAjiUtcuKAHt+hhSHwA9SSoD6Ce1IOJywsobqDifnID9OSG4u4T+C27S6prljDLP/mkUz1V/x9TDV2IBDXBEZlUIr0xkQd4iEeI+yIJlKEcF135X0nmDzEe64mMw3h04QZu4hY2sqYFKeafpt8ZnMUa1q1Fsxt8Nsi9z/iCIUxhzVRMw3RfIqVyK+g9D/OxAM/xAi/xCntYsxez6X+NftfRhX2M9+NAmJugVxnKVU8sYk0jFmNJhtw59N6EzdiCr/iG7/jhDc/dQP8B8t7gLY4z7kBnmGvXQTfDTSNXldrblKTv8TL6L0cTDtEnyZxWTIbD2IWXJTdX6dxUyN7jleStwmqcCnMrw9xqxjWYUYJce4+byVuH9bFwfphbh1ieWXZuuwzTVREXGY0x8SKaU1US/Jx6j8xcCTM7+AKdOIGTqC4y81//HLl6jy+RdRlXcBVLyW1krxtQ72Xqmn+uzjJzH5P1BE/xDHVktWI7tpUod5QEvxemSoPa/q3Gu0pf7brNnDvoRo+XPrZzk1aOTT8L/a7SV7te07sP/Rjw0scjzc23ftL7F37jj5c+tnNrMddSVUBuE3uwws9+tXPbeIC7sNspIMyoHfTe6QdXs6e+b+ce4bOjOFZkrjq/7+G+E+3Zi4lONFe9485x7zwuqPOqCAvxEZ+caE+Vq/5G7efZzb0e3M3yfQ9bcpXPuRB3oz0H0ZDhf5J3eI8PBe6zef7MJHOWG+2ZyHL2/gV94o4A
+  </data>
+ </layer>
+ <layer id="2" name="background" width="30" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
+  </data>
+ </layer>
+ <objectgroup id="4" name="Object">
+  <object id="8" x="80.5" y="128" width="62.5" height="48"/>
+  <object id="10" x="338.5" y="1" width="60" height="45"/>
+  <object id="11" x="222.5" y="16.5" width="49" height="49"/>
+  <object id="16" gid="1911" x="95.3333" y="188.667" width="16" height="16"/>
+ </objectgroup>
+</map>

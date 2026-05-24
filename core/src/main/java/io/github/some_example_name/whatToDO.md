@@ -1,2 +1,3 @@
-1pm to 3 pomodor work on healhtbar for enemy and player
-lunch break
+when u play an effect it costs mana
+delete end turn button 
+end turn happens automatically when no mana

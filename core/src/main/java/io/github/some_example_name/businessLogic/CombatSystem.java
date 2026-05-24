@@ -63,6 +63,11 @@ public class CombatSystem {
         return true;
     }
 
+    // In CombatSystem
+    public boolean isOutOfMana() {
+        return gameState.getPlayer().getCurrentMana() <= 0;
+    }
+
     // ---- Internal ----
 
     public boolean checkEnemyDeath() {

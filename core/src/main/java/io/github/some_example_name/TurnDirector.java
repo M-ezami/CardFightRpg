@@ -16,7 +16,6 @@ public class TurnDirector {
     public TurnDirector(CombatSystem combatSystem, EventBus eventBus) {
         this.eventBus = eventBus;
         this.combatSystem = combatSystem;
-
     }
 
     // ---- Player intent ----
@@ -29,6 +28,7 @@ public class TurnDirector {
         if (combatSystem.checkEnemyDeath()) {
             eventBus.emit(new EnemyDiedEvent());
         }
+        if(combatSystem.isOutOfMana()) turnSequence();
     }
 
     // ---- Turn sequencing ----
@@ -41,7 +41,8 @@ public class TurnDirector {
             combatSystem.runEnemyTurn();
             // show the effect that enemy has
             eventBus.emit(new EnemyEffectAppliedEvent());
-            delay(1f, () -> {// visual: green banner
+            delay(1f, () -> {
+                // visual: green banner
 
                 eventBus.emit(new PlayerTurnStartEvent());
                 delay(1.5f, () -> {

@@ -8,6 +8,10 @@ import java.util.List;
 
 public abstract class Card {
     private int manaCost;
+    /*private Mood mood;
+    private int age;
+    */
+
     private List<Effect> effects;
     private String name;
     protected TargetingStrategy targetingStrategy;

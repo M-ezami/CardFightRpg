@@ -63,7 +63,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private List<Opponent> createOpponents() {
-        opponents.add(new EasyEnemy(7, 7, game.getAssets()));
+        opponents.add(new EasyEnemy(12, 12, game.getAssets()));
         return opponents;
     }
 
