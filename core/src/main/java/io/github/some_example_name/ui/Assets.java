@@ -44,7 +44,8 @@ public class Assets implements Disposable {
     private Animation barOverlayIconAnimation;
     private BitmapFont font;
     private TextureRegion barOverlayTextureRegion;
-
+    private Texture buttonTextures;
+    private TextureRegion buttonTextureRegion;
 
     AssetManager assetManger = new AssetManager();
 
@@ -58,7 +59,7 @@ public class Assets implements Disposable {
         wrapButtonTexturetoDrawable();
         loadTextButtonStyle(this.drawable);
         loadBarAssets();
-
+        loadButtonTextures();
     }
 
     private void loadBarAssets() {
@@ -73,7 +74,14 @@ public class Assets implements Disposable {
 
     }
 
+    public void loadButtonTextures() {
+        this.buttonTextures = new Texture(Gdx.files.internal("HUD/UI_TravelBookAnimated_Spritesheet01a.png"));
+        this.buttonTextureRegion = new TextureRegion(this.buttonTextures,1,34,30,29);
+    }
 
+    public TextureRegion getButtonTextureRegion() {
+        return buttonTextureRegion;
+    }
 
     private void loadOverlayAnimations() {
         Array<TextureRegion> frames = new Array<>();
@@ -102,9 +110,7 @@ public class Assets implements Disposable {
 
     }
 
-    public TextButton.TextButtonStyle getTextButtonStyle() {
-        return this.textButtonStyle;
-    }
+
 
     public void loadSlimeAnimations(){
         loadSlimeIdleAnimations();
@@ -228,6 +234,10 @@ public class Assets implements Disposable {
 
     public TextureRegion getHealthBarForeground() {
         return healthBarForeground;
+    }
+
+    public Texture getButtonTextures() {
+        return buttonTextures;
     }
 
     public TextureRegion getBarOverlayTextureRegion() {

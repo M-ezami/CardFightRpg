@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -56,17 +57,17 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
     private final EventBus eventBus;
     private final Player player;
     private final DeckState deckState;
-
-
+    private final float barOverlayPositionX = 80;
+    private final float barOverlayPositionY = 1200;
+    private final BitmapFont font;
     private static final float ENEMY_X = 11.5f;
     private static final float BAR_SCALE = 3f;
     private static final float ENEMY_Y = 6.5f;
-    private final float barOverlayPositionX = 80;
-    private final float barOverlayPositionY = 1200;
+
 
     private TurnDirector turnDirector;
     private Stage stage;
-
+    private TextButton endTurnButton;
     private Label turnBanner;
     private InputMultiplexer multiplexer;
     private CardView selectedCard = null;
@@ -77,12 +78,12 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
 
 
     public CombatScreen(GameState gameState, GdxGame game, EventBus eventBus) {
+        this.assets = game.getAssets();
         this.eventBus = eventBus;
         this.gameState = gameState;
         this.player = gameState.getPlayer();
         this.deckState = gameState.getDeckState();
-
-        this.assets = game.getAssets();
+        this.font = assets.getFont();
         this.batch = game.getBatch();
         this.viewport = new ExtendViewport(16f, 9f);
         this.uiViewport = new ScreenViewport();
@@ -94,6 +95,37 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
 
     }
 
+    public void setupEndTurnButton() {
+        float buttonScaleWidth = 6f;
+        float buttonScaleHeight = 2f;
+        TextureRegion buttonTextureRegion = assets.getButtonTextureRegion();
+        System.out.println("jope"+buttonTextureRegion.getRegionHeight());
+        Drawable textButtonRegion = new TextureRegionDrawable(buttonTextureRegion);
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        textButtonStyle.up = textButtonRegion;
+        //need to add down still
+
+        this.endTurnButton = new TextButton("Text", textButtonStyle);
+        System.out.println("actual" + endTurnButton.getWidth());
+        Table table = new Table();
+        table.right();
+        table.setFillParent(true);
+        table.add(endTurnButton)
+            .width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth)
+            .height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
+        stage.addActor(table);
+
+
+        this.endTurnButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (turnDirector != null) {
+                    turnDirector.turnSequence();
+                }
+            }
+        });
+    }
 
     private ProgressBar addBar(TextureRegion bg, TextureRegion fg,
                                float max, float value,
@@ -239,9 +271,6 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
     }
 
 
-
-
-
     // ---- Setup ----
 
     private void populateScene2d() {
@@ -250,14 +279,13 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         setupTurnBanner();
         refreshHand();
         createManaAndHealthBar();
+        setupEndTurnButton();
     }
-
-
 
 
     private void setupTurnBanner() {
         Label.LabelStyle bannerStyle = new Label.LabelStyle();
-        bannerStyle.font = assets.getFont();
+        bannerStyle.font = font;
         this.turnBanner = new Label("", bannerStyle);
         this.turnBanner.setFontScale(3f);
         this.turnBanner.setVisible(false);
@@ -299,6 +327,7 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
                 return true;
             }
         }
+
 
         selectedCard = null;
         return false;

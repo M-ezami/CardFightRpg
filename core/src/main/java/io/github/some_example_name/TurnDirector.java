@@ -28,7 +28,7 @@ public class TurnDirector {
         if (combatSystem.checkEnemyDeath()) {
             eventBus.emit(new EnemyDiedEvent());
         }
-        if(combatSystem.isOutOfMana()) turnSequence();
+
     }
 
     // ---- Turn sequencing ----
