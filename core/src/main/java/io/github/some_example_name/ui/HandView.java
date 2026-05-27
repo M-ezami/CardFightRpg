@@ -27,6 +27,7 @@ public class HandView {
     public void draw(SpriteBatch batch, CardView selectedCard) {
         for (int i = 0; i < cardViews.size(); i++) {
             CardView card = cardViews.get(i);
+
             float x = 1f + i * 2.2f;
             float y = 0.5f;
 

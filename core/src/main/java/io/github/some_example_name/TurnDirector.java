@@ -33,7 +33,7 @@ public class TurnDirector {
 
     // ---- Turn sequencing ----
 
-    public void turnSequence() {
+    public void onPlayerEndTurn() {
         combatSystem.endPlayerTurn();
         eventBus.emit(new EnemyTurnStartEvent());                 // visual: red banner, disable input
 
