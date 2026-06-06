@@ -9,12 +9,12 @@ public abstract class MonsterCard implements Card {
     private int manaCost;
     private String name;
     protected Monster monster;
-    private CardType cardType;
+    protected CardType cardType;
     private String description;
 
 
     public MonsterCard() {
-
+        this.cardType = CardType.MONSTER;
     }
 
 

@@ -21,6 +21,7 @@ public class GameState {
     public GameState(Player player, List<Opponent> opponents) {
         this.player = player;
         this.opponents = opponents;
+        this.monsters = new ArrayList<>();
         this.targetOpponent = opponents.get(0);
         this.deckState = new DeckState(player.getDeck());
     }

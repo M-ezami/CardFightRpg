@@ -9,11 +9,7 @@ import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.entiteRelated.Targatable;
 
-/**
- * Pure game rules. No timers, no UI, no phase tracking.
- * Depends only on GameState.
- * Can be unit tested with no LibGDX.
- */
+
 public class CombatSystem {
 
     private final GameState gameState;
@@ -22,7 +18,6 @@ public class CombatSystem {
         this.gameState = gameState;
     }
 
-    // ---- Turn logic ----
 
     public void endPlayerTurn() {
         gameState.getDeckState().discardHand();
@@ -40,16 +35,15 @@ public class CombatSystem {
         gameState.getDeckState().drawHand();
     }
 
-    // ---- Card actions ----
 
     public boolean manaCheck(Card card) {
         Player player = gameState.getPlayer();
 
         if (player.getCurrentMana() < card.getManaCost()) {
             System.out.println("Not enough mana!");
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean onPlaySpellCard(SpellCard card, Targatable target) {
@@ -72,12 +66,10 @@ public class CombatSystem {
         return true;
     }
 
-    // In CombatSystem
     public boolean isOutOfMana() {
         return gameState.getPlayer().getCurrentMana() <= 0;
     }
 
-    // ---- Internal ----
 
     public boolean checkEnemyDeath() {
         Opponent target = gameState.getTargetOpponent();
@@ -90,10 +82,12 @@ public class CombatSystem {
         return true;
     }
 
-    public void onPlayMonsterCard(MonsterCard card) {
+    public boolean onPlayMonsterCard(MonsterCard card) {
+        if (manaCheck(card)) return false;
+
         gameState.getMonsters().add(card.getMonster());
         gameState.getDeckState().discard(card);
 
-
+        return true;
     }
 }

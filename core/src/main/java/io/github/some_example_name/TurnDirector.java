@@ -26,11 +26,14 @@ public class TurnDirector {
     // ---- Player intent ----
 
     public void onPlayMonsterCard(MonsterCard card) {
-        combatSystem.onPlayMonsterCard(card);
+        System.out.println("reached");
+        boolean played =  combatSystem.onPlayMonsterCard(card);
+        System.out.println(played + " s" + card);
     }
 
     public void onPlaySpellCard(SpellCard spellCard, Targatable target) {
         boolean played = combatSystem.onPlaySpellCard(spellCard, target);
+        System.out.println(played);
         if (played) {
             eventBus.emit(new CardPlayedEvent(spellCard, target));
             //banner show damage of player subscribe to this

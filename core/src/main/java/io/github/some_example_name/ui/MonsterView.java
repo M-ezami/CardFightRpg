@@ -16,7 +16,6 @@ public class MonsterView {
 
     public void defineRectangle(float x, float y, float width, float height) {
         setPosition(x, y);
-        setSize(width, height);
     }
 
     public void setPosition(float x, float y) {

@@ -11,6 +11,7 @@ public class SimpleMonster extends Monster {
         this.targetingStrategy = new SingleTarget();
         this.name = "simpleMonster";
         this.type = MonsterType.MAGE;
+
     }
 
 

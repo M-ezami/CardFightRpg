@@ -36,7 +36,8 @@ public class MonsterFieldView {
             float my = y + height / 2f;
 
             view.setPosition(mx, my);
-
+            view.setSize(width/4, height/4);
+            System.out.println(monster.getType());
             view.draw(batch);
         }
     }

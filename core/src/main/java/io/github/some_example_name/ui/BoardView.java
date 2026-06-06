@@ -69,6 +69,7 @@ public class BoardView {
     }
 
     public void onUpdateMonsterField() {
+        System.out.println("onUpdateMonsterField");
         monsterFieldView.update(gameState.getMonsters());
     }
 

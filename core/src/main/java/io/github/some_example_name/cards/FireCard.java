@@ -19,6 +19,7 @@ public class FireCard extends SpellCard {
         this.targetingStrategy = new SingleTarget();
         this.damageEffect= new DamageEffect(3, targetingStrategy);
         this.addEffect(damageEffect);
+
     }
 
     @Override
