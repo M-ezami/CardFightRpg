@@ -6,25 +6,24 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.TurnDirector;
+import io.github.some_example_name.cards.cardParents.CardType;
+import io.github.some_example_name.cards.cardParents.MonsterCard;
+import io.github.some_example_name.cards.cardParents.SpellCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.entiteRelated.Targatable;
-import io.github.some_example_name.events.CardPlayedEvent;
-import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.events.EventListener;
-import io.github.some_example_name.events.PlayerTurnReadyEvent;
-import io.github.some_example_name.ui.Assets;
-import io.github.some_example_name.ui.CardView;
-import io.github.some_example_name.ui.HandView;
-import io.github.some_example_name.ui.Hud;
+import io.github.some_example_name.events.*;
+import io.github.some_example_name.ui.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,42 +36,38 @@ import java.util.List;
 public class CombatScreen extends ScreenAdapter implements InputProcessor {
 
     private final SpriteBatch batch;
-    private final Viewport viewport;
+    private final ExtendViewport viewport;
+    private final ShapeRenderer shapeRenderer;
 
-    private final HandView handView;
-    private final GameState gameState;
     private final List<Opponent> opponentList;
     private final Vector3 touchPos = new Vector3();
     private final EventBus eventBus;
-    private final Player player;
-
-
-    private static final float ENEMY_X = 11.5f;
-
-    private static final float ENEMY_Y = 6.5f;
-
 
     private TurnDirector turnDirector;
-
-
-    private InputMultiplexer multiplexer;
     private CardView selectedCard = null;
-
+    private boolean isOpponentClicked = false;
+    private Targatable clickedOpponent;
     private final Hud hud;
+    private final BoardView boardView;
+    private final GameState gameState;
+
 
     public CombatScreen(GameState gameState, GdxGame game, EventBus eventBus) {
         Assets assets = game.getAssets();
-        this.eventBus = eventBus;
         this.gameState = gameState;
-        this.player = gameState.getPlayer();
+        this.eventBus = eventBus;
+        this.shapeRenderer = new ShapeRenderer();
         this.batch = game.getBatch();
         this.viewport = new ExtendViewport(16f, 9f);
-        this.handView = new HandView(assets);
+        this.boardView = new BoardView(this.viewport, game, gameState);
+
         this.opponentList = gameState.getOpponents();
 
         this.hud = new Hud(assets, gameState, eventBus);
         subscribe();
-        hud.setupHud(() -> turnDirector.onPlayerEndTurn());
+        hud.setupHud();
+        refreshHand();
+
     }
 
     public void setTurnDirector(TurnDirector turnDirector) {
@@ -89,55 +84,101 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         eventBus.subscribe(PlayerTurnReadyEvent.class, event -> {
             onPlayerTurnReady();
         });
+        eventBus.subscribe(PlayerTurnStartEvent.class, event -> {
+            refreshHand();
+        });
 
     }
 
     public void onPlayerTurnReady() {
         refreshHand();
+        hud.hideBanner();
     }
 
     // ---- Visual helpers ----
 
     public void refreshHand() {
-        handView.update(gameState.getDeckState().getHand());
-
+        boardView.onUpdateHand();
     }
 
 
     @Override
     public void show() {
-        this.multiplexer = new InputMultiplexer();
+        InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(hud.getStage());
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
+        hud.addButtonListener(() -> turnDirector.onPlayerEndTurn());
+    }
+
+    public boolean onPlaySpellCard() {
+        clickedOpponent = getClickedOpponent(touchPos.x, touchPos.y);
+        if (clickedOpponent != null) {
+            turnDirector.onPlaySpellCard((SpellCard) selectedCard.getCard(), clickedOpponent);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public boolean onPlayMonsterCard() {
+        Rectangle dimensions = boardView.monsterViewDimensions();
+        if (dimensions.contains(touchPos.x, touchPos.y)) {
+            turnDirector.onPlayMonsterCard((MonsterCard) selectedCard.getCard());
+            boardView.onUpdateMonsterField();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getSelectedCard() {
+        for (CardView cardView : boardView.getCards()) {
+            if (cardView.contains(touchPos.x, touchPos.y)) {
+                selectedCard = cardView;
+                return true;
+            }
+        }
+        return false;
+
     }
 
     // ---- Input ----
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         touchPos.set(screenX, screenY, 0);
         viewport.unproject(touchPos);
 
-        Targatable clickedOpponent = getClickedOpponent(touchPos.x, touchPos.y);
-
-        if (selectedCard != null && clickedOpponent != null) {
-            turnDirector.onPlayCard(selectedCard.getCard(), clickedOpponent);
-            selectedCard = null;
-            return true;
+        if (selectedCard == null) {
+            return getSelectedCard();
         }
 
-        for (CardView cardView : handView.getCardViews()) {
-            if (cardView.contains(touchPos.x, touchPos.y)) {
-                selectedCard = cardView;
-                return true;
-            }
+        if (selectedCard.getCardType() == CardType.SPELL) {
+            boolean result = onPlaySpellCard();
+            if (result) selectedCard = null;
+            return result;
         }
 
+        if (selectedCard.getCardType() == CardType.MONSTER) {
+            boolean result = onPlayMonsterCard();
+            if (result) selectedCard = null;
+            return result;
+        }
 
-        selectedCard = null;
         return false;
     }
+
+
+    @Override
+    public boolean touchDragged(int x, int y, int p) {
+        System.out.println("Dragging at: " + x + ", " + y);
+        return true;
+
+    }
+
 
     private Targatable getClickedOpponent(float x, float y) {
         for (Targatable target : opponentList) {
@@ -148,47 +189,45 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         return null;
     }
 
+
     // ---- Render ----
 
     @Override
     public void render(float delta) {
 
-        ScreenUtils.clear(Color.BLACK);   // 1. Clear once, at the top
+        ScreenUtils.clear(Color.BLACK);
 
-        // 2. Draw world
         viewport.apply();
+        viewport.getCamera().update();
+
+
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        boardView.debugDraw(shapeRenderer);
+        shapeRenderer.end();
+
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         drawWorld(delta);
         batch.end();
-        hud.draw(batch, delta);
 
+
+        hud.draw(batch, delta);
     }
 
 
     private void drawWorld(float delta) {
-
-        Opponent selectedOpponent = gameState.getTargetOpponent();
-        if (selectedOpponent != null && !selectedOpponent.isDead()) {
-            if (selectedCard != null) {
-                selectedOpponent.setPosition(ENEMY_X, ENEMY_Y + 0.5f);
-                batch.setColor(Color.YELLOW);
-            } else {
-                selectedOpponent.setPosition(ENEMY_X, ENEMY_Y);
-                batch.setColor(Color.WHITE);
-            }
-            selectedOpponent.draw(batch, delta);
-        }
-
         batch.setColor(Color.WHITE);
-        handView.draw(batch, selectedCard);
+        boardView.draw(batch, selectedCard, delta, isOpponentClicked);
     }
 
 
     @Override
     public void resize(int width, int height) {
         hud.getUiViewport().update(width, height, true);
+        boardView.rebuild();
         viewport.update(width, height, true);
+        boardView.rebuild();
 
     }
 
@@ -219,10 +258,6 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         return false;
     }
 
-    @Override
-    public boolean touchDragged(int x, int y, int p) {
-        return false;
-    }
 
     @Override
     public boolean mouseMoved(int x, int y) {

@@ -15,15 +15,21 @@ public class GdxGame extends Game {
     private SpriteBatch batch;
     private Assets assets;
     private EventBus eventBus;
-
+    private MonsterAsset monsterAsset;
 
     @Override
     public void create() {
         this.eventBus = new EventBus();
         batch = new SpriteBatch();
         this.assets = new Assets();
+        this.monsterAsset = new MonsterAsset();
         assets.load();
-        this.setScreen(new GameScreen(this));
+        this.monsterAsset.load();
+        this.setScreen(new GameScreen(this,assets));
+    }
+
+    public MonsterAsset getMonsterAssets() {
+        return monsterAsset;
     }
 
     public EventBus getEventBus() {

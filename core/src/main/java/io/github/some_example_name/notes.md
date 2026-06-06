@@ -1,20 +1,13 @@
-## mana
-- mana grows per turn
-- no end turn button
+- cards - in hands
+- monsters - own monster field
+- hands and monster field can both be supported
+- u are in a world where u have differnt shops u can go to to buy upgrades
+- u start in a tournament u stay in the tournament until u leave it to buy something the longer u stay the more money u get each time for ur streak
+- different monster types
+- synergies betweeen them
+- th less health he less attack damge they make they both correlate in a multiplier
+- attacking costst mana same as playing a monster or a spell
 
-## fight
-- u sort of can also imporve all ur stats form fighting differnet kinds of people
-- caards are ur firneds like in yugioh
-- corrupt cards do s omethin witht hem
-
-## cards
-- cards have mooods
-- cards need food
-- cards get happy when they win
-- train cards
-
-## The core loop:
-You have creatures on your side, enemy has creatures on their side
-Each creature can attack once per turn, but attacking costs mana
-You also have spells that cost mana
-Every turn you're dividing limited mana between attacking and playing spells
+## Architecture improvements
+- perhaps a better overall architecture could be so basically everything is lead by some sort of class 
+that handles input which calls businesslogic businesslogic emits events events updatae gamestate and ui reads gamestate

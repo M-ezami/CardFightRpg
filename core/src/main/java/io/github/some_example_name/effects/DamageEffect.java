@@ -14,6 +14,10 @@ public class DamageEffect extends Effect {
         this.amount = amount;
     }
 
+    public void setAmount(final int amount) {
+        this.amount = amount;
+    }
+
     @Override
     public String getDescription() {
         return amount + " damage effect";

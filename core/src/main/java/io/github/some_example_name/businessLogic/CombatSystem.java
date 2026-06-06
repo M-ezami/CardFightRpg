@@ -1,6 +1,8 @@
 package io.github.some_example_name.businessLogic;
 
-import io.github.some_example_name.data.Card;
+import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardParents.MonsterCard;
+import io.github.some_example_name.cards.cardParents.SpellCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Opponent;
@@ -40,13 +42,20 @@ public class CombatSystem {
 
     // ---- Card actions ----
 
-    public boolean playCard(Card card, Targatable target) {
+    public boolean manaCheck(Card card) {
         Player player = gameState.getPlayer();
 
         if (player.getCurrentMana() < card.getManaCost()) {
             System.out.println("Not enough mana!");
             return false;
         }
+        return true;
+    }
+
+    public boolean onPlaySpellCard(SpellCard card, Targatable target) {
+        Player player = gameState.getPlayer();
+
+        if (manaCheck(card)) return false;
 
         gameState.setTargetOpponent((Opponent) target);
 
@@ -79,5 +88,12 @@ public class CombatSystem {
         System.out.println("Enemy defeated!");
 
         return true;
+    }
+
+    public void onPlayMonsterCard(MonsterCard card) {
+        gameState.getMonsters().add(card.getMonster());
+        gameState.getDeckState().discard(card);
+
+
     }
 }

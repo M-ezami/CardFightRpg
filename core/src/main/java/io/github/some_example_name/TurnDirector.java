@@ -2,9 +2,14 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.utils.Timer;
 import io.github.some_example_name.businessLogic.CombatSystem;
-import io.github.some_example_name.data.Card;
+
+import io.github.some_example_name.cards.cardParents.MonsterCard;
+import io.github.some_example_name.cards.cardParents.SpellCard;
 import io.github.some_example_name.entiteRelated.Targatable;
 import io.github.some_example_name.events.*;
+
+// (PlayerTurnStartEvent());  SUBSCRIBERS ARE: Hud: Showbanner with player, CombatScreen : RefreshHand
+// new PlayerTurnReadyEvent(); SUBSCRIBERS ARE: CombatScreen: refreshHand();, hud.hideBanner();
 
 
 public class TurnDirector {
@@ -20,16 +25,22 @@ public class TurnDirector {
 
     // ---- Player intent ----
 
-    public void onPlayCard(Card card, Targatable target) {
-        boolean played = combatSystem.playCard(card, target);
+    public void onPlayMonsterCard(MonsterCard card) {
+        combatSystem.onPlayMonsterCard(card);
+    }
+
+    public void onPlaySpellCard(SpellCard spellCard, Targatable target) {
+        boolean played = combatSystem.onPlaySpellCard(spellCard, target);
         if (played) {
-            eventBus.emit(new CardPlayedEvent(card, target));
+            eventBus.emit(new CardPlayedEvent(spellCard, target));
+            //banner show damage of player subscribe to this
         }
         if (combatSystem.checkEnemyDeath()) {
             eventBus.emit(new EnemyDiedEvent());
         }
 
     }
+
 
     // ---- Turn sequencing ----
 
@@ -55,7 +66,8 @@ public class TurnDirector {
 
     // ---- Internal ----
 
-    private void delay(float seconds, Runnable action) {
+    //move to delta
+    private static void delay(float seconds, Runnable action) {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {

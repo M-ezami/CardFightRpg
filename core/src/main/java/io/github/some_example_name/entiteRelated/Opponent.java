@@ -1,4 +1,5 @@
 package io.github.some_example_name.entiteRelated;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import io.github.some_example_name.effects.Effect;
@@ -13,22 +14,20 @@ public abstract class Opponent implements Targatable {
     protected float y;
     protected float width;
     protected float height;
-    protected Map<Effect, Integer> pool;
-
 
 
     public Opponent(int health, int maxHealth) {
         this.health = health;
         this.maxHealth = maxHealth;
-        this.pool = createEffectPool();
+
     }
 
-    public abstract void setAnimationState(EnemyAnimationState  state);
+    public abstract void setAnimationState(EnemyAnimationState state);
 
     protected abstract Map<Effect, Integer> createEffectPool();
 
     public Effect getRandomEffect() {
-
+        Map<Effect, Integer> pool = createEffectPool();
         int totalWeight = 0;
 
         for (int weight : pool.values()) {
@@ -52,10 +51,8 @@ public abstract class Opponent implements Targatable {
     }
 
 
-
-
     public boolean contains(float worldX, float worldY) {
-        return worldX >= x && worldX <= x +width &&
+        return worldX >= x && worldX <= x + width &&
             worldY >= y && worldY <= y + height;
     }
 

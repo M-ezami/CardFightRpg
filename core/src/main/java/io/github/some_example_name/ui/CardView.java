@@ -5,59 +5,57 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import io.github.some_example_name.data.Card;
-
+import com.badlogic.gdx.utils.Align;
+import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardParents.CardType;
 
 public class CardView {
 
-    private TextureRegion cardOverlay;
-    private TextureRegion textBox;
-    private TextureRegion nameRegion;
-
     private final Card card;
+    private final Assets assets;
+
+    private final TextureRegion cardOverlay;
+    private final TextureRegion textBox;
+    private final TextureRegion nameRegion;
+
+    private final BitmapFont font;
+    private final GlyphLayout glyphLayout;
+
+    // world bounds (single source of truth)
+    private float x, y, width, height;
+
     private final String description;
     private final String name;
-    private float width;
-    private float height;
 
-    private BitmapFont font;
-    private Assets assets;
-    private GlyphLayout glyphLayout;
-    private float drawX, drawY;
 
     public CardView(Card card, Assets assets) {
+        this.card = card;
         this.assets = assets;
         this.font = assets.getCardFont();
         this.glyphLayout = new GlyphLayout();
-        this.card = card;
-        this.name = this.card.getName();
-        this.description = this.card.getDescription();
-        buildCardUi();
-//        float aspectRatio =
-//            (float) texture.getHeight() / texture.getWidth();
-        float aspectRatio = this.assets.calculateTextureAspectRatio(cardOverlay);
-        this.width = 2f;
-        this.height = width * aspectRatio;
 
-        this.font.getData().setScale(0.009f); // add this
-        this.font.setUseIntegerPositions(false);
-
-    }
-
-    public Card getCard() {
-        return card;
-    }
-
-    public void buildCardUi() {
         this.cardOverlay = assets.getCardOverlay();
         this.textBox = assets.getTextBox();
         this.nameRegion = assets.getNameRegion();
 
+        this.name = card.getName();
+        this.description = card.getDescription();
+
+        // DO NOT scale font per instance (do it once in Assets instead)
+    }
+    public CardType getCardType() {
+        return card.getCardType();
     }
 
 
+    public void setBounds(float x, float y, float width, float height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
 
-    private float toWorldY(float y, float pixelOffsetFromBottom) {
+    private float toWorldY(float pixelOffsetFromBottom) {
         return y + (pixelOffsetFromBottom / cardOverlay.getRegionHeight()) * height;
     }
 
@@ -65,27 +63,38 @@ public class CardView {
         return (region.getRegionHeight() / (float) cardOverlay.getRegionHeight()) * height;
     }
 
-    public void draw(SpriteBatch batch, float x, float y) {
-        this.drawX = x;
-        this.drawY = y;
+    public void draw(SpriteBatch batch) {
+
+        // main card
         batch.draw(cardOverlay, x, y, width, height);
 
-        float tbWorldY = toWorldY(y, 22f);
+        // textbox
+        float tbWorldY = toWorldY(22f);
         float tbWorldH = toWorldH(textBox);
         batch.draw(textBox, x, tbWorldY, width, tbWorldH);
 
-        float nameWorldY = toWorldY(y, 110f);
+        // name banner
+        float nameWorldY = toWorldY(110f);
         float nameWorldH = toWorldH(nameRegion);
         batch.draw(nameRegion, x, nameWorldY, width, nameWorldH);
 
-        font.setColor(Color.WHITE);
-        glyphLayout.setText(font, description);
-        font.draw(batch, description, x + (width / 2) - glyphLayout.width / 2, tbWorldY + tbWorldH - 0.1f);
+        font.setColor(Color.BLACK);
+        glyphLayout.setText(font, description, Color.BLACK, width, Align.center, true);
+
+        font.draw(
+            batch,
+            glyphLayout,
+            x,
+            tbWorldY + tbWorldH
+        );
     }
 
     public boolean contains(float worldX, float worldY) {
-        return worldX >= drawX && worldX <= drawX + width &&
-            worldY >= drawY && worldY <= drawY + height;
+        return worldX >= x && worldX <= x + width &&
+            worldY >= y && worldY <= y + height;
     }
 
+    public Card getCard() {
+        return card;
+    }
 }

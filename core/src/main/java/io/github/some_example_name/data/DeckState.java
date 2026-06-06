@@ -1,5 +1,7 @@
 package io.github.some_example_name.data;
 
+import io.github.some_example_name.cards.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 

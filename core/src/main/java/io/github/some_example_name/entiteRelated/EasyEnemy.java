@@ -52,8 +52,9 @@ public class EasyEnemy extends Opponent {
     @Override
     protected Map<Effect, Integer> createEffectPool() {
         return Map.of(
-            new DamageEffect(MathUtils.random(0, 5), new PlayerTarget()), 70
+             new DamageEffect(MathUtils.random(0, 5), new PlayerTarget()), 70
         );
+
     }
 
     @Override

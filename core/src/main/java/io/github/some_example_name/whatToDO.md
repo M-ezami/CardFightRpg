@@ -1,5 +1,4 @@
-- split up board into 3 sections
-- mana is preserved between turns if unspend
-- add end turn button
-- onplaycard caan play monsters or spell cards
-- 
+- thouhghts for next time:
+- hashmap for handview maybe and monster view maybe
+- get monsters to draw would be nice
+

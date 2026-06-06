@@ -35,17 +35,19 @@ public class Assets implements Disposable {
     private Texture barBackgroundTexture;
     private Texture barForegroundTexture;
     private Texture barOverlayTexture;
-    private Texture backgroundTexture;
-    private Texture cardTexure;
+
 
     private TextureRegion barBackground;
     private TextureRegion healthBarForeground;
     private TextureRegion manaBarForeground;
     private Animation barOverlayIconAnimation;
-    private BitmapFont font;
+    private BitmapFont buttonFont;
+    private BitmapFont cardFont;
     private TextureRegion barOverlayTextureRegion;
     private Texture buttonTextures;
     private TextureRegion buttonTextureRegion;
+
+
 
     AssetManager assetManger = new AssetManager();
 
@@ -53,7 +55,7 @@ public class Assets implements Disposable {
     public void load() {
         loadAtlas();
         loadCardTextures();
-        createFont();
+        createFonts();
         loadSlimeAnimations();
         loadSkins();
         wrapButtonTexturetoDrawable();
@@ -76,7 +78,7 @@ public class Assets implements Disposable {
 
     public void loadButtonTextures() {
         this.buttonTextures = new Texture(Gdx.files.internal("HUD/UI_TravelBookAnimated_Spritesheet01a.png"));
-        this.buttonTextureRegion = new TextureRegion(this.buttonTextures,1,34,30,29);
+        this.buttonTextureRegion = new TextureRegion(this.buttonTextures, 1, 34, 30, 29);
     }
 
     public TextureRegion getButtonTextureRegion() {
@@ -106,13 +108,12 @@ public class Assets implements Disposable {
         this.textButtonStyle = new TextButton.TextButtonStyle();
         this.textButtonStyle.up = drawable;
         this.textButtonStyle.down = drawable;
-        this.textButtonStyle.font = getFont();
+        this.textButtonStyle.font = getButtonFont();
 
     }
 
 
-
-    public void loadSlimeAnimations(){
+    public void loadSlimeAnimations() {
         loadSlimeIdleAnimations();
         loadSlimeAttackAnimations();
         loadSlimeHurtAnimations();
@@ -136,6 +137,7 @@ public class Assets implements Disposable {
         frames.add(slimeAtlas.findRegion("slime-attack-3"));
         slimeAttackAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
     }
+
     private void loadSlimeHurtAnimations() {
         Array<TextureRegion> frames = new Array<>();
         frames.add(slimeAtlas.findRegion("slime-hurt-0"));
@@ -144,6 +146,7 @@ public class Assets implements Disposable {
         frames.add(slimeAtlas.findRegion("slime-hurt-3"));
         slimeHurtAnimation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
     }
+
     private void loadSlimeMoveAnimations() {
         Array<TextureRegion> frames = new Array<>();
         frames.add(slimeAtlas.findRegion("slime-move-0"));
@@ -162,17 +165,33 @@ public class Assets implements Disposable {
         return barOverlayIconAnimation;
     }
 
-    public void createFont() {
+    public void createButtonFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CherryCreamSoda-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 16;
 
-        font = generator.generateFont(parameter);
+        buttonFont = generator.generateFont(parameter);
         generator.dispose();
     }
 
+    public void createCardFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("BitcountGridDoubleInk-VariableFont_CRSV,ELSH,ELXP,SZP1,SZP2,XPN1,XPN2,YPN1,YPN2,slnt,wght.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 16;
+
+        cardFont = generator.generateFont(parameter);
+        generator.dispose();
+
+    }
+
+    public void createFonts(){
+        createButtonFont();
+        createCardFont();
+    }
+
+
     public BitmapFont getCardFont() {
-        return font;
+        return cardFont;
     }
 
     public TextureRegion getNameRegion() {
@@ -183,6 +202,7 @@ public class Assets implements Disposable {
         this.cardAtlas = new TextureAtlas("ui/ui.atlas");
         this.slimeAtlas = new TextureAtlas("slime/slime.atlas");
     }
+
 
 
     public void loadCardTextures() {
@@ -196,13 +216,6 @@ public class Assets implements Disposable {
         return (float) texture.getRegionHeight() / texture.getRegionWidth();
     }
 
-    public Texture getBackgroundTexture() {
-        return backgroundTexture;
-    }
-
-    public Texture getCardTexure() {
-        return cardTexure;
-    }
 
     public TextureAtlas getCardAtlas() {
         return cardAtlas;
@@ -260,9 +273,10 @@ public class Assets implements Disposable {
         return manaBarForeground;
     }
 
-    public BitmapFont getFont() {
-        return font;
+    public BitmapFont getButtonFont() {
+        return buttonFont;
     }
+
 
     public Animation getSlimeHurtAnimation() {
         return slimeHurtAnimation;
@@ -276,10 +290,13 @@ public class Assets implements Disposable {
         return slimeAttackAnimation;
     }
 
+
+
     @Override
     public void dispose() {
-        this.backgroundTexture.dispose();
         this.cardAtlas.dispose();
+        this.buttonFont.dispose();
+        this.cardFont.dispose();
     }
 
     public Texture getButtonSkin() {

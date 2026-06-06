@@ -51,7 +51,7 @@ public class Hud {
 
     public Hud(Assets assets, GameState gameState, EventBus eventBus) {
         this.uiViewport = new ScreenViewport();
-        this.font = assets.getFont();
+        this.font = assets.getButtonFont();
         this.stage = new Stage(uiViewport);
         this.assets = assets;
         this.eventBus = eventBus;
@@ -71,208 +71,210 @@ public class Hud {
         eventBus.subscribe(EnemyEffectAppliedEvent.class, event -> showEnemyEffect());
     }
 
-public void setupHud(Runnable onEndTurn) {
-    setupEndTurnButton(onEndTurn);
-    createBars();
-    setupTurnBanner();
-}
+    public void setupHud() {
+        createBars();
+        setupTurnBanner();
+        setupEndTurnButton();
+    }
 
 
+    private void createHealthBar() {
+        this.healthBar = addBar(
+            assets.getBarBackground(),
+            assets.getHealthBarForeground(),
+            player.getMaxHealth(),
+            player.getHealth(),
+            barOverlayPositionX + 1,
+            barOverlayPositionY + 8
+        );
+    }
+
+    private void createManaBar() {
+
+        this.manaBar = addBar(
+            assets.getBarBackground(),
+            assets.getManaBarForeground(),
+            player.getMaxMana(),
+            player.getMana(),
+            barOverlayPositionX + 1,
+            barOverlayPositionY + healthBar.getHeight() + 8
+        );
+    }
+
+    public void createBars() {
+        createHealthBar();
+        createManaBar();
+    }
+
+    public void addButtonListener(Runnable onEndTurn) {
+
+        this.endTurnButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onEndTurn.run();
+            }
+
+        });
+
+    }
+
+    public void setupEndTurnButton() {
+        float buttonScaleWidth = 6f;
+        float buttonScaleHeight = 2f;
+        TextureRegion buttonTextureRegion = assets.getButtonTextureRegion();
+        Drawable textButtonRegion = new TextureRegionDrawable(buttonTextureRegion);
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        textButtonStyle.up = textButtonRegion;
+        //need to add down still
+
+        this.endTurnButton = new TextButton("End turn", textButtonStyle);
+        System.out.println("actual" + endTurnButton.getWidth());
+        Table table = new Table();
+        table.right();
+        table.setFillParent(true);
+        table.add(endTurnButton)
+            .width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth)
+            .height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
+        stage.addActor(table);
 
 
-private void createHealthBar() {
-    this.healthBar = addBar(
-        assets.getBarBackground(),
-        assets.getHealthBarForeground(),
-        player.getMaxHealth(),
-        player.getHealth(),
-        barOverlayPositionX + 1,
-        barOverlayPositionY + 8
-    );
-}
-
-private void createManaBar() {
-
-    this.manaBar = addBar(
-        assets.getBarBackground(),
-        assets.getManaBarForeground(),
-        player.getMaxMana(),
-        player.getMana(),
-        barOverlayPositionX + 1,
-        barOverlayPositionY + healthBar.getHeight() + 8
-    );
-}
-
-public void createBars() {
-    createHealthBar();
-    createManaBar();
-}
+    }
 
 
-public void setupEndTurnButton(Runnable onEndTurn) {
-    float buttonScaleWidth = 6f;
-    float buttonScaleHeight = 2f;
-    TextureRegion buttonTextureRegion = assets.getButtonTextureRegion();
-    Drawable textButtonRegion = new TextureRegionDrawable(buttonTextureRegion);
-    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-    textButtonStyle.font = font;
-    textButtonStyle.up = textButtonRegion;
-    //need to add down still
+    private ProgressBar addBar(TextureRegion bg, TextureRegion fg,
+                               float max, float value,
+                               float x, float y) {
 
-    this.endTurnButton = new TextButton("End turn", textButtonStyle);
-    System.out.println("actual" + endTurnButton.getWidth());
-    Table table = new Table();
-    table.right();
-    table.setFillParent(true);
-    table.add(endTurnButton)
-        .width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth)
-        .height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
-    stage.addActor(table);
+        Drawable background = new TextureRegionDrawable(bg);
+        Drawable fill = new TextureRegionDrawable(fg);
 
 
-    this.endTurnButton.addListener(new ChangeListener() {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            onEndTurn.run();
-        }
+        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
+        style.background = background;
+        style.knobBefore = fill;
 
-    });
-}
+        ProgressBar bar = new ProgressBar(0, max, 1, false, style);
+        bar.setValue(value);
+        background.setMinHeight(bg.getRegionHeight() * BAR_SCALE);
+        fill.setMinHeight(fg.getRegionHeight() * BAR_SCALE);
 
+        bar.setSize(fg.getRegionWidth() * BAR_SCALE, fg.getRegionHeight() * BAR_SCALE);
+        bar.setPosition(x, y);
 
-private ProgressBar addBar(TextureRegion bg, TextureRegion fg,
-                           float max, float value,
-                           float x, float y) {
+        stage.addActor(bar);
+        return bar;
 
-    Drawable background = new TextureRegionDrawable(bg);
-    Drawable fill = new TextureRegionDrawable(fg);
+    }
 
+    private void drawUI() {
+        uiViewport.apply();
+        stage.act();
+        stage.draw();
+    }
 
-    ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
-    style.background = background;
-    style.knobBefore = fill;
+    public TextureRegion getCurrentFrame(float delta) {
+        stateTime += delta;
+        return (TextureRegion) progressAnimationBar.getKeyFrame(stateTime);
 
-    ProgressBar bar = new ProgressBar(0, max, 1, false, style);
-    bar.setValue(value);
-    background.setMinHeight(bg.getRegionHeight() * BAR_SCALE);
-    fill.setMinHeight(fg.getRegionHeight() * BAR_SCALE);
+    }
 
-    bar.setSize(fg.getRegionWidth() * BAR_SCALE, fg.getRegionHeight() * BAR_SCALE);
-    bar.setPosition(x, y);
+    public void drawBarOveralay(SpriteBatch batch, float delta) {
+        TextureRegion currentFrame = getCurrentFrame(delta);
+        TextureRegion overlay = assets.getBarOverlayTextureRegion();
 
-    stage.addActor(bar);
-    return bar;
+        float overlayW = overlay.getRegionWidth() * BAR_SCALE;
+        float overlayH = overlay.getRegionHeight() * BAR_SCALE;
+        float frameW = currentFrame.getRegionWidth() * BAR_SCALE;
+        float frameH = currentFrame.getRegionHeight() * BAR_SCALE;
 
-}
+        batch.draw(overlay, barOverlayPositionX, barOverlayPositionY, overlayW, overlayH);
+        batch.draw(currentFrame, barOverlayPositionX - frameW, barOverlayPositionY, frameW, frameH);
+    }
 
-private void drawUI() {
-    uiViewport.apply();
-    stage.act();
-    stage.draw();
-}
+    private void showBanner(String text, Color color) {
+        turnBanner.setColor(color);
+        turnBanner.setText(text);
+        turnBanner.setVisible(true);
+    }
 
-public TextureRegion getCurrentFrame(float delta) {
-    stateTime += delta;
-    return (TextureRegion) progressAnimationBar.getKeyFrame(stateTime);
+    public void hideBanner() {
+        turnBanner.setVisible(false);
+    }
 
-}
+    private void setupTurnBanner() {
+        Label.LabelStyle bannerStyle = new Label.LabelStyle();
+        bannerStyle.font = font;
+        this.turnBanner = new Label("", bannerStyle);
+        this.turnBanner.setFontScale(3f);
+        this.turnBanner.setVisible(false);
 
-public void drawBarOveralay(SpriteBatch batch, float delta) {
-    TextureRegion currentFrame = getCurrentFrame(delta);
-    TextureRegion overlay = assets.getBarOverlayTextureRegion();
+        Table bannerTable = new Table();
+        bannerTable.setFillParent(true);
+        bannerTable.center();
+        bannerTable.add(turnBanner);
 
-    float overlayW = overlay.getRegionWidth() * BAR_SCALE;
-    float overlayH = overlay.getRegionHeight() * BAR_SCALE;
-    float frameW = currentFrame.getRegionWidth() * BAR_SCALE;
-    float frameH = currentFrame.getRegionHeight() * BAR_SCALE;
+        stage.addActor(bannerTable);
+    }
 
-    batch.draw(overlay, barOverlayPositionX, barOverlayPositionY, overlayW, overlayH);
-    batch.draw(currentFrame, barOverlayPositionX - frameW, barOverlayPositionY, frameW, frameH);
-}
+    public void draw(SpriteBatch batch, float delta) {
+        updateBars();
+        uiViewport.apply();
+        batch.setProjectionMatrix(uiViewport.getCamera().combined);
+        batch.begin();
+        drawBarOveralay(batch, delta);
+        batch.end();
 
-private void showBanner(String text, Color color) {
-    turnBanner.setColor(color);
-    turnBanner.setText(text);
-    turnBanner.setVisible(true);
-}
+        drawUI();
+    }
 
-private void hideBanner() {
-    turnBanner.setVisible(false);
-}
+    public void showEnemyEffect() {
+        showBanner(
+            player.getHealth() + "-" + opponents.getFirst().getRandomEffect().getDescription(),
+            Color.RED
+        );
 
-private void setupTurnBanner() {
-    Label.LabelStyle bannerStyle = new Label.LabelStyle();
-    bannerStyle.font = font;
-    this.turnBanner = new Label("", bannerStyle);
-    this.turnBanner.setFontScale(3f);
-    this.turnBanner.setVisible(false);
-
-    Table bannerTable = new Table();
-    bannerTable.setFillParent(true);
-    bannerTable.center();
-    bannerTable.add(turnBanner);
-
-    stage.addActor(bannerTable);
-}
-
-public void draw(SpriteBatch batch, float delta) {
-    updateBars();
-    uiViewport.apply();
-    batch.setProjectionMatrix(uiViewport.getCamera().combined);
-    batch.begin();
-    drawBarOveralay(batch, delta);
-    batch.end();
-
-    drawUI();
-}
-
-public void showEnemyEffect() {
-    showBanner(
-        player.getHealth() + "-" + opponents.getFirst().getRandomEffect().getDescription(),
-        Color.RED
-    );
-
-}
+    }
 
 
 // ---- Turn lifecycle ----
 
-public void onEnemyTurnBegin() {
-    showBanner("ENEMY TURN", Color.RED);
-}
-
-public void onPlayerTurnBegin() {
-    showBanner("PLAYER TURN", Color.GREEN);
-}
-
-
-private void updateBars() {
-    if (healthBar != null) {
-        healthBar.setValue(player.getHealth());
+    public void onEnemyTurnBegin() {
+        showBanner("ENEMY TURN", Color.RED);
     }
 
-    if (manaBar != null) {
-        manaBar.setValue(player.getMana());
+    public void onPlayerTurnBegin() {
+        showBanner("PLAYER TURN", Color.GREEN);
+
     }
-}
 
 
-public Stage getStage() {
-    return stage;
-}
+    private void updateBars() {
+        if (healthBar != null) {
+            healthBar.setValue(player.getHealth());
+        }
 
-public Viewport getUiViewport() {
-    return uiViewport;
-}
+        if (manaBar != null) {
+            manaBar.setValue(player.getMana());
+        }
+    }
 
-public void addToMultiplexer(InputMultiplexer multiplexer) {
-    multiplexer.addProcessor(stage);
-}
 
-public void resize(int width, int height) {
-    uiViewport.update(width, height, true);
-}
+    public Stage getStage() {
+        return stage;
+    }
 
+    public Viewport getUiViewport() {
+        return uiViewport;
+    }
+
+    public void addToMultiplexer(InputMultiplexer multiplexer) {
+        multiplexer.addProcessor(stage);
+    }
+
+    public void resize(int width, int height) {
+        uiViewport.update(width, height, true);
+    }
 
 
 }

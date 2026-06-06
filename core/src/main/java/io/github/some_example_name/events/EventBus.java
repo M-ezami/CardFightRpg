@@ -14,6 +14,8 @@ public class EventBus {
             .add(listener);
     }
 
+
+
     @SuppressWarnings("unchecked")
     public <T> void emit(T event) {
         Class<?> eventType = event.getClass();
@@ -23,6 +25,7 @@ public class EventBus {
         if (eventListeners == null) return;
 
         for (EventListener<?> listener : eventListeners) {
+            System.out.println("Event: " + eventType + ", Listener: " + listener.getClass().getName());
             ((EventListener<T>) listener).onEvent(event);
         }
     }
