@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.AnimationDirector;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.TurnDirector;
+import io.github.some_example_name.businessLogic.CardSystem;
 import io.github.some_example_name.businessLogic.CombatSystem;
 import io.github.some_example_name.cards.FireCard;
 import io.github.some_example_name.data.GameState;
@@ -71,9 +72,10 @@ public class GameScreen extends ScreenAdapter {
 
         GameState gameState = new GameState(player, opponents);
         CombatSystem combatSystem = new CombatSystem(gameState);
+        CardSystem cardSystem = new CardSystem(gameState, eventBus);
         CombatScreen combatScreen = new CombatScreen(gameState, game, eventBus);
         TurnDirector turnDirector = new TurnDirector(combatSystem, eventBus);
-        AnimationDirector animationDirector = new AnimationDirector(eventBus,opponents);
+        AnimationDirector animationDirector = new AnimationDirector(eventBus, opponents);
         combatScreen.setTurnDirector(turnDirector);
         game.setScreen(combatScreen);
 

@@ -14,9 +14,6 @@ public class MonsterView {
         this.rectangle = new Rectangle();
     }
 
-    public void defineRectangle(float x, float y, float width, float height) {
-        setPosition(x, y);
-    }
 
     public void setPosition(float x, float y) {
         rectangle.setPosition(x, y);

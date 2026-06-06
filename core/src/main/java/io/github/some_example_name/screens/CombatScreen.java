@@ -10,17 +10,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import io.github.some_example_name.CardContext;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.TurnDirector;
 import io.github.some_example_name.cards.Card;
-import io.github.some_example_name.cards.cardParents.CardType;
 import io.github.some_example_name.cards.cardParents.MonsterCard;
-import io.github.some_example_name.cards.cardParents.SpellCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Targatable;
-import io.github.some_example_name.events.*;
-import io.github.some_example_name.ui.*;
+import io.github.some_example_name.events.CardPlayedEvent;
+import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.PlayerTurnReadyEvent;
+import io.github.some_example_name.events.PlayerTurnStartEvent;
+import io.github.some_example_name.ui.BoardView;
+import io.github.some_example_name.ui.CardView;
+import io.github.some_example_name.ui.Hud;
 
 import java.util.List;
 
@@ -136,73 +140,92 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         System.out.println("trying to play card " + cardView + " at " + x + ", " + y);
         Card card = cardView.getCard();
 
-        if (card.getCardType() == CardType.SPELL) {
-            Targatable target = getOpponentAt(x, y);
-            if (target == null) return;
-            turnDirector.onPlaySpellCard((SpellCard) card, target);
-        }
+        Targatable target = getOpponentAt(x, y);
+        boolean monsterFieldClicked = boardView.monsterViewDimensions().contains(x, y);
+        CardContext cardContext = new CardContext(monsterFieldClicked, target, card);
+        eventBus.emit(new CardPlayedEvent(cardContext));
 
-        if (card.getCardType() == CardType.MONSTER) {
-            if (!boardView.monsterViewDimensions().contains(x, y)) return;
-            turnDirector.onPlayMonsterCard((MonsterCard) card);
-            boardView.onUpdateMonsterField();
-        }
     }
 
-    private Targatable getOpponentAt(float x, float y) {
-        for (Targatable target : opponentList) {
-            if (target.contains(x, y) && !target.isDead()) return target;
-        }
-        return null;
+
+private Targatable getOpponentAt(float x, float y) {
+    for (Targatable target : opponentList) {
+        if (target.contains(x, y) && !target.isDead()) return target;
     }
+    return null;
+}
 
-    // ---- Render ----
+// ---- Render ----
 
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+@Override
+public void render(float delta) {
+    ScreenUtils.clear(Color.BLACK);
 
-        viewport.apply();
-        viewport.getCamera().update();
+    viewport.apply();
+    viewport.getCamera().update();
 
-        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        boardView.debugDraw(shapeRenderer);
-        shapeRenderer.end();
+    shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+    shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+    boardView.debugDraw(shapeRenderer);
+    shapeRenderer.end();
 
-        batch.setProjectionMatrix(viewport.getCamera().combined);
-        batch.begin();
-        drawWorld(delta);
-        batch.end();
+    batch.setProjectionMatrix(viewport.getCamera().combined);
+    batch.begin();
+    drawWorld(delta);
+    batch.end();
 
-        hud.draw(batch, delta);
+    hud.draw(batch, delta);
+}
+
+private void drawWorld(float delta) {
+    batch.setColor(Color.WHITE);
+    boardView.draw(batch, draggedCard, delta, false);
+
+    if (draggedCard != null) {
+        float cardW = boardView.monsterViewDimensions().width / Math.max(boardView.getCards().size(), 1);
+        float cardH = boardView.monsterViewDimensions().height;
+        draggedCard.setBounds(dragX - cardW / 2f, dragY - cardH / 2f, cardW, cardH);
+        draggedCard.draw(batch);
     }
+}
 
-    private void drawWorld(float delta) {
-        batch.setColor(Color.WHITE);
-        boardView.draw(batch, draggedCard, delta, false);
+@Override
+public void resize(int width, int height) {
+    hud.getUiViewport().update(width, height, true);
+    viewport.update(width, height, true);
+    boardView.rebuild();
+}
 
-        if (draggedCard != null) {
-            float cardW = boardView.monsterViewDimensions().width / Math.max(boardView.getCards().size(), 1);
-            float cardH = boardView.monsterViewDimensions().height;
-            draggedCard.setBounds(dragX - cardW / 2f, dragY - cardH / 2f, cardW, cardH);
-            draggedCard.draw(batch);
-        }
-    }
+// ---- Unused stubs ----
 
-    @Override
-    public void resize(int width, int height) {
-        hud.getUiViewport().update(width, height, true);
-        viewport.update(width, height, true);
-        boardView.rebuild();
-    }
+@Override
+public boolean keyDown(int k) {
+    return false;
+}
 
-    // ---- Unused stubs ----
+@Override
+public boolean keyUp(int k) {
+    return false;
+}
 
-    @Override public boolean keyDown(int k) { return false; }
-    @Override public boolean keyUp(int k) { return false; }
-    @Override public boolean keyTyped(char c) { return false; }
-    @Override public boolean touchCancelled(int x, int y, int p, int b) { draggedCard = null; return false; }
-    @Override public boolean mouseMoved(int x, int y) { return false; }
-    @Override public boolean scrolled(float a, float b) { return false; }
+@Override
+public boolean keyTyped(char c) {
+    return false;
+}
+
+@Override
+public boolean touchCancelled(int x, int y, int p, int b) {
+    draggedCard = null;
+    return false;
+}
+
+@Override
+public boolean mouseMoved(int x, int y) {
+    return false;
+}
+
+@Override
+public boolean scrolled(float a, float b) {
+    return false;
+}
 }
