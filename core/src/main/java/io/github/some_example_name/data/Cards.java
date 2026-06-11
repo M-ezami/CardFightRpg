@@ -5,20 +5,25 @@ import io.github.some_example_name.cards.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeckState {
+public class Cards {
 
     public static int HANDSIZE = 5;
 
-    private List<Card> hand;
-    private List<Card> drawPile;
-    private List<Card> discardPile;
+    private final List<Card> hand;
+    private final List<Card> drawPile;
+    private final List<Card> discardPile;
+    private final List<Card> cardDeck;
 
-
-    public DeckState(Deck deck) {
+    public Cards(List<Card> deck) {
+        this.cardDeck = new ArrayList<>(deck);
         this.hand = new ArrayList<>();
-        this.drawPile = new ArrayList<>(deck.getCards());
+        this.drawPile = new ArrayList<>(cardDeck);
         this.discardPile = new ArrayList<>();
         drawHand();
+    }
+
+    public void addCard(final Card card) {
+        this.hand.add(card);
     }
 
     public void drawHand() {
@@ -26,8 +31,9 @@ public class DeckState {
         System.out.println(discardPile.size() +"");
         if (HANDSIZE <= 0) return;
         if (drawPile.isEmpty()) reshuffle();
+        int cardsToDraw = Math.min(HANDSIZE, drawPile.size());
 
-        for (int i = 0; i < HANDSIZE; i++) {
+        for (int i = 0; i < cardsToDraw; i++) {
             Card card = drawPile.remove(0);
             hand.add(card);
         }
@@ -55,5 +61,9 @@ public class DeckState {
 
     public List<Card> getHand() {
         return hand;
+    }
+
+    public List<Card> getCardDeck() {
+        return cardDeck;
     }
 }

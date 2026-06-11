@@ -14,8 +14,8 @@ public class AnimationDirector {
     public AnimationDirector(EventBus eventBus, List<Opponent> opponents) {
 
         eventBus.subscribe(CardPlayedEvent.class, e -> {
-            if (e.getTarget() != null) {
-                ((EasyEnemy) e.getTarget()).setAnimationState(EnemyAnimationState.HURT);
+            if (e.cardContext().target() != null) {
+                ((EasyEnemy) e.cardContext().target()).setAnimationState(EnemyAnimationState.HURT);
             }
         });
 

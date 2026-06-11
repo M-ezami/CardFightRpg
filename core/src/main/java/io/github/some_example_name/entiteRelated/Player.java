@@ -1,23 +1,55 @@
 package io.github.some_example_name.entiteRelated;
 
-import io.github.some_example_name.data.Deck;
+import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.FireCard;
+import io.github.some_example_name.cards.Monster;
+import io.github.some_example_name.data.Cards;
+import io.github.some_example_name.screens.SimpleMonsterCard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Targatable {
-    public  float maxHealth = 10;
-    private int maxMana = 3;
 
-    private final Deck deck;
+    private final Cards cards;
+    private final List<Monster> monsters;
 
     private float health;
     private int mana;
+    public float maxHealth = 10;
+    private int maxMana = 3;
 
     public Player() {
+        this.monsters = new ArrayList<>();
         this.health = maxHealth;
         this.mana = maxMana;
-        this.deck = new Deck();
+        this.cards = new Cards(setupPlayerDeck());
     }
 
-    public  float getMaxHealth() {
+
+    private List<Card> setupPlayerDeck() {
+        List<Card> playerDeck = new  ArrayList<>();
+        playerDeck.add(new FireCard("Card 1"));
+        playerDeck.add(new FireCard("Card 2"));
+        playerDeck.add(new FireCard("Card 3"));
+        playerDeck.add(new FireCard("Card 4"));
+        playerDeck.add(new SimpleMonsterCard());
+        return playerDeck;
+    }
+
+    public Cards getCards() {
+        return cards;
+    }
+
+    public List<Card> getCardDeck() {
+        return cards.getCardDeck();
+    }
+
+    public List<Monster> getMonsters() {
+        return monsters;
+    }
+
+    public float getMaxHealth() {
         return maxHealth;
     }
 
@@ -29,8 +61,8 @@ public class Player implements Targatable {
         return mana;
     }
 
-    public Deck getDeck() {
-        return deck;
+    public Cards getDeck() {
+        return cards;
     }
 
     public int getCurrentMana() {

@@ -9,7 +9,7 @@ import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.entiteRelated.Targatable;
 
-
+/*
 public class CombatSystem {
 
     private final GameState gameState;
@@ -91,3 +91,5 @@ public class CombatSystem {
         return true;
     }
 }
+
+ */

@@ -10,9 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.AnimationDirector;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.TurnDirector;
-import io.github.some_example_name.businessLogic.CardSystem;
-import io.github.some_example_name.businessLogic.CombatSystem;
+import io.github.some_example_name.businessLogic.CardPlaySystem;
 import io.github.some_example_name.cards.FireCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.EasyEnemy;
@@ -35,30 +33,26 @@ public class GameScreen extends ScreenAdapter {
     // ---- Fields ----
 
     private final GdxGame game;
-    private final Player player;
+    private Player player;
     private final List<Opponent> opponents;
     private final Viewport viewport;
     private final BitmapFont font;
     // ---- Constructor ----
 
     public GameScreen(GdxGame game, Assets assets) {
+
         this.game = game;
-        this.player = new Player();
         this.opponents = new ArrayList<>();
         this.font = assets.getButtonFont();
         this.viewport = new ExtendViewport(16f, 9f);
-        setupPlayerDeck();
+
+
+
     }
 
     // ---- Setup ----
 
-    private void setupPlayerDeck() {
-        player.getDeck().addCard(new FireCard("Card 1"));
-        player.getDeck().addCard(new FireCard("Card 2"));
-        player.getDeck().addCard(new FireCard("Card 3"));
-        player.getDeck().addCard(new FireCard("Card 4"));
-        player.getDeck().addCard(new SimpleMonsterCard());
-    }
+
 
     private void createOpponents() {
         opponents.add(new EasyEnemy(12, 12, game.getAssets()));
@@ -67,16 +61,13 @@ public class GameScreen extends ScreenAdapter {
     // ---- Encounter ----
 
     private void startCombat() {
+        this.player = new Player();
         EventBus eventBus = new EventBus();
         createOpponents();
-
         GameState gameState = new GameState(player, opponents);
-        CombatSystem combatSystem = new CombatSystem(gameState);
-        CardSystem cardSystem = new CardSystem(gameState, eventBus);
+        CardPlaySystem cardSystem = new CardPlaySystem(gameState, eventBus);
         CombatScreen combatScreen = new CombatScreen(gameState, game, eventBus);
-        TurnDirector turnDirector = new TurnDirector(combatSystem, eventBus);
         AnimationDirector animationDirector = new AnimationDirector(eventBus, opponents);
-        combatScreen.setTurnDirector(turnDirector);
         game.setScreen(combatScreen);
 
     }

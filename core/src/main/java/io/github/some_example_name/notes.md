@@ -8,6 +8,14 @@
 - th less health he less attack damge they make they both correlate in a multiplier
 - attacking costst mana same as playing a monster or a spell
 
+
+
+## Turn flow
+- 3 phases spell phase monster phase and attack phase
+- every action can only be done in its phase
+- 
+
+
 ## Architecture improvements
 - perhaps a better overall architecture could be so basically everything is lead by some sort of class 
 that handles input which calls businesslogic businesslogic emits events events updatae gamestate and ui reads gamestate

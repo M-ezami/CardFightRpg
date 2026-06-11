@@ -65,7 +65,7 @@ public class BoardView {
     }
 
     public void onUpdateHand() {
-        handView.update(gameState.getDeckState().getHand());
+        handView.update(gameState.getDeck().getHand());
     }
 
     public void onUpdateMonsterField() {

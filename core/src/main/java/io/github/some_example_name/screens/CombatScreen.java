@@ -12,9 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.github.some_example_name.CardContext;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.TurnDirector;
 import io.github.some_example_name.cards.Card;
-import io.github.some_example_name.cards.cardParents.MonsterCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Targatable;
@@ -45,8 +43,8 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
     private final GameState gameState;
     private final List<Opponent> opponentList;
 
-    private TurnDirector turnDirector;
 
+        // this can be further decoupled it shouldnt know about targets
     private CardView draggedCard = null;
     private float dragX, dragY;
 
@@ -65,16 +63,15 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         boardView.onUpdateHand();
     }
 
-    public void setTurnDirector(TurnDirector turnDirector) {
-        this.turnDirector = turnDirector;
-    }
-
-    // ---- Subscriptions ----
-
     public void subscribe() {
         eventBus.subscribe(CardPlayedEvent.class, e -> refreshHand());
         eventBus.subscribe(PlayerTurnReadyEvent.class, e -> onPlayerTurnReady());
         eventBus.subscribe(PlayerTurnStartEvent.class, e -> refreshHand());
+        eventBus.subscribe(MonsterPlayedEvent.class, e-> updateMonsterField());
+    }
+
+    public void updateMonsterField(){
+        boardView.onUpdateMonsterField();
     }
 
     public void onPlayerTurnReady() {
@@ -86,7 +83,6 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         boardView.onUpdateHand();
     }
 
-    // ---- Show ----
 
     @Override
     public void show() {
@@ -94,10 +90,9 @@ public class CombatScreen extends ScreenAdapter implements InputProcessor {
         multiplexer.addProcessor(hud.getStage());
         multiplexer.addProcessor(this);
         Gdx.input.setInputProcessor(multiplexer);
-        hud.addButtonListener(() -> turnDirector.onPlayerEndTurn());
+
     }
 
-    // ---- Input ----
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -155,7 +150,6 @@ private Targatable getOpponentAt(float x, float y) {
     return null;
 }
 
-// ---- Render ----
 
 @Override
 public void render(float delta) {
@@ -189,6 +183,8 @@ private void drawWorld(float delta) {
     }
 }
 
+
+
 @Override
 public void resize(int width, int height) {
     hud.getUiViewport().update(width, height, true);
@@ -196,7 +192,7 @@ public void resize(int width, int height) {
     boardView.rebuild();
 }
 
-// ---- Unused stubs ----
+
 
 @Override
 public boolean keyDown(int k) {
