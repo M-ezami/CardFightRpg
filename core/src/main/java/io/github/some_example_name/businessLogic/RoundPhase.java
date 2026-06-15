@@ -5,5 +5,6 @@ public enum RoundPhase {
     SPELL_PHASE,
     PLAY_PHASE,
     FIGHT_PHASE,
+    DISCARD_PHASE,
     ENEMY_TURN
 }

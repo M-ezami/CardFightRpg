@@ -1,37 +1,39 @@
 package io.github.some_example_name.businessLogic;
 
+import io.github.some_example_name.PhaseStartEvent;
+
 import io.github.some_example_name.events.EventBus;
 
 public class TurnSystem {
 
     private final EventBus eventBus;
-    private RoundPhase currentRoundPhase;
+    private RoundPhase currentPhase = RoundPhase.SPELL_PHASE;
 
-    // subcribes to events that advance phases
+    public TurnSystem() {
+        this.eventBus = EventBus.getInstance();
 
-    public TurnSystem(EventBus eventBus) {
-        this.eventBus = eventBus;
-        this.currentRoundPhase = RoundPhase.DRAW_PHASE;
+        eventBus.subscribe(AdvancePhaseEvent.class, e -> {
+            advancePhase();
+        });
+
+        emitPhaseStart();
     }
-
-    public void subscribe() {
-
-    }
-
 
     public void advancePhase() {
-        switch (currentRoundPhase) {
-            case DRAW_PHASE -> currentRoundPhase = RoundPhase.SPELL_PHASE;
-            case SPELL_PHASE -> currentRoundPhase = RoundPhase.PLAY_PHASE;
-            case PLAY_PHASE -> currentRoundPhase = RoundPhase.FIGHT_PHASE;
-            case FIGHT_PHASE -> currentRoundPhase = RoundPhase.ENEMY_TURN;
-            case ENEMY_TURN -> currentRoundPhase = RoundPhase.DRAW_PHASE;
-        }
-        onEnter();
+        currentPhase = switch (currentPhase) {
+            case DRAW_PHASE -> RoundPhase.SPELL_PHASE;
+            case SPELL_PHASE -> RoundPhase.PLAY_PHASE;
+            case PLAY_PHASE -> RoundPhase.FIGHT_PHASE;
+            case FIGHT_PHASE -> RoundPhase.DISCARD_PHASE;
+            case DISCARD_PHASE -> RoundPhase.ENEMY_TURN;
+            case ENEMY_TURN -> RoundPhase.DRAW_PHASE;
+        };
+
+        emitPhaseStart();
     }
 
-    private void onEnter() {
-
+    private void emitPhaseStart() {
+        eventBus.emit(new PhaseStartEvent(currentPhase));
     }
 
 

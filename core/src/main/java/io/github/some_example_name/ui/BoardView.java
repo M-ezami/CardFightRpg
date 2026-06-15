@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import io.github.some_example_name.DraggedCard;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.cards.Monster;
 import io.github.some_example_name.data.GameState;
 
 import java.util.List;
@@ -20,6 +20,9 @@ public class BoardView {
 
 
     private final GameState gameState;
+    private DraggedCard draggedCard;
+
+    // i really think this should be refactored into a seperate view for drawing and layout and saaame fora ll child classes
 
     public BoardView(ExtendViewport viewport, GdxGame game, GameState gameState) {
         this.gameState = gameState;
@@ -28,6 +31,14 @@ public class BoardView {
         this.handView = new HandView(assets);
         this.boardLayout = new BoardLayout(viewport);
         this.monsterFieldView = new MonsterFieldView(game.getMonsterAssets());
+    }
+
+    public HandView getHandView() {
+        return handView;
+    }
+
+    public OpponentView getOpponentView() {
+        return opponentView;
     }
 
     public void debugDraw(ShapeRenderer shapeRenderer) {
@@ -77,15 +88,19 @@ public class BoardView {
         return handView.getCardViews();
     }
 
+    public void setDraggedCard(DraggedCard draggedCard) {
+        this.draggedCard = draggedCard;
+    }
 
 
-    public void draw(SpriteBatch batch, CardView selectedCard, float delta, Boolean isOpponentClicked) {
+
+    public void draw(SpriteBatch batch, float delta) {
         handView.draw(batch,
             boardLayout.getPlayerHand().x,
             boardLayout.getPlayerHand().y,
             boardLayout.getPlayerHand().width,
             boardLayout.getPlayerHand().height,
-            selectedCard);
+            draggedCard);
 
         this.opponentView.draw(
             boardLayout.getEnemyMonster().x,
@@ -93,8 +108,7 @@ public class BoardView {
             boardLayout.getEnemyMonster().width,
             boardLayout.getEnemyMonster().height,
             batch,
-            delta,
-            isOpponentClicked);
+            delta);
 
         this.monsterFieldView.draw(boardLayout.getPlayerMonsters().x,
             boardLayout.getPlayerMonsters().y,

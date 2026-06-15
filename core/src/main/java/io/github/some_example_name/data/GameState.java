@@ -1,5 +1,6 @@
 package io.github.some_example_name.data;
 
+import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.cards.Monster;
 import io.github.some_example_name.entiteRelated.Opponent;
@@ -15,12 +16,21 @@ public class GameState {
     private final Player player;
     private final List<Opponent> opponents;
     private Opponent targetOpponent;
+    private RoundPhase roundPhase;
 
-    // ---- Constructor ----
     public GameState(Player player, List<Opponent> opponents) {
         this.player = player;
         this.opponents = opponents;
         this.targetOpponent = opponents.get(0);
+
+    }
+
+    public RoundPhase getRoundPhase() {
+        return roundPhase;
+    }
+
+    public void setRoundPhase(RoundPhase roundPhase) {
+        this.roundPhase = roundPhase;
     }
 
     public List<Monster> getMonsters() {
@@ -28,7 +38,6 @@ public class GameState {
 
     }
 
-    // ---- Getters ----
 
     public Player getPlayer() {
         return player;

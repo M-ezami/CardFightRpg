@@ -17,10 +17,10 @@ public class CardPlaySystem {
     private final GameState gameState;
     private final Player player;
 
-    public CardPlaySystem(GameState gameState, EventBus eventBus) {
+    public CardPlaySystem(GameState gameState) {
         this.gameState = gameState;
         this.player = gameState.getPlayer();
-        this.eventBus = eventBus;
+        this.eventBus = EventBus.getInstance();
         subscribe();
     }
 

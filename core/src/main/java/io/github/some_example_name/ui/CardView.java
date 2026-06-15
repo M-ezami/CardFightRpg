@@ -43,6 +43,7 @@ public class CardView {
 
         // DO NOT scale font per instance (do it once in Assets instead)
     }
+
     public CardType getCardType() {
         return card.getCardType();
     }
@@ -65,15 +66,12 @@ public class CardView {
 
     public void draw(SpriteBatch batch) {
 
-        // main card
         batch.draw(cardOverlay, x, y, width, height);
 
-        // textbox
         float tbWorldY = toWorldY(22f);
         float tbWorldH = toWorldH(textBox);
         batch.draw(textBox, x, tbWorldY, width, tbWorldH);
 
-        // name banner
         float nameWorldY = toWorldY(110f);
         float nameWorldH = toWorldH(nameRegion);
         batch.draw(nameRegion, x, nameWorldY, width, nameWorldH);

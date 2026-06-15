@@ -8,12 +8,20 @@ import java.util.Map;
 public class EventBus {
 
     private final Map<Class<?>, List<EventListener<?>>> listeners = new HashMap<>();
+    public static EventBus instance;
 
     public <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
         listeners.computeIfAbsent((Class<?>) eventType, k -> new ArrayList<>())
             .add(listener);
     }
 
+    public static EventBus getInstance() {
+        if (instance == null) {
+            instance = new EventBus();
+        }
+
+        return instance;
+    }
 
 
     @SuppressWarnings("unchecked")
