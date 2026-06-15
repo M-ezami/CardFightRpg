@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 
 import io.github.some_example_name.ui.BoardView;
+import io.github.some_example_name.ui.CardView;
 
 public class PlayInputHandler extends InputHandler {
 
@@ -11,19 +12,22 @@ public class PlayInputHandler extends InputHandler {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    protected boolean dragCard() {
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    protected boolean onCardTouched(CardView cardView) {
         return false;
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    protected boolean onCardReleased() {
         return false;
     }
+
+
+
 }
 
 

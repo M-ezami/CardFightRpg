@@ -22,7 +22,7 @@ public class BoardView {
     private final GameState gameState;
     private DraggedCard draggedCard;
 
-    // i really think this should be refactored into a seperate view for drawing and layout and saaame fora ll child classes
+    // I really think this should be refactored into a seperate view for drawing and layout and saaame for all child classes
 
     public BoardView(ExtendViewport viewport, GdxGame game, GameState gameState) {
         this.gameState = gameState;
@@ -65,19 +65,19 @@ public class BoardView {
         );
 
     }
-    public Rectangle monsterViewDimensions(){
-        return boardLayout.getPlayerMonsters();
+
+    public void updateHand() {
+        handView.update(gameState.getHand());
     }
 
-
+    public Rectangle monsterViewDimensions() {
+        return boardLayout.getPlayerMonsters();
+    }
 
     public void rebuild() {
         boardLayout.rebuild();
     }
 
-    public void onUpdateHand() {
-        handView.update(gameState.getDeck().getHand());
-    }
 
     public void onUpdateMonsterField() {
         System.out.println("onUpdateMonsterField");
@@ -91,7 +91,6 @@ public class BoardView {
     public void setDraggedCard(DraggedCard draggedCard) {
         this.draggedCard = draggedCard;
     }
-
 
 
     public void draw(SpriteBatch batch, float delta) {
@@ -113,10 +112,7 @@ public class BoardView {
         this.monsterFieldView.draw(boardLayout.getPlayerMonsters().x,
             boardLayout.getPlayerMonsters().y,
             boardLayout.getPlayerMonsters().width,
-            boardLayout.getPlayerMonsters().height,batch);
+            boardLayout.getPlayerMonsters().height, batch);
     }
-
-
-
 
 }

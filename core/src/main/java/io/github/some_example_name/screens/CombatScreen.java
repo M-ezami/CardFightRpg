@@ -9,17 +9,12 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.InputRouter;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.entiteRelated.Targatable;
 import io.github.some_example_name.events.CardPlayedEvent;
 import io.github.some_example_name.events.EventBus;
 import io.github.some_example_name.events.PlayerTurnReadyEvent;
 import io.github.some_example_name.events.PlayerTurnStartEvent;
 import io.github.some_example_name.ui.BoardView;
-import io.github.some_example_name.ui.CardView;
 import io.github.some_example_name.ui.Hud;
-
-import java.util.List;
 
 /**
  * Visuals and input only. No game rules live here.
@@ -34,10 +29,8 @@ public class CombatScreen extends ScreenAdapter {
     private final EventBus eventBus;
     private final Hud hud;
     private final BoardView boardView;
-    private final List<Opponent> opponentList;
-
+    private final InputRouter inputRouter;
     // this can be further decoupled it shouldnt know about targets
-    private final CardView draggedCard = null;
 
     public CombatScreen(GameState gameState, GdxGame game, EventBus eventBus) {
         this.eventBus = EventBus.getInstance();
@@ -45,20 +38,25 @@ public class CombatScreen extends ScreenAdapter {
         this.shapeRenderer = new ShapeRenderer();
         this.viewport = new ExtendViewport(16f, 9f);
         this.boardView = new BoardView(this.viewport, game, gameState);
-        this.opponentList = gameState.getOpponents();
         this.hud = new Hud(game.getAssets(), gameState, eventBus);
 
         subscribe();
-        InputRouter inputRouter = new InputRouter(viewport, boardView);
+        this.inputRouter = new InputRouter(viewport, boardView);
         hud.setupHud();
-        boardView.onUpdateHand();
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        hud.getUiViewport().update(width, height, true);
+        viewport.update(width, height, true);
+        boardView.rebuild();
     }
 
 
+
     public void subscribe() {
-        eventBus.subscribe(CardPlayedEvent.class, e -> refreshHand());
         eventBus.subscribe(PlayerTurnReadyEvent.class, e -> onPlayerTurnReady());
-        eventBus.subscribe(PlayerTurnStartEvent.class, e -> refreshHand());
         eventBus.subscribe(MonsterPlayedEvent.class, e -> updateMonsterField());
     }
 
@@ -67,21 +65,12 @@ public class CombatScreen extends ScreenAdapter {
     }
 
     public void onPlayerTurnReady() {
-        refreshHand();
         hud.hideBanner();
     }
 
-    public void refreshHand() {
-        boardView.onUpdateHand();
+    public void update(float delta) {
+        boardView.updateHand();
     }
-
-
-    @Override
-    public void show() {
-
-    }
-
-
 
     @Override
     public void render(float delta) {
@@ -96,6 +85,7 @@ public class CombatScreen extends ScreenAdapter {
         shapeRenderer.end();
 
         batch.setProjectionMatrix(viewport.getCamera().combined);
+        update(delta);
         batch.begin();
         drawWorld(delta);
         batch.end();
@@ -105,15 +95,7 @@ public class CombatScreen extends ScreenAdapter {
 
     private void drawWorld(float delta) {
         batch.setColor(Color.WHITE);
-        boardView.draw(batch, delta );
-    }
-
-
-    @Override
-    public void resize(int width, int height) {
-        hud.getUiViewport().update(width, height, true);
-        viewport.update(width, height, true);
-        boardView.rebuild();
+        boardView.draw(batch, delta);
     }
 
 

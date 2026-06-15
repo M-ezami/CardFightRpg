@@ -3,6 +3,7 @@ package io.github.some_example_name.ui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.DraggedCard;
 import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.events.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +12,22 @@ public class HandView {
 
     private final List<CardView> cardViews = new ArrayList<>();
     private final Assets assets;
+    private final EventBus eventBus;
 
-    private DraggedCard draggedCard;
 
     public HandView(Assets assets) {
         this.assets = assets;
+        this.eventBus = EventBus.getInstance();
+        subscribe();
     }
 
-    public void setDraggedCard(DraggedCard draggedCard) {
-        this.draggedCard = draggedCard;
+    public void subscribe(){
+        eventBus.subscribe(HandChangedEvent.class,event -> {
+            update(event.hand());
+        });
     }
+
+
 
     public void update(List<Card> hand) {
         cardViews.clear();
@@ -54,7 +61,6 @@ public class HandView {
             card.setBounds(baseX, baseY, cardWidth, height);
 
             if (isDragged) {
-                System.out.println("draggedCard: " + draggedCard);
                 draggedCardView = card;
                 draggedCardWidth = cardWidth;
             } else {

@@ -30,7 +30,21 @@ public class CardPlaySystem {
 
     public void onCardPlayed(CardContext ctx) {
         Card card = ctx.card();
-        if (!ctx.isMonsterField() && ctx.target() == null || manaCheck(card)) return;
+        if(!ctx.isMonsterField()) System.out.println("monster is empty");
+
+        if(ctx.target() == null){
+            System.out.println("target is empty");
+        }
+
+        if(manaCheck(card)){
+            System.out.println("mana is empty");
+        }
+
+        if (!ctx.isMonsterField() && ctx.target() == null || manaCheck(card)){
+            System.out.println("something is wrong");
+            return;
+        }
+
 
         switch (card.getCardType()) {
             case SPELL -> {
@@ -45,8 +59,8 @@ public class CardPlaySystem {
             }
             default -> System.out.println(CardPlaySystem.class + " : card needs a type");
         }
-    }
 
+    }
 
 
     public boolean manaCheck(Card card) {
@@ -62,7 +76,7 @@ public class CardPlaySystem {
         // perhaps pass in monster
         player.getMonsters().add(card.getMonster());
         player.spendMana(card.getManaCost());
-        player.getDeck().discard(card);
+        player.discardCard(card);
         eventBus.emit(new MonsterPlayedEvent());
     }
 
@@ -77,6 +91,7 @@ public class CardPlaySystem {
 
         player.spendMana(card.getManaCost());
         player.getDeck().discard(card);
+        //card discarded
     }
 
 

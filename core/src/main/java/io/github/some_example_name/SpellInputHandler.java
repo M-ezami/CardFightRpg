@@ -11,7 +11,8 @@ import io.github.some_example_name.ui.CardView;
 public class SpellInputHandler extends InputHandler {
 
     private CardView selectedCard = null;
-        // i think this shouldnt talkt o boardview boardview should only be rendering
+
+    // i think this shouldnt talkt o boardview boardview should only be rendering
     // this should talk to some layoutdata class about positions and update them and boardview shuld read it
     //but aint that bad
     public SpellInputHandler(BoardView boardView, Viewport viewport) {
@@ -20,13 +21,8 @@ public class SpellInputHandler extends InputHandler {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        touchPos.set(screenX, screenY);
-        viewport.unproject(touchPos);
-
-        CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView != null && cardView.getCardType() == CardType.SPELL) {
+    protected boolean onCardTouched(CardView cardView) {
+        if (cardView.getCardType() == CardType.SPELL) {
             selectedCard = cardView;
             return true;
         }
@@ -34,12 +30,11 @@ public class SpellInputHandler extends InputHandler {
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public boolean dragCard() {
 
         if (selectedCard == null) return false;
         System.out.println("touchDragged: " + touchPos.x + ", " + touchPos.y);
-        touchPos.set(screenX, screenY);
-        viewport.unproject(touchPos);
+
 
         boardView.setDraggedCard(
             new DraggedCard(selectedCard, touchPos.x, touchPos.y)
@@ -48,29 +43,18 @@ public class SpellInputHandler extends InputHandler {
         return true;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+    @Override
+    protected boolean onCardReleased() {
         if (selectedCard == null) return false;
 
-        touchPos.set(screenX, screenY);
-        viewport.unproject(touchPos);
-
-        Opponent opponent = boardView.getOpponentView()
-            .getOpponentAt(touchPos.x, touchPos.y);
-
         Card card = selectedCard.getCard();
-
-        boolean monsterFieldClicked =
-            boardView.monsterViewDimensions().contains(touchPos.x, touchPos.y);
+        Opponent opponent = boardView.getOpponentView().getOpponentAt(touchPos.x, touchPos.y);
 
         eventBus.emit(new CardPlayedEvent(
-            new CardContext(monsterFieldClicked, opponent, card)
-        ));
-
-        selectedCard = null;
+            new CardContext(false, opponent, card)));
         boardView.setDraggedCard(null);
-
+        selectedCard = null;
         return true;
     }
 }

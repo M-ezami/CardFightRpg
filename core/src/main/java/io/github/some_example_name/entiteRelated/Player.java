@@ -26,6 +26,10 @@ public class Player implements Targatable {
         this.cards = new Cards(setupPlayerDeck());
     }
 
+    public void discardCard(Card card) {
+        cards.discard(card);
+    }
+
 
     private List<Card> setupPlayerDeck() {
         List<Card> playerDeck = new  ArrayList<>();

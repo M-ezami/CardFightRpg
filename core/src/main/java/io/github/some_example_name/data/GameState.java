@@ -25,19 +25,10 @@ public class GameState {
 
     }
 
-    public RoundPhase getRoundPhase() {
-        return roundPhase;
-    }
-
-    public void setRoundPhase(RoundPhase roundPhase) {
-        this.roundPhase = roundPhase;
-    }
-
     public List<Monster> getMonsters() {
         return player.getMonsters();
 
     }
-
 
     public Player getPlayer() {
         return player;
@@ -56,11 +47,12 @@ public class GameState {
         return targetOpponent;
     }
 
-    public List<Card> getCardDeck() {
-        return player.getDeck().getCardDeck();
-    }
 
     public Cards getDeck() {
         return player.getDeck();
+    }
+
+    public List<Card> getHand() {
+        return player.getDeck().getHand();
     }
 }
