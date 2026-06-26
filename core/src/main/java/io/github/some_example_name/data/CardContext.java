@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.data;
 
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.entiteRelated.Targatable;

@@ -1,8 +1,9 @@
-package io.github.some_example_name;
+package io.github.some_example_name.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.some_example_name.events.PhaseStartEvent;
 import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.events.EventBus;
 import io.github.some_example_name.view.BoardView;

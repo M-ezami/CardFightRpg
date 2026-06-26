@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.events.EventBus;
 import io.github.some_example_name.screens.GameScreen;
 import io.github.some_example_name.ui.Assets;
+import io.github.some_example_name.ui.MonsterAsset;
 
 
 /**

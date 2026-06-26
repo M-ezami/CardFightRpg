@@ -1,10 +1,11 @@
-package io.github.some_example_name.businessLogic;
+package io.github.some_example_name.system;
 
-import io.github.some_example_name.PhaseStartEvent;
+import io.github.some_example_name.events.PhaseStartEvent;
 
-import io.github.some_example_name.events.CardPlayedEvent;
+import io.github.some_example_name.events.AdvancePhaseEvent;
+import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.screens.MonsterPlayedEvent;
+import io.github.some_example_name.events.MonsterPlayedEvent;
 
 public class TurnSystem {
 

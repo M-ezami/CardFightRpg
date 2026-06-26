@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import io.github.some_example_name.DraggedCard;
+import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.ui.Assets;

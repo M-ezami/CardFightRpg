@@ -1,7 +1,7 @@
 package io.github.some_example_name.cards;
 
 
-import io.github.some_example_name.cards.cardParents.SpellCard;
+import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.effects.DamageEffect;
 import io.github.some_example_name.entiteRelated.SingleTarget;
 

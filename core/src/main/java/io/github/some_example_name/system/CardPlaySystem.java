@@ -1,15 +1,15 @@
-package io.github.some_example_name.businessLogic;
+package io.github.some_example_name.system;
 
-import io.github.some_example_name.CardContext;
+import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.cards.Card;
-import io.github.some_example_name.cards.cardParents.MonsterCard;
-import io.github.some_example_name.cards.cardParents.SpellCard;
+import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
+import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.events.CardPlayedEvent;
 import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.screens.MonsterPlayedEvent;
+import io.github.some_example_name.events.MonsterPlayedEvent;
 
 public class CardPlaySystem {
     private final EventBus eventBus;

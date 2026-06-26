@@ -1,6 +1,7 @@
-package io.github.some_example_name.cards.cardParents;
+package io.github.some_example_name.cards.cardRelated.parents;
 
 import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.entiteRelated.TargetingStrategy;
 import io.github.some_example_name.effects.Effect;
 

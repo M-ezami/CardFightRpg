@@ -4,4 +4,6 @@ import io.github.some_example_name.cards.Card;
 
 import java.util.List;
 
+//this is unnecesary
+
 public record HandChangedEvent(List<Card> hand){}

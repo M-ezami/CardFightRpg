@@ -1,7 +1,6 @@
 package io.github.some_example_name.cards;
 
-import io.github.some_example_name.cards.cardParents.CardType;
-import io.github.some_example_name.effects.Effect;
+import io.github.some_example_name.cards.cardRelated.CardType;
 
 public interface Card {
 

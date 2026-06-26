@@ -1,7 +1,9 @@
-package io.github.some_example_name;
+package io.github.some_example_name.input;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.events.CardPlayedEvent;
 import io.github.some_example_name.view.BoardView;

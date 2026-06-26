@@ -1,6 +1,6 @@
 package io.github.some_example_name.cards;
 
-import io.github.some_example_name.MonsterType;
+import io.github.some_example_name.cards.cardRelated.MonsterType;
 import io.github.some_example_name.effects.MonsterEffect;
 import io.github.some_example_name.entiteRelated.TargetingStrategy;
 

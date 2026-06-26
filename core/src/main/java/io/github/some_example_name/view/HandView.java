@@ -1,7 +1,7 @@
 package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.some_example_name.DraggedCard;
+import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.events.EventBus;
 import io.github.some_example_name.events.HandChangedEvent;

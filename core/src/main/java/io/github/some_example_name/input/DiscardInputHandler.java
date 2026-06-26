@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.input;
 
 
 import io.github.some_example_name.view.BoardView;

@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.input;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
@@ -25,7 +25,7 @@ public abstract class InputHandler extends InputAdapter {
         this.monsterFieldView = boardView.getMonsterFieldView();
     }
 
-    void pixelsToWorld(int screenX, int screenY) {
+    protected void pixelsToWorld(int screenX, int screenY) {
         touchPos.set(screenX, screenY);
         viewport.unproject(touchPos);
     }

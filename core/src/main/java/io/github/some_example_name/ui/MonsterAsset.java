@@ -1,7 +1,8 @@
-package io.github.some_example_name;
+package io.github.some_example_name.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
+import io.github.some_example_name.cards.cardRelated.MonsterType;
 
 import java.util.HashMap;
 import java.util.Map;

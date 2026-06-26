@@ -17,16 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.PhaseStartEvent;
-import io.github.some_example_name.businessLogic.AdvancePhaseEvent;
+import io.github.some_example_name.events.PhaseStartEvent;
 import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.events.EnemyEffectAppliedEvent;
-import io.github.some_example_name.events.EnemyTurnStartEvent;
 import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.events.PlayerTurnStartEvent;
 
 import java.util.List;
 

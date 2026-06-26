@@ -7,10 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.InputRouter;
+import io.github.some_example_name.input.InputRouter;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.events.PlayerTurnReadyEvent;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.ui.Hud;
 

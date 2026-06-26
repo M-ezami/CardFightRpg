@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.ui;
 
 import io.github.some_example_name.entiteRelated.EasyEnemy;
 import io.github.some_example_name.entiteRelated.EnemyAnimationState;
