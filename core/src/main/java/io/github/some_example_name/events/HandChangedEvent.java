@@ -1,4 +1,4 @@
-package io.github.some_example_name.ui;
+package io.github.some_example_name.events;
 
 import io.github.some_example_name.cards.Card;
 

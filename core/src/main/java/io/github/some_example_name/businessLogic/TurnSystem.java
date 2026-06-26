@@ -2,7 +2,9 @@ package io.github.some_example_name.businessLogic;
 
 import io.github.some_example_name.PhaseStartEvent;
 
+import io.github.some_example_name.events.CardPlayedEvent;
 import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.screens.MonsterPlayedEvent;
 
 public class TurnSystem {
 
@@ -12,11 +14,22 @@ public class TurnSystem {
     public TurnSystem() {
         this.eventBus = EventBus.getInstance();
 
+        subscribe();
+        emitPhaseStart();
+    }
+
+
+
+
+    public void subscribe() {
         eventBus.subscribe(AdvancePhaseEvent.class, e -> {
             advancePhase();
         });
-
-        emitPhaseStart();
+        eventBus.subscribe(MonsterPlayedEvent.class, e -> {
+            if(currentPhase.equals(RoundPhase.SPELL_PHASE)) {
+                currentPhase = RoundPhase.PLAY_PHASE;
+            }
+        });
     }
 
     public void advancePhase() {

@@ -1,4 +1,4 @@
-package io.github.some_example_name.ui;
+package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.cards.cardParents.CardType;
+import io.github.some_example_name.ui.Assets;
 
 public class CardView {
 

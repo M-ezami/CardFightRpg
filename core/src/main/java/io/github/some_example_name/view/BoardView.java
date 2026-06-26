@@ -1,4 +1,4 @@
-package io.github.some_example_name.ui;
+package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.github.some_example_name.DraggedCard;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.ui.Assets;
+import io.github.some_example_name.ui.BoardLayout;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class BoardView {
     private DraggedCard draggedCard;
 
     // I really think this should be refactored into a seperate view for drawing and layout and saaame for all child classes
-
+    // another good thing would be if this doesnt know its children it just knows it has a list of children to call update and render but also not that important rn
     public BoardView(ExtendViewport viewport, GdxGame game, GameState gameState) {
         this.gameState = gameState;
         this.opponentView = new OpponentView(gameState);
@@ -64,6 +66,10 @@ public class BoardView {
             boardLayout.getPlayerMonsters().height
         );
 
+    }
+
+    public MonsterFieldView getMonsterFieldView() {
+        return monsterFieldView;
     }
 
     public void updateHand() {

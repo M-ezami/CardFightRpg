@@ -17,6 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.some_example_name.PhaseStartEvent;
+import io.github.some_example_name.businessLogic.AdvancePhaseEvent;
+import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
@@ -37,39 +40,35 @@ public class Hud {
     private final float barOverlayPositionX = 80;
     private final float barOverlayPositionY = 1200;
     private final EventBus eventBus;
+    private final Animation progressAnimationBar;
+    private final Assets assets;
+    private final Player player;
+    private final List<Opponent> opponents;
 
-    private Animation progressAnimationBar;
+
     private TextButton endTurnButton;
     private Label turnBanner;
     private ProgressBar healthBar;
     private ProgressBar manaBar;
-    private final Assets assets;
-    private final Player player;
-    private final List<Opponent> opponents;
+
     private float stateTime;
 
 
-    public Hud(Assets assets, GameState gameState, EventBus eventBus) {
+    public Hud(Assets assets, GameState gameState) {
         this.uiViewport = new ScreenViewport();
         this.font = assets.getButtonFont();
         this.stage = new Stage(uiViewport);
         this.assets = assets;
-        this.eventBus = eventBus;
+        this.eventBus = EventBus.getInstance();
         this.player = gameState.getPlayer();
         this.opponents = gameState.getOpponents();
         this.progressAnimationBar = assets.getBarOverlayIconAnimation();
-        subscribe();
+        setupHud();
+        addButtonListener();
+
     }
 
-    public void subscribe() {
-        eventBus.subscribe(EnemyTurnStartEvent.class, event -> {
-            onEnemyTurnBegin();
-        });
-        eventBus.subscribe(PlayerTurnStartEvent.class, event -> {
-            onPlayerTurnBegin();
-        });
-        eventBus.subscribe(EnemyEffectAppliedEvent.class, event -> showEnemyEffect());
-    }
+
 
     public void setupHud() {
         createBars();
@@ -106,12 +105,14 @@ public class Hud {
         createManaBar();
     }
 
-    public void addButtonListener(Runnable onEndTurn) {
-
+    public void addButtonListener() {
+        System.out.println("reaching this but not that");
         this.endTurnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                onEndTurn.run();
+                System.out.println("reached that");
+                eventBus.emit(new PhaseStartEvent(RoundPhase.ENEMY_TURN));
+                System.out.println("enemy turn has started");
             }
 
         });

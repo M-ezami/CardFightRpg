@@ -4,9 +4,9 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.ui.BoardView;
-import io.github.some_example_name.ui.CardView;
-import io.github.some_example_name.ui.HandView;
+import io.github.some_example_name.view.BoardView;
+import io.github.some_example_name.view.HandView;
+import io.github.some_example_name.view.MonsterFieldView;
 
 public abstract class InputHandler extends InputAdapter {
 
@@ -15,43 +15,37 @@ public abstract class InputHandler extends InputAdapter {
     protected HandView handView;
     protected Viewport viewport;
     protected EventBus eventBus;
+    protected MonsterFieldView monsterFieldView;
+
 
     public InputHandler(BoardView boardView) {
         this.boardView = boardView;
         this.handView = boardView.getHandView();
         this.eventBus = EventBus.getInstance();
+        this.monsterFieldView = boardView.getMonsterFieldView();
     }
 
-    @Override
-    public final boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        pixelsToWorld(screenX, screenY);
-
-        CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView == null) return false;
-        return onCardTouched(cardView);
-    }
-
-    private void pixelsToWorld(int screenX, int screenY) {
+    void pixelsToWorld(int screenX, int screenY) {
         touchPos.set(screenX, screenY);
         viewport.unproject(touchPos);
     }
 
+    @Override
+    public abstract boolean touchDown(int screenX, int screenY, int pointer, int button);
+
 
     @Override
-    public final boolean touchDragged(int screenX, int screenY, int pointer){
-        pixelsToWorld(screenX, screenY);
-        return dragCard();
-    }
+    public abstract boolean touchDragged(int screenX, int screenY, int pointer);
+
 
     @Override
-    public final boolean touchUp(int screenX, int screenY, int pointer, int button){
+    public final boolean touchUp(int screenX, int screenY, int pointer, int button) {
         pixelsToWorld(screenX, screenY);
-       return onCardReleased();
+        return onCardReleased();
 
     }
 
-    protected abstract boolean dragCard();
-    protected abstract boolean onCardTouched(CardView cardView);
+
     protected abstract boolean onCardReleased();
 
 }

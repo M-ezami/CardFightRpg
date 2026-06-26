@@ -1,9 +1,11 @@
-package io.github.some_example_name.ui;
+package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.DraggedCard;
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.HandChangedEvent;
+import io.github.some_example_name.ui.Assets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class HandView {
     }
 
     public void subscribe(){
-        eventBus.subscribe(HandChangedEvent.class,event -> {
+        eventBus.subscribe(HandChangedEvent.class, event -> {
             update(event.hand());
         });
     }
@@ -75,7 +77,6 @@ public class HandView {
         }
     }
 
-
     public CardView getCardAtPosition(float x, float y) {
         for (CardView cv : cardViews) {
             if (cv.contains(x, y)) {
@@ -84,6 +85,7 @@ public class HandView {
         }
         return null;
     }
+
 
 
     public List<CardView> getCardViews() {

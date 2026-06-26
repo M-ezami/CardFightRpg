@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.ui.BoardView;
+import io.github.some_example_name.view.BoardView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,13 +63,14 @@ public class InputRouter {
 
 
     private InputHandler createHandler(RoundPhase phase) {
+        CardPhaseInputHandler cardPhaseInputHandler = new CardPhaseInputHandler(boardView, viewport);
         return switch (phase) {
             case DRAW_PHASE -> null;
-            case SPELL_PHASE -> new SpellInputHandler(boardView, viewport);
-            case PLAY_PHASE -> new PlayInputHandler(null);
-            case FIGHT_PHASE -> null;
+            case SPELL_PHASE -> cardPhaseInputHandler;
+            case PLAY_PHASE -> cardPhaseInputHandler;
+            case FIGHT_PHASE -> new FightInputHandler(boardView);
             case DISCARD_PHASE -> new DiscardInputHandler(null);
-            case ENEMY_TURN -> null;
+            case ENEMY_TURN -> new EnemyTurnInputHandler(boardView);
         };
     }
 

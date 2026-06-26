@@ -1,12 +1,10 @@
 package io.github.some_example_name;
 
-
 import io.github.some_example_name.view.BoardView;
 
-public class DiscardInputHandler extends InputHandler {
+public class EnemyTurnInputHandler extends InputHandler {
 
-
-    public DiscardInputHandler(BoardView boardView) {
+    public EnemyTurnInputHandler(BoardView boardView) {
         super(boardView);
     }
 
@@ -20,15 +18,8 @@ public class DiscardInputHandler extends InputHandler {
         return false;
     }
 
-
-
     @Override
     protected boolean onCardReleased() {
         return false;
     }
-
-
-
-
-
 }

@@ -1,4 +1,4 @@
-package io.github.some_example_name.ui;
+package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.MonsterAsset;
@@ -36,9 +36,20 @@ public class MonsterFieldView {
             float my = y + height / 2f;
 
             view.setPosition(mx, my);
-            view.setSize(width/4, height/4);
+            view.setSize(width / 4, height / 4);
             System.out.println(monster.getType());
             view.draw(batch);
         }
+    }
+
+
+    public MonsterView getMonsterAtPosition(float x, float y) {
+        for (Monster monster : monsterViews.keySet()) {
+            MonsterView view = monsterViews.get(monster);
+            if (view.contains(x, y)) {
+                return view;
+            }
+        }
+        return null;
     }
 }

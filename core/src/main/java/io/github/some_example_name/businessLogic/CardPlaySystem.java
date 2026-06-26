@@ -11,7 +11,6 @@ import io.github.some_example_name.events.CardPlayedEvent;
 import io.github.some_example_name.events.EventBus;
 import io.github.some_example_name.screens.MonsterPlayedEvent;
 
-
 public class CardPlaySystem {
     private final EventBus eventBus;
     private final GameState gameState;
@@ -78,6 +77,7 @@ public class CardPlaySystem {
         player.spendMana(card.getManaCost());
         player.discardCard(card);
         eventBus.emit(new MonsterPlayedEvent());
+
     }
 
 

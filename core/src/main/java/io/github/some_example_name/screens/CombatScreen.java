@@ -9,11 +9,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.InputRouter;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.events.CardPlayedEvent;
 import io.github.some_example_name.events.EventBus;
 import io.github.some_example_name.events.PlayerTurnReadyEvent;
-import io.github.some_example_name.events.PlayerTurnStartEvent;
-import io.github.some_example_name.ui.BoardView;
+import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.ui.Hud;
 
 /**
@@ -38,11 +36,11 @@ public class CombatScreen extends ScreenAdapter {
         this.shapeRenderer = new ShapeRenderer();
         this.viewport = new ExtendViewport(16f, 9f);
         this.boardView = new BoardView(this.viewport, game, gameState);
-        this.hud = new Hud(game.getAssets(), gameState, eventBus);
+        this.hud = new Hud(game.getAssets(), gameState);
 
-        subscribe();
+
         this.inputRouter = new InputRouter(viewport, boardView);
-        hud.setupHud();
+
 
     }
 
@@ -55,10 +53,7 @@ public class CombatScreen extends ScreenAdapter {
 
 
 
-    public void subscribe() {
-        eventBus.subscribe(PlayerTurnReadyEvent.class, e -> onPlayerTurnReady());
-        eventBus.subscribe(MonsterPlayedEvent.class, e -> updateMonsterField());
-    }
+
 
     public void updateMonsterField() {
         boardView.onUpdateMonsterField();

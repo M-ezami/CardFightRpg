@@ -1,4 +1,4 @@
-package io.github.some_example_name.ui;
+package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +26,12 @@ public class MonsterView {
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
+
+    public boolean contains(float worldX, float worldY) {
+        return worldX >= rectangle.x && worldX <= rectangle.x + rectangle.width &&
+            worldY >= rectangle.y && worldY <= rectangle.y + rectangle.height;
+    }
+
 
 
 }
