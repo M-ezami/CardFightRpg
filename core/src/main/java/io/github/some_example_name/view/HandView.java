@@ -3,8 +3,8 @@ package io.github.some_example_name.view;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.cards.Card;
-import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.events.HandChangedEvent;
+import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.ArrayList;
@@ -14,24 +14,22 @@ public class HandView {
 
     private final List<CardView> cardViews = new ArrayList<>();
     private final Assets assets;
-    private final EventBus eventBus;
 
+    private final GameState gameState;
 
-    public HandView(Assets assets) {
+    public HandView(Assets assets, GameState gameState) {
+        this.gameState = gameState;
         this.assets = assets;
-        this.eventBus = EventBus.getInstance();
-        subscribe();
-    }
 
-    public void subscribe(){
-        eventBus.subscribe(HandChangedEvent.class, event -> {
-            update(event.hand());
-        });
+
     }
 
 
 
-    public void update(List<Card> hand) {
+
+
+    public void update() {
+       List<Card> hand = gameState.getHand();
         cardViews.clear();
         for (Card card : hand) {
             CardView cv = new CardView(card, assets);

@@ -1,13 +1,14 @@
 package io.github.some_example_name.input;
 
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.view.BoardView;
 
 public class DiscardInputHandler extends InputHandler {
 
 
-    public DiscardInputHandler(BoardView boardView) {
-        super(boardView);
+    public DiscardInputHandler(BoardView boardView, Viewport viewport) {
+        super(boardView,viewport);
     }
 
     @Override
@@ -23,7 +24,7 @@ public class DiscardInputHandler extends InputHandler {
 
 
     @Override
-    protected boolean onCardReleased() {
+    protected boolean touchUp() {
         return false;
     }
 

@@ -3,7 +3,7 @@ package io.github.some_example_name.input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.HandView;
 import io.github.some_example_name.view.MonsterFieldView;
@@ -18,7 +18,8 @@ public abstract class InputHandler extends InputAdapter {
     protected MonsterFieldView monsterFieldView;
 
 
-    public InputHandler(BoardView boardView) {
+    public InputHandler(BoardView boardView, Viewport viewport) {
+        this.viewport = viewport;
         this.boardView = boardView;
         this.handView = boardView.getHandView();
         this.eventBus = EventBus.getInstance();
@@ -41,11 +42,11 @@ public abstract class InputHandler extends InputAdapter {
     @Override
     public final boolean touchUp(int screenX, int screenY, int pointer, int button) {
         pixelsToWorld(screenX, screenY);
-        return onCardReleased();
+        return touchUp();
 
     }
 
 
-    protected abstract boolean onCardReleased();
+    protected abstract boolean touchUp();
 
 }

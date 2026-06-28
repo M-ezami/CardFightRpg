@@ -3,7 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.screens.GameScreen;
 import io.github.some_example_name.ui.Assets;
 import io.github.some_example_name.ui.MonsterAsset;

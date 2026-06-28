@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.input.InputRouter;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.view.BoardView;
+import io.github.some_example_name.input.InputRouter;
 import io.github.some_example_name.ui.Hud;
+import io.github.some_example_name.view.BoardView;
 
 /**
  * Visuals and input only. No game rules live here.
@@ -23,24 +22,17 @@ public class CombatScreen extends ScreenAdapter {
     private final SpriteBatch batch;
     private final ExtendViewport viewport;
     private final ShapeRenderer shapeRenderer;
-    private final EventBus eventBus;
     private final Hud hud;
     private final BoardView boardView;
-    private final InputRouter inputRouter;
     // this can be further decoupled it shouldnt know about targets
 
-    public CombatScreen(GameState gameState, GdxGame game, EventBus eventBus) {
-        this.eventBus = EventBus.getInstance();
+    public CombatScreen(GameState gameState, GdxGame game) {
         this.batch = game.getBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.viewport = new ExtendViewport(16f, 9f);
         this.boardView = new BoardView(this.viewport, game, gameState);
         this.hud = new Hud(game.getAssets(), gameState);
-
-
-        this.inputRouter = new InputRouter(viewport, boardView);
-
-
+        final InputRouter inputRouter = new InputRouter(viewport, boardView, hud);
     }
 
     @Override
@@ -50,17 +42,6 @@ public class CombatScreen extends ScreenAdapter {
         boardView.rebuild();
     }
 
-
-
-
-
-    public void updateMonsterField() {
-        boardView.onUpdateMonsterField();
-    }
-
-    public void onPlayerTurnReady() {
-        hud.hideBanner();
-    }
 
     public void update(float delta) {
         boardView.updateHand();
@@ -85,6 +66,8 @@ public class CombatScreen extends ScreenAdapter {
         batch.end();
 
         hud.draw(batch, delta);
+
+
     }
 
     private void drawWorld(float delta) {

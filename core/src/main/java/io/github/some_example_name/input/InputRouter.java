@@ -2,10 +2,12 @@ package io.github.some_example_name.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.events.PhaseStartEvent;
 import io.github.some_example_name.businessLogic.RoundPhase;
-import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.event.PhaseStartEvent;
+import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.ui.Hud;
 import io.github.some_example_name.view.BoardView;
 
 import java.util.HashMap;
@@ -18,15 +20,22 @@ public class InputRouter {
     private final Viewport viewport;
     private final BoardView boardView;
     private final InputMultiplexer inputMultiplexer;
+    private final Hud hud;
     private InputHandler activeHandler;
 
-    public InputRouter(Viewport viewport, BoardView boardView) {
+    public InputRouter(Viewport viewport, BoardView boardView, Hud hud) {
         this.eventBus = EventBus.getInstance();
+        this.hud = hud;
         this.boardView = boardView;
         this.viewport = viewport;
         this.inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
         subscribe();
+        debug();
+    }
+
+
+    public void debug() {
         if (Gdx.input.getInputProcessor() != null) {
             System.out.println("input processor found");
             System.out.println("ACTIVE INPUT PROCESSOR = " + Gdx.input.getInputProcessor());
@@ -37,12 +46,17 @@ public class InputRouter {
 
     public void subscribe() {
         eventBus.subscribe(PhaseStartEvent.class, event -> {
-            RoundPhase phase = event.roundPhase();
+            RoundPhase phase = event.getRoundPhase();
             setInputHandler(phase);
         });
     }
 
     public void setInputHandler(RoundPhase phase) {
+        inputMultiplexer.clear();
+
+        if (phase != RoundPhase.ENEMY_TURN) {
+            inputMultiplexer.addProcessor(hud.getStage());
+        }
 
         InputHandler newHandler = handlers.computeIfAbsent(phase, this::createHandler);
 
@@ -66,13 +80,14 @@ public class InputRouter {
     private InputHandler createHandler(RoundPhase phase) {
         CardPhaseInputHandler cardPhaseInputHandler = new CardPhaseInputHandler(boardView, viewport);
         return switch (phase) {
-            case DRAW_PHASE -> null;
+            case DRAW_PHASE -> cardPhaseInputHandler;
             case SPELL_PHASE -> cardPhaseInputHandler;
             case PLAY_PHASE -> cardPhaseInputHandler;
-            case FIGHT_PHASE -> new FightInputHandler(boardView);
-            case DISCARD_PHASE -> new DiscardInputHandler(null);
-            case ENEMY_TURN -> new EnemyTurnInputHandler(boardView);
+            case FIGHT_PHASE -> new FightInputHandler(boardView,viewport);
+            case DISCARD_PHASE -> new DiscardInputHandler(null, null);
+            case ENEMY_TURN -> new EnemyTurnInputHandler(boardView,viewport);
         };
+
     }
 
 

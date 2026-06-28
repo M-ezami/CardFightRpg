@@ -1,53 +1,38 @@
 package io.github.some_example_name.system;
 
-import io.github.some_example_name.events.PhaseStartEvent;
-
-import io.github.some_example_name.events.AdvancePhaseEvent;
 import io.github.some_example_name.businessLogic.RoundPhase;
-import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.events.MonsterPlayedEvent;
+import io.github.some_example_name.events.event.MonsterPlayedEvent;
+import io.github.some_example_name.events.event.PhaseStartEvent;
+import io.github.some_example_name.events.utilities.EventBus;
 
 public class TurnSystem {
 
     private final EventBus eventBus;
-    private RoundPhase currentPhase = RoundPhase.SPELL_PHASE;
+    private static RoundPhase currentPhaseInstance = RoundPhase.SPELL_PHASE;
 
     public TurnSystem() {
         this.eventBus = EventBus.getInstance();
-
         subscribe();
         emitPhaseStart();
     }
 
-
-
-
-    public void subscribe() {
-        eventBus.subscribe(AdvancePhaseEvent.class, e -> {
-            advancePhase();
-        });
-        eventBus.subscribe(MonsterPlayedEvent.class, e -> {
-            if(currentPhase.equals(RoundPhase.SPELL_PHASE)) {
-                currentPhase = RoundPhase.PLAY_PHASE;
-            }
-        });
+    public static RoundPhase getRoundPhase(){
+        return currentPhaseInstance;
     }
 
-    public void advancePhase() {
-        currentPhase = switch (currentPhase) {
-            case DRAW_PHASE -> RoundPhase.SPELL_PHASE;
-            case SPELL_PHASE -> RoundPhase.PLAY_PHASE;
-            case PLAY_PHASE -> RoundPhase.FIGHT_PHASE;
-            case FIGHT_PHASE -> RoundPhase.DISCARD_PHASE;
-            case DISCARD_PHASE -> RoundPhase.ENEMY_TURN;
-            case ENEMY_TURN -> RoundPhase.DRAW_PHASE;
-        };
+    public void subscribe() {
 
-        emitPhaseStart();
+        eventBus.subscribe(MonsterPlayedEvent.class, e -> {
+            if (currentPhaseInstance.equals(RoundPhase.SPELL_PHASE)) {
+                currentPhaseInstance = RoundPhase.PLAY_PHASE;
+            }
+        });
+
     }
 
     private void emitPhaseStart() {
-        eventBus.emit(new PhaseStartEvent(currentPhase));
+        eventBus.emit(new PhaseStartEvent(currentPhaseInstance));
+        System.out.println(currentPhaseInstance + "hello");
     }
 
 

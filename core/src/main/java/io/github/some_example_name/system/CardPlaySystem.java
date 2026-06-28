@@ -7,9 +7,9 @@ import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.events.CardPlayedEvent;
-import io.github.some_example_name.events.EventBus;
-import io.github.some_example_name.events.MonsterPlayedEvent;
+import io.github.some_example_name.events.event.CardPlayedEvent;
+import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.events.event.MonsterPlayedEvent;
 
 public class CardPlaySystem {
     private final EventBus eventBus;

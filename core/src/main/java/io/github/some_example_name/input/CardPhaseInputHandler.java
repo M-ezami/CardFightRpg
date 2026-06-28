@@ -5,7 +5,7 @@ import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.events.CardPlayedEvent;
+import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.CardView;
 
@@ -17,8 +17,8 @@ public class CardPhaseInputHandler extends InputHandler {
     // this should talk to some layoutData class about positions and update them and boardview shuld read it
     //but aint that bad
     public CardPhaseInputHandler(BoardView boardView, Viewport viewport) {
-        super(boardView);
-        this.viewport = viewport;
+        super(boardView, viewport);
+
     }
 
 
@@ -48,7 +48,7 @@ public class CardPhaseInputHandler extends InputHandler {
 
 
     @Override
-    protected boolean onCardReleased() {
+    protected boolean touchUp() {
         if (selectedCard == null) return false;
 
         Card card = selectedCard.getCard();

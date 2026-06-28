@@ -1,4 +1,4 @@
-package io.github.some_example_name.events;
+package io.github.some_example_name.events.utilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;

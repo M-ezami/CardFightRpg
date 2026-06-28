@@ -1,11 +1,12 @@
 package io.github.some_example_name.input;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.view.BoardView;
 
 public class EnemyTurnInputHandler extends InputHandler {
 
-    public EnemyTurnInputHandler(BoardView boardView) {
-        super(boardView);
+    public EnemyTurnInputHandler(BoardView boardView, Viewport viewport) {
+        super(boardView,viewport);
     }
 
     @Override
@@ -19,7 +20,9 @@ public class EnemyTurnInputHandler extends InputHandler {
     }
 
     @Override
-    protected boolean onCardReleased() {
+    protected boolean touchUp() {
         return false;
     }
+
+
 }

@@ -93,7 +93,7 @@ public class Player implements Targatable {
         return false;
     }
 
-    @Override
+
     public boolean isDead() {
         return false;
     }

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.GdxGame;
+import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.ui.Assets;
 import io.github.some_example_name.ui.BoardLayout;
@@ -19,9 +19,9 @@ public class BoardView {
     private final OpponentView opponentView;
     private final MonsterFieldView monsterFieldView;
     private final Assets assets;
-
-
     private final GameState gameState;
+
+
     private DraggedCard draggedCard;
 
     // I really think this should be refactored into a seperate view for drawing and layout and saaame for all child classes
@@ -30,9 +30,10 @@ public class BoardView {
         this.gameState = gameState;
         this.opponentView = new OpponentView(gameState);
         this.assets = game.getAssets();
-        this.handView = new HandView(assets);
+        this.handView = new HandView(assets, gameState);
         this.boardLayout = new BoardLayout(viewport);
         this.monsterFieldView = new MonsterFieldView(game.getMonsterAssets());
+
     }
 
     public HandView getHandView() {
@@ -73,7 +74,7 @@ public class BoardView {
     }
 
     public void updateHand() {
-        handView.update(gameState.getHand());
+        handView.update();
     }
 
     public Rectangle monsterViewDimensions() {

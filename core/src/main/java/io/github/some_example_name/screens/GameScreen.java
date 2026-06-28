@@ -8,15 +8,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.ui.AnimationDirector;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.system.CardPlaySystem;
-import io.github.some_example_name.system.TurnSystem;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.EasyEnemy;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.system.CardPlaySystem;
+import io.github.some_example_name.system.EnemyTurnSystem;
+import io.github.some_example_name.system.TurnSystem;
+import io.github.some_example_name.ui.AnimationDirector;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.ArrayList;
@@ -47,11 +48,9 @@ public class GameScreen extends ScreenAdapter {
         this.viewport = new ExtendViewport(16f, 9f);
 
 
-
     }
 
     // ---- Setup ----
-
 
 
     private void createOpponents() {
@@ -65,14 +64,17 @@ public class GameScreen extends ScreenAdapter {
         EventBus eventBus = new EventBus();
         createOpponents();
         GameState gameState = new GameState(player, opponents);
-        CardPlaySystem cardSystem = new CardPlaySystem(gameState);
-        CombatScreen combatScreen = new CombatScreen(gameState, game, eventBus);
-        AnimationDirector animationDirector = new AnimationDirector(eventBus, opponents);
-        TurnSystem turnSystem = new TurnSystem();
+        CombatScreen combatScreen = new CombatScreen(gameState, game);
         game.setScreen(combatScreen);
+        initilizeSystems(gameState, eventBus);
+    }
 
 
-
+    private void initilizeSystems(GameState gameState, EventBus eventBus) {
+        new CardPlaySystem(gameState);
+        new AnimationDirector(eventBus, opponents);
+        new TurnSystem();
+        new EnemyTurnSystem(gameState);
     }
 
     // ---- Render ----

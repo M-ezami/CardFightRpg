@@ -1,13 +1,14 @@
 package io.github.some_example_name.input;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.MonsterView;
 
 public class FightInputHandler extends InputHandler {
     public MonsterView selectedMonsterView = null;
 
-    public FightInputHandler(BoardView boardView) {
-        super(boardView);
+    public FightInputHandler(BoardView boardView, Viewport viewport) {
+        super(boardView,viewport);
     }
 
     @Override
@@ -25,7 +26,7 @@ public class FightInputHandler extends InputHandler {
     }
 
     @Override
-    protected boolean onCardReleased() {
+    protected boolean touchUp() {
         return false;
     }
 

@@ -3,10 +3,10 @@ package io.github.some_example_name.ui;
 import io.github.some_example_name.entiteRelated.EasyEnemy;
 import io.github.some_example_name.entiteRelated.EnemyAnimationState;
 import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.events.CardPlayedEvent;
-import io.github.some_example_name.events.EnemyDiedEvent;
-import io.github.some_example_name.events.EnemyEffectAppliedEvent;
-import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.event.CardPlayedEvent;
+import io.github.some_example_name.events.event.EnemyDiedEvent;
+import io.github.some_example_name.events.event.EnemyEffectAppliedEvent;
+import io.github.some_example_name.events.utilities.EventBus;
 
 import java.util.List;
 

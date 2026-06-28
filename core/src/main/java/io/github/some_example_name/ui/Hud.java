@@ -17,37 +17,36 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.events.PhaseStartEvent;
 import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.events.EventBus;
+import io.github.some_example_name.events.event.PhaseStartEvent;
+import io.github.some_example_name.events.utilities.EventBus;
 
-import java.util.List;
 
 public class Hud {
 
     private static final float BAR_SCALE = 3f;
 
+    private final float barOverlayPositionX = 80;
+    private final float barOverlayPositionY = 1200;
+    private float bannerTime = 0;
+    private float bannerTimer = 0;
+
+    private float stateTime;
     private final Viewport uiViewport;
     private final BitmapFont font;
     private final Stage stage;
-    private final float barOverlayPositionX = 80;
-    private final float barOverlayPositionY = 1200;
     private final EventBus eventBus;
     private final Animation progressAnimationBar;
     private final Assets assets;
     private final Player player;
-    private final List<Opponent> opponents;
-
+    private RoundPhase roundPhase;
 
     private TextButton endTurnButton;
     private Label turnBanner;
     private ProgressBar healthBar;
     private ProgressBar manaBar;
-
-    private float stateTime;
 
 
     public Hud(Assets assets, GameState gameState) {
@@ -57,13 +56,21 @@ public class Hud {
         this.assets = assets;
         this.eventBus = EventBus.getInstance();
         this.player = gameState.getPlayer();
-        this.opponents = gameState.getOpponents();
         this.progressAnimationBar = assets.getBarOverlayIconAnimation();
         setupHud();
         addButtonListener();
+        subscribe();
 
     }
 
+    public void subscribe() {
+        eventBus.subscribe(PhaseStartEvent.class, event -> {
+            if (event.getRoundPhase().equals(RoundPhase.ENEMY_TURN)) {
+                roundPhase = event.getRoundPhase();
+                bannerTime = event.getRoundTimer();
+            }
+        });
+    }
 
 
     public void setupHud() {
@@ -74,26 +81,12 @@ public class Hud {
 
 
     private void createHealthBar() {
-        this.healthBar = addBar(
-            assets.getBarBackground(),
-            assets.getHealthBarForeground(),
-            player.getMaxHealth(),
-            player.getHealth(),
-            barOverlayPositionX + 1,
-            barOverlayPositionY + 8
-        );
+        this.healthBar = addBar(assets.getBarBackground(), assets.getHealthBarForeground(), player.getMaxHealth(), player.getHealth(), barOverlayPositionX + 1, barOverlayPositionY + 8);
     }
 
     private void createManaBar() {
 
-        this.manaBar = addBar(
-            assets.getBarBackground(),
-            assets.getManaBarForeground(),
-            player.getMaxMana(),
-            player.getMana(),
-            barOverlayPositionX + 1,
-            barOverlayPositionY + healthBar.getHeight() + 8
-        );
+        this.manaBar = addBar(assets.getBarBackground(), assets.getManaBarForeground(), player.getMaxMana(), player.getMana(), barOverlayPositionX + 1, barOverlayPositionY + healthBar.getHeight() + 8);
     }
 
     public void createBars() {
@@ -130,18 +123,14 @@ public class Hud {
         Table table = new Table();
         table.right();
         table.setFillParent(true);
-        table.add(endTurnButton)
-            .width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth)
-            .height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
+        table.add(endTurnButton).width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth).height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
         stage.addActor(table);
 
 
     }
 
 
-    private ProgressBar addBar(TextureRegion bg, TextureRegion fg,
-                               float max, float value,
-                               float x, float y) {
+    private ProgressBar addBar(TextureRegion bg, TextureRegion fg, float max, float value, float x, float y) {
 
         Drawable background = new TextureRegionDrawable(bg);
         Drawable fill = new TextureRegionDrawable(fg);
@@ -189,10 +178,19 @@ public class Hud {
         batch.draw(currentFrame, barOverlayPositionX - frameW, barOverlayPositionY, frameW, frameH);
     }
 
-    private void showBanner(String text, Color color) {
-        turnBanner.setColor(color);
-        turnBanner.setText(text);
-        turnBanner.setVisible(true);
+    private void showBanner(String text, Color color, float delta) {
+        bannerTimer += delta;
+        if (roundPhase == RoundPhase.ENEMY_TURN) {
+            turnBanner.setColor(color);
+            turnBanner.setText(text);
+            turnBanner.setVisible(true);
+            roundPhase = null;
+        }
+
+        if (bannerTimer >= bannerTime) {
+            bannerTimer = 0;
+            turnBanner.setVisible(false);
+        }
     }
 
     public void hideBanner() {
@@ -220,30 +218,14 @@ public class Hud {
         batch.setProjectionMatrix(uiViewport.getCamera().combined);
         batch.begin();
         drawBarOveralay(batch, delta);
+        showBanner("Enemy Turn", Color.RED, delta);
+
         batch.end();
-
         drawUI();
-    }
-
-    public void showEnemyEffect() {
-        showBanner(
-            player.getHealth() + "-" + opponents.getFirst().getRandomEffect().getDescription(),
-            Color.RED
-        );
-
     }
 
 
 // ---- Turn lifecycle ----
-
-    public void onEnemyTurnBegin() {
-        showBanner("ENEMY TURN", Color.RED);
-    }
-
-    public void onPlayerTurnBegin() {
-        showBanner("PLAYER TURN", Color.GREEN);
-
-    }
 
 
     private void updateBars() {

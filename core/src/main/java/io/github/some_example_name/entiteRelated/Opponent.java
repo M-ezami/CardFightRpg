@@ -62,7 +62,7 @@ public abstract class Opponent implements Targatable {
 
     }
 
-    @Override
+
     public boolean isDead() {
         return health <= 0;
     }

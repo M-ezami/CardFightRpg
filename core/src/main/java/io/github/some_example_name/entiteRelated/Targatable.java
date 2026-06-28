@@ -6,5 +6,4 @@ public interface Targatable {
 
     boolean contains(float x, float y);
 
-    boolean isDead();
 }
