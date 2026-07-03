@@ -32,7 +32,7 @@ public class CombatScreen extends ScreenAdapter {
         this.viewport = new ExtendViewport(16f, 9f);
         this.boardView = new BoardView(this.viewport, game, gameState);
         this.hud = new Hud(game.getAssets(), gameState);
-        final InputRouter inputRouter = new InputRouter(viewport, boardView, hud);
+        final InputRouter inputRouter = new InputRouter(viewport, boardView, hud, gameState);
     }
 
     @Override

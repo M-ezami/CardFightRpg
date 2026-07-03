@@ -80,7 +80,6 @@ public class CardPlaySystem {
 
     }
 
-
     public void onSpellCardPlayed(SpellCard card) {
         Player player = gameState.getPlayer();
 
@@ -91,7 +90,6 @@ public class CardPlaySystem {
 
         player.spendMana(card.getManaCost());
         player.getDeck().discard(card);
-        //card discarded
     }
 
 

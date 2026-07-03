@@ -1,6 +1,6 @@
 package io.github.some_example_name.system;
 
-import io.github.some_example_name.businessLogic.RoundPhase;
+import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.events.event.MonsterPlayedEvent;
 import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;

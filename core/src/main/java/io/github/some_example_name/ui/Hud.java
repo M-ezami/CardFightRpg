@@ -1,6 +1,5 @@
 package io.github.some_example_name.ui;
 
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,11 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.businessLogic.RoundPhase;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.events.utilities.RoundPhase;
+import io.github.some_example_name.system.TurnSystem;
 
 
 public class Hud {
@@ -41,9 +41,11 @@ public class Hud {
     private final Animation progressAnimationBar;
     private final Assets assets;
     private final Player player;
+    private final Table table;
+
     private RoundPhase roundPhase;
 
-    private TextButton endTurnButton;
+    private TextButton godButton;
     private Label turnBanner;
     private ProgressBar healthBar;
     private ProgressBar manaBar;
@@ -51,24 +53,24 @@ public class Hud {
 
     public Hud(Assets assets, GameState gameState) {
         this.uiViewport = new ScreenViewport();
+        this.roundPhase = TurnSystem.getRoundPhase();
         this.font = assets.getButtonFont();
         this.stage = new Stage(uiViewport);
         this.assets = assets;
         this.eventBus = EventBus.getInstance();
         this.player = gameState.getPlayer();
         this.progressAnimationBar = assets.getBarOverlayIconAnimation();
+        this.table = new Table();
         setupHud();
-        addButtonListener();
         subscribe();
+
 
     }
 
     public void subscribe() {
         eventBus.subscribe(PhaseStartEvent.class, event -> {
-            if (event.getRoundPhase().equals(RoundPhase.ENEMY_TURN)) {
-                roundPhase = event.getRoundPhase();
-                bannerTime = event.getRoundTimer();
-            }
+            roundPhase = event.getRoundPhase();
+            bannerTime = event.getDuration();
         });
     }
 
@@ -76,16 +78,14 @@ public class Hud {
     public void setupHud() {
         createBars();
         setupTurnBanner();
-        setupEndTurnButton();
+        setupGodButton();
     }
-
 
     private void createHealthBar() {
         this.healthBar = addBar(assets.getBarBackground(), assets.getHealthBarForeground(), player.getMaxHealth(), player.getHealth(), barOverlayPositionX + 1, barOverlayPositionY + 8);
     }
 
     private void createManaBar() {
-
         this.manaBar = addBar(assets.getBarBackground(), assets.getManaBarForeground(), player.getMaxMana(), player.getMana(), barOverlayPositionX + 1, barOverlayPositionY + healthBar.getHeight() + 8);
     }
 
@@ -94,21 +94,32 @@ public class Hud {
         createManaBar();
     }
 
-    public void addButtonListener() {
-        System.out.println("reaching this but not that");
-        this.endTurnButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("reached that");
-                eventBus.emit(new PhaseStartEvent(RoundPhase.ENEMY_TURN));
-                System.out.println("enemy turn has started");
-            }
 
-        });
+    public void onPhaseChange() {
+        this.godButton.setDisabled(false);
+        switch (roundPhase) {
+            case SPELL_PHASE -> eventBus.emit(new PhaseStartEvent(RoundPhase.DISCARD_PHASE));
+            case DISCARD_PHASE ->
+                    eventBus.emit(new DiscardEvent());
+            case ENEMY_TURN -> this.godButton.setDisabled(true);
+        }
+    }
+
+
+    public String ButtonString() {
+        return switch (roundPhase) {
+            case DRAW_PHASE -> "Dira";
+            case SPELL_PHASE -> "Discard Phase";
+            case PLAY_PHASE -> "Diss";
+            case FIGHT_PHASE -> "Dif";
+            case DISCARD_PHASE -> "Discard cards and end phase";
+            case ENEMY_TURN -> "Enemy Turn";
+        };
 
     }
 
-    public void setupEndTurnButton() {
+
+    public void setupGodButton() {
         float buttonScaleWidth = 6f;
         float buttonScaleHeight = 2f;
         TextureRegion buttonTextureRegion = assets.getButtonTextureRegion();
@@ -118,17 +129,21 @@ public class Hud {
         textButtonStyle.up = textButtonRegion;
         //need to add down still
 
-        this.endTurnButton = new TextButton("End turn", textButtonStyle);
-        System.out.println("actual" + endTurnButton.getWidth());
-        Table table = new Table();
+        this.godButton = new TextButton(ButtonString(), textButtonStyle);
+        this.godButton.setText(ButtonString());
+        System.out.println("actual" + godButton.getWidth());
         table.right();
         table.setFillParent(true);
-        table.add(endTurnButton).width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth).height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
+        table.add(godButton).width(buttonTextureRegion.getRegionWidth() * buttonScaleWidth).height(buttonTextureRegion.getRegionHeight() * buttonScaleHeight);
         stage.addActor(table);
-
+        this.godButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onPhaseChange();
+            }
+        });
 
     }
-
 
     private ProgressBar addBar(TextureRegion bg, TextureRegion fg, float max, float value, float x, float y) {
 
@@ -178,23 +193,19 @@ public class Hud {
         batch.draw(currentFrame, barOverlayPositionX - frameW, barOverlayPositionY, frameW, frameH);
     }
 
+
     private void showBanner(String text, Color color, float delta) {
         bannerTimer += delta;
         if (roundPhase == RoundPhase.ENEMY_TURN) {
             turnBanner.setColor(color);
             turnBanner.setText(text);
             turnBanner.setVisible(true);
-            roundPhase = null;
         }
 
         if (bannerTimer >= bannerTime) {
             bannerTimer = 0;
             turnBanner.setVisible(false);
         }
-    }
-
-    public void hideBanner() {
-        turnBanner.setVisible(false);
     }
 
     private void setupTurnBanner() {
@@ -218,14 +229,13 @@ public class Hud {
         batch.setProjectionMatrix(uiViewport.getCamera().combined);
         batch.begin();
         drawBarOveralay(batch, delta);
-        showBanner("Enemy Turn", Color.RED, delta);
-
+        this.godButton.setText(ButtonString());
+        showBanner("ENEMY TURN", Color.RED, delta);
         batch.end();
         drawUI();
     }
 
 
-// ---- Turn lifecycle ----
 
 
     private void updateBars() {
@@ -245,14 +255,6 @@ public class Hud {
 
     public Viewport getUiViewport() {
         return uiViewport;
-    }
-
-    public void addToMultiplexer(InputMultiplexer multiplexer) {
-        multiplexer.addProcessor(stage);
-    }
-
-    public void resize(int width, int height) {
-        uiViewport.update(width, height, true);
     }
 
 

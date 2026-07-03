@@ -1,35 +1,55 @@
 package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HandView {
-
+    // something weird with these 3 lists can be simplified
+    private final List<Card> selectedCards;
     private final List<CardView> cardViews = new ArrayList<>();
+    private final List<Card> hand;
     private final Assets assets;
-
+    private final EventBus eventBus;
     private final GameState gameState;
+    private boolean isDiscardPhase;
 
     public HandView(Assets assets, GameState gameState) {
         this.gameState = gameState;
         this.assets = assets;
+        this.eventBus = EventBus.getInstance();
+        this.hand = gameState.getHand();
+        this.selectedCards = gameState.getSelectedCards();
+        subscribe();
+    }
 
+    public List<Card> getSelectedCards() {
+        return selectedCards;
+    }
 
+    private void subscribe() {
+        eventBus.subscribe(PhaseStartEvent.class, e -> {
+            if (e.getRoundPhase() == RoundPhase.DISCARD_PHASE) isDiscardPhase = true;
+
+            if(!selectedCards.isEmpty()) {
+
+            }
+        });
+        eventBus.subscribe(PhaseStartEvent.class, e -> {
+            if (e.getRoundPhase() == RoundPhase.ENEMY_TURN) isDiscardPhase = false;
+        });
     }
 
 
-
-
-
     public void update() {
-       List<Card> hand = gameState.getHand();
         cardViews.clear();
         for (Card card : hand) {
             CardView cv = new CardView(card, assets);
@@ -37,11 +57,9 @@ public class HandView {
         }
     }
 
-    // move to a laayout class so we dont calc position every time in draw
-    public void draw(SpriteBatch batch,
-                     float x, float y,
-                     float width, float height,
-                     DraggedCard draggedCard) {
+
+    // this method is so ugly it makes me cry and needs refactoring
+    public void draw(SpriteBatch batch, float x, float y, float width, float height, DraggedCard draggedCard) {
         if (cardViews.isEmpty()) return;
         float spacing = 1f;
         float totalSpacing = spacing * (cardViews.size() - 1);
@@ -54,25 +72,37 @@ public class HandView {
             CardView card = cardViews.get(i);
             float baseX = x + i * (cardWidth + spacing);
             float baseY = y;
-            boolean isDragged =
-                draggedCard != null &&
-                    card.getCard() == draggedCard.draggedCard().getCard();
 
-            card.setBounds(baseX, baseY, cardWidth, height);
+            boolean isDragged = draggedCard != null && card.getCard() == draggedCard.draggedCard().getCard();
+            if (isDiscardPhase) {
+                baseY = y + 2f;
+                isDragged = false;
+                if(selectedCards.contains(card.getCard())){
+                    System.out.println("Selected Card found");
+                    System.out.println(selectedCards.size());
+                    baseY += 2f;
+                }else{
+                    System.out.println(selectedCards.size());
+                    System.out.println("Selected Card not found");
 
-            if (isDragged) {
-                draggedCardView = card;
-                draggedCardWidth = cardWidth;
-            } else {
-                card.draw(batch);
+                }
             }
-        }
+                card.setBounds(baseX, baseY, cardWidth, height);
 
-        // draw dragged card last so it renders on top
+                if (isDragged) {
+                    draggedCardView = card;
+                    draggedCardWidth = cardWidth;
+                } else {
+                    card.draw(batch);
+                }
+            }
+
+
         if (draggedCardView != null) {
             draggedCardView.setBounds(draggedCard.x(), draggedCard.y(), draggedCardWidth, height);
             draggedCardView.draw(batch);
         }
+
     }
 
     public CardView getCardAtPosition(float x, float y) {
@@ -83,7 +113,6 @@ public class HandView {
         }
         return null;
     }
-
 
 
     public List<CardView> getCardViews() {

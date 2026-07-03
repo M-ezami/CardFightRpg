@@ -1,9 +1,10 @@
 package io.github.some_example_name.system;
 
 import com.badlogic.gdx.utils.Timer;
-import io.github.some_example_name.businessLogic.RoundPhase;
+import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
+import io.github.some_example_name.events.event.EnemyEffectAppliedEvent;
 import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 
@@ -12,20 +13,18 @@ import java.util.List;
 public class EnemyTurnSystem {
     private final EventBus eventBus;
     private final GameState gameState;
-    private final Timer timer;
 
     public EnemyTurnSystem(GameState gameState) {
         this.eventBus = EventBus.getInstance();
         this.gameState = gameState;
         subscribe();
-        timer = new Timer();
     }
 
 
     private void subscribe() {
         eventBus.subscribe(PhaseStartEvent.class, event -> {
             if (event.getRoundPhase() == RoundPhase.ENEMY_TURN) {
-                enemyTurn(event.getRoundTimer());
+                enemyTurn(event.getDuration());
             }
         });
     }
@@ -39,6 +38,7 @@ public class EnemyTurnSystem {
                 System.out.println("no opponent");
             }
             opponent.getRandomEffect().apply(gameState);
+            eventBus.emit(new EnemyEffectAppliedEvent());
 
         }
         Timer.Task task = new Timer.Task() {
@@ -47,8 +47,7 @@ public class EnemyTurnSystem {
                 eventBus.emit(new PhaseStartEvent(RoundPhase.SPELL_PHASE));
             }
         };
-       Timer.schedule(task,timeGoal);
-
+        Timer.schedule(task, timeGoal);
 
 
     }

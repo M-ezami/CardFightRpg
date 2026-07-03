@@ -20,10 +20,11 @@ public class AnimationDirector {
         });
 
         eventBus.subscribe(EnemyEffectAppliedEvent.class, e -> {
-            opponents.get(0).setAnimationState(EnemyAnimationState.ATTACK);
+            System.out.println("reaching enemyeffect");
+            opponents.getFirst().setAnimationState(EnemyAnimationState.ATTACK);
         });
 
-        // registered once, not nested
+
         eventBus.subscribe(EnemyDiedEvent.class, e -> {
             opponents.get(0).setAnimationState(EnemyAnimationState.DEATH);
         });

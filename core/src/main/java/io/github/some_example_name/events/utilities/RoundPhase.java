@@ -1,4 +1,4 @@
-package io.github.some_example_name.businessLogic;
+package io.github.some_example_name.events.utilities;
 
 public enum RoundPhase {
     DRAW_PHASE,

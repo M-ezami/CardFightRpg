@@ -2,9 +2,9 @@ package io.github.some_example_name.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.businessLogic.RoundPhase;
+import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.ui.Hud;
@@ -21,10 +21,14 @@ public class InputRouter {
     private final BoardView boardView;
     private final InputMultiplexer inputMultiplexer;
     private final Hud hud;
+    private final GameState gameState;
+
     private InputHandler activeHandler;
 
-    public InputRouter(Viewport viewport, BoardView boardView, Hud hud) {
+
+    public InputRouter(Viewport viewport, BoardView boardView, Hud hud, GameState gameState) {
         this.eventBus = EventBus.getInstance();
+        this.gameState = gameState;
         this.hud = hud;
         this.boardView = boardView;
         this.viewport = viewport;
@@ -76,7 +80,8 @@ public class InputRouter {
 
     }
 
-
+        // inputhandlers shouldnt know boardview the only reason they do right now is because of detecting where cards are
+        // instead they should talk to the higher level which is card via gamestate
     private InputHandler createHandler(RoundPhase phase) {
         CardPhaseInputHandler cardPhaseInputHandler = new CardPhaseInputHandler(boardView, viewport);
         return switch (phase) {
@@ -84,7 +89,7 @@ public class InputRouter {
             case SPELL_PHASE -> cardPhaseInputHandler;
             case PLAY_PHASE -> cardPhaseInputHandler;
             case FIGHT_PHASE -> new FightInputHandler(boardView,viewport);
-            case DISCARD_PHASE -> new DiscardInputHandler(null, null);
+            case DISCARD_PHASE -> new DiscardInputHandler(boardView, viewport, gameState);
             case ENEMY_TURN -> new EnemyTurnInputHandler(boardView,viewport);
         };
 

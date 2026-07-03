@@ -42,7 +42,7 @@ public class CardView {
         this.name = card.getName();
         this.description = card.getDescription();
 
-        // DO NOT scale font per instance (do it once in Assets instead)
+        // DO Nnot scale font per instance do it once in Assets instead
     }
 
     public CardType getCardType() {

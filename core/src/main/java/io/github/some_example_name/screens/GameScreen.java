@@ -15,6 +15,7 @@ import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.system.CardPlaySystem;
+import io.github.some_example_name.system.DiscardSystem;
 import io.github.some_example_name.system.EnemyTurnSystem;
 import io.github.some_example_name.system.TurnSystem;
 import io.github.some_example_name.ui.AnimationDirector;
@@ -75,6 +76,7 @@ public class GameScreen extends ScreenAdapter {
         new AnimationDirector(eventBus, opponents);
         new TurnSystem();
         new EnemyTurnSystem(gameState);
+        new DiscardSystem(gameState);
     }
 
     // ---- Render ----
