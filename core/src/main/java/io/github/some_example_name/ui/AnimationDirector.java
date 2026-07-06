@@ -11,7 +11,16 @@ import io.github.some_example_name.events.utilities.EventBus;
 import java.util.List;
 
 public class AnimationDirector {
-    public AnimationDirector(EventBus eventBus, List<Opponent> opponents) {
+    private final EventBus eventBus;
+    private final List<Opponent>  opponents;
+
+    public AnimationDirector(List<Opponent> opponents) {
+        this.eventBus = EventBus.getInstance();
+        this.opponents = opponents;
+        subscribe();
+    }
+
+    private void subscribe() {
 
         eventBus.subscribe(CardPlayedEvent.class, e -> {
             if (e.cardContext().target() != null) {
@@ -20,8 +29,10 @@ public class AnimationDirector {
         });
 
         eventBus.subscribe(EnemyEffectAppliedEvent.class, e -> {
-            System.out.println("reaching enemyeffect");
-            opponents.getFirst().setAnimationState(EnemyAnimationState.ATTACK);
+
+                System.out.println("reaching enemyeffect");
+
+            opponents.get(0).setAnimationState(EnemyAnimationState.ATTACK);
         });
 
 
@@ -29,4 +40,5 @@ public class AnimationDirector {
             opponents.get(0).setAnimationState(EnemyAnimationState.DEATH);
         });
     }
-}
+    }
+

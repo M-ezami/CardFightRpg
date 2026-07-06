@@ -18,10 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.events.utilities.RoundPhase;
-import io.github.some_example_name.system.TurnSystem;
 
 
 public class Hud {
@@ -30,7 +27,7 @@ public class Hud {
 
     private final float barOverlayPositionX = 80;
     private final float barOverlayPositionY = 1200;
-    private float bannerTime = 0;
+    private float bannerTime = 2;
     private float bannerTimer = 0;
 
     private float stateTime;
@@ -42,8 +39,8 @@ public class Hud {
     private final Assets assets;
     private final Player player;
     private final Table table;
+    private final GameState gameState;
 
-    private RoundPhase roundPhase;
 
     private TextButton godButton;
     private Label turnBanner;
@@ -53,25 +50,15 @@ public class Hud {
 
     public Hud(Assets assets, GameState gameState) {
         this.uiViewport = new ScreenViewport();
-        this.roundPhase = TurnSystem.getRoundPhase();
         this.font = assets.getButtonFont();
         this.stage = new Stage(uiViewport);
         this.assets = assets;
         this.eventBus = EventBus.getInstance();
+        this.gameState = gameState;
         this.player = gameState.getPlayer();
         this.progressAnimationBar = assets.getBarOverlayIconAnimation();
         this.table = new Table();
         setupHud();
-        subscribe();
-
-
-    }
-
-    public void subscribe() {
-        eventBus.subscribe(PhaseStartEvent.class, event -> {
-            roundPhase = event.getRoundPhase();
-            bannerTime = event.getDuration();
-        });
     }
 
 
@@ -96,26 +83,27 @@ public class Hud {
 
 
     public void onPhaseChange() {
+
         this.godButton.setDisabled(false);
-        switch (roundPhase) {
-            case SPELL_PHASE -> eventBus.emit(new PhaseStartEvent(RoundPhase.DISCARD_PHASE));
-            case DISCARD_PHASE ->
-                    eventBus.emit(new DiscardEvent());
+        switch (gameState.getRoundPhase()) {
+            // if we are in spell, fight or play phase the button click enters the discard phase, changes inbetween these states does not need a
+            // phaseStartRequest it happens automatically in turnsystem based on game logic f.i if a monster card gets played in spellphase we automatically swithc to playPhase
+            case SPELL_PHASE, FIGHT_PHASE, PLAY_PHASE -> eventBus.emit(new ChooseCardsToDiscardEvent());
+            case DISCARD_PHASE -> eventBus.emit(new DiscardEvent());
             case ENEMY_TURN -> this.godButton.setDisabled(true);
+
         }
     }
 
-
     public String ButtonString() {
-        return switch (roundPhase) {
-            case DRAW_PHASE -> "Dira";
+        return switch (gameState.getRoundPhase()) {
+            case DRAW_PHASE -> "draw phase";
             case SPELL_PHASE -> "Discard Phase";
-            case PLAY_PHASE -> "Diss";
-            case FIGHT_PHASE -> "Dif";
-            case DISCARD_PHASE -> "Discard cards and end phase";
+            case PLAY_PHASE -> "Play Phase";
+            case FIGHT_PHASE -> "fight Phase";
+            case DISCARD_PHASE -> "Discard cards & End turn ";
             case ENEMY_TURN -> "Enemy Turn";
         };
-
     }
 
 
@@ -193,14 +181,19 @@ public class Hud {
         batch.draw(currentFrame, barOverlayPositionX - frameW, barOverlayPositionY, frameW, frameH);
     }
 
+//    private void showBannerPerPhase() {
+//        switch (roundPhase) {
+//            case SPELL_PHASE ->
+//        }
+//    }
+
 
     private void showBanner(String text, Color color, float delta) {
         bannerTimer += delta;
-        if (roundPhase == RoundPhase.ENEMY_TURN) {
-            turnBanner.setColor(color);
-            turnBanner.setText(text);
-            turnBanner.setVisible(true);
-        }
+        turnBanner.setColor(color);
+        turnBanner.setText(text);
+        turnBanner.setVisible(true);
+
 
         if (bannerTimer >= bannerTime) {
             bannerTimer = 0;
@@ -230,12 +223,9 @@ public class Hud {
         batch.begin();
         drawBarOveralay(batch, delta);
         this.godButton.setText(ButtonString());
-        showBanner("ENEMY TURN", Color.RED, delta);
         batch.end();
         drawUI();
     }
-
-
 
 
     private void updateBars() {

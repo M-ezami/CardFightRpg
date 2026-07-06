@@ -2,10 +2,8 @@ package io.github.some_example_name.system;
 
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.events.event.CardPlayedEvent;
-import io.github.some_example_name.events.event.PhaseStartEvent;
+import io.github.some_example_name.events.event.EnemyTurnStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.ui.DiscardEvent;
 
 public class DiscardSystem {
@@ -20,9 +18,10 @@ public class DiscardSystem {
 
     private void subscribe() {
         eventBus.subscribe(DiscardEvent.class, e -> {
-                eventBus.emit(new PhaseStartEvent(RoundPhase.ENEMY_TURN));
-                for (Card card : gameState.getSelectedCards() )
-                gameState.getPlayer().discardCard(card);
+                //shouldnt his maybe be passed via evetn
+                for (Card card : gameState.getSelectedCards())
+                    gameState.getPlayer().discardCard(card);
+
             }
         );
         gameState.getSelectedCards().clear();

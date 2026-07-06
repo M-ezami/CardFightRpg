@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.events.utilities.RoundPhase;
-import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.ui.Hud;
 import io.github.some_example_name.view.BoardView;
@@ -22,7 +21,7 @@ public class InputRouter {
     private final InputMultiplexer inputMultiplexer;
     private final Hud hud;
     private final GameState gameState;
-
+    private  RoundPhase lastPhase;
     private InputHandler activeHandler;
 
 
@@ -34,7 +33,6 @@ public class InputRouter {
         this.viewport = viewport;
         this.inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
-        subscribe();
         debug();
     }
 
@@ -47,17 +45,20 @@ public class InputRouter {
             System.out.println("input processor not found");
         }
     }
+    public void update() {
+        RoundPhase current = gameState.getRoundPhase();
 
-    public void subscribe() {
-        eventBus.subscribe(PhaseStartEvent.class, event -> {
-            RoundPhase phase = event.getRoundPhase();
-            setInputHandler(phase);
-        });
+        if (current != lastPhase) {
+            setInputHandler(current);
+            lastPhase = current;
+        }
     }
+
+
 
     public void setInputHandler(RoundPhase phase) {
         inputMultiplexer.clear();
-
+        lastPhase = phase;
         if (phase != RoundPhase.ENEMY_TURN) {
             inputMultiplexer.addProcessor(hud.getStage());
         }

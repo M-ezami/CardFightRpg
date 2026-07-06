@@ -13,7 +13,6 @@ import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.EasyEnemy;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.system.CardPlaySystem;
 import io.github.some_example_name.system.DiscardSystem;
 import io.github.some_example_name.system.EnemyTurnSystem;
@@ -62,19 +61,18 @@ public class GameScreen extends ScreenAdapter {
 
     private void startCombat() {
         this.player = new Player();
-        EventBus eventBus = new EventBus();
         createOpponents();
         GameState gameState = new GameState(player, opponents);
         CombatScreen combatScreen = new CombatScreen(gameState, game);
         game.setScreen(combatScreen);
-        initilizeSystems(gameState, eventBus);
+        initilizeSystems(gameState);
     }
 
 
-    private void initilizeSystems(GameState gameState, EventBus eventBus) {
+    private void initilizeSystems(GameState gameState ) {
         new CardPlaySystem(gameState);
-        new AnimationDirector(eventBus, opponents);
-        new TurnSystem();
+        new AnimationDirector(opponents);
+        new TurnSystem(gameState);
         new EnemyTurnSystem(gameState);
         new DiscardSystem(gameState);
     }

@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.events.event.PhaseStartEvent;
-import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.ui.Assets;
 
@@ -18,34 +16,25 @@ public class HandView {
     private final List<CardView> cardViews = new ArrayList<>();
     private final List<Card> hand;
     private final Assets assets;
-    private final EventBus eventBus;
     private final GameState gameState;
     private boolean isDiscardPhase;
 
     public HandView(Assets assets, GameState gameState) {
         this.gameState = gameState;
         this.assets = assets;
-        this.eventBus = EventBus.getInstance();
         this.hand = gameState.getHand();
         this.selectedCards = gameState.getSelectedCards();
-        subscribe();
     }
 
     public List<Card> getSelectedCards() {
         return selectedCards;
     }
 
-    private void subscribe() {
-        eventBus.subscribe(PhaseStartEvent.class, e -> {
-            if (e.getRoundPhase() == RoundPhase.DISCARD_PHASE) isDiscardPhase = true;
 
-            if(!selectedCards.isEmpty()) {
 
-            }
-        });
-        eventBus.subscribe(PhaseStartEvent.class, e -> {
-            if (e.getRoundPhase() == RoundPhase.ENEMY_TURN) isDiscardPhase = false;
-        });
+    private void updateRoundPhase() {
+        RoundPhase roundPhase = gameState.getRoundPhase();
+        isDiscardPhase = roundPhase.equals(RoundPhase.DISCARD_PHASE);
     }
 
 
@@ -55,6 +44,7 @@ public class HandView {
             CardView cv = new CardView(card, assets);
             cardViews.add(cv);
         }
+        updateRoundPhase();
     }
 
 
@@ -77,25 +67,25 @@ public class HandView {
             if (isDiscardPhase) {
                 baseY = y + 2f;
                 isDragged = false;
-                if(selectedCards.contains(card.getCard())){
+                if (selectedCards.contains(card.getCard())) {
                     System.out.println("Selected Card found");
                     System.out.println(selectedCards.size());
                     baseY += 2f;
-                }else{
+                } else {
                     System.out.println(selectedCards.size());
                     System.out.println("Selected Card not found");
 
                 }
             }
-                card.setBounds(baseX, baseY, cardWidth, height);
+            card.setBounds(baseX, baseY, cardWidth, height);
 
-                if (isDragged) {
-                    draggedCardView = card;
-                    draggedCardWidth = cardWidth;
-                } else {
-                    card.draw(batch);
-                }
+            if (isDragged) {
+                draggedCardView = card;
+                draggedCardWidth = cardWidth;
+            } else {
+                card.draw(batch);
             }
+        }
 
 
         if (draggedCardView != null) {

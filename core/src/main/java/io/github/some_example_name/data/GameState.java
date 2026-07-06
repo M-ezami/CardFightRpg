@@ -16,13 +16,22 @@ public class GameState {
     private final Player player;
     private final List<Opponent> opponents;
     private final List<Card> selectedCards;
-    private Opponent targetOpponent;
+    private  Opponent targetOpponent;
+    private RoundPhase roundPhase = RoundPhase.SPELL_PHASE;
 
     public GameState(Player player, List<Opponent> opponents) {
         this.selectedCards = new ArrayList<>();
         this.player = player;
         this.opponents = opponents;
         this.targetOpponent = opponents.get(0);
+    }
+
+    public RoundPhase getRoundPhase() {
+        return roundPhase;
+    }
+
+    public void setRoundPhase(RoundPhase roundPhase) {
+        this.roundPhase = roundPhase;
     }
 
     public List<Card> getSelectedCards() {

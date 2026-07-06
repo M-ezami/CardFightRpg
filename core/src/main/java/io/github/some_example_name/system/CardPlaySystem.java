@@ -24,7 +24,7 @@ public class CardPlaySystem {
     }
 
     public void subscribe() {
-        eventBus.subscribe(CardPlayedEvent.class, event -> onCardPlayed(event.cardContext()));
+        eventBus.<CardPlayedEvent>subscribe(CardPlayedEvent.class, event -> onCardPlayed(event.cardContext()));
     }
 
     public void onCardPlayed(CardContext ctx) {
@@ -76,7 +76,7 @@ public class CardPlaySystem {
         player.getMonsters().add(card.getMonster());
         player.spendMana(card.getManaCost());
         player.discardCard(card);
-        eventBus.emit(new MonsterPlayedEvent());
+        eventBus.<MonsterPlayedEvent>emit(new MonsterPlayedEvent());
 
     }
 

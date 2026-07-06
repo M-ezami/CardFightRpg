@@ -1,11 +1,11 @@
 package io.github.some_example_name.system;
 
 import com.badlogic.gdx.utils.Timer;
-import io.github.some_example_name.events.utilities.RoundPhase;
+import io.github.some_example_name.events.event.EnemyTurnStartEvent;
+import io.github.some_example_name.events.event.PlayerTurnBeginEvent;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.events.event.EnemyEffectAppliedEvent;
-import io.github.some_example_name.events.event.PhaseStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 
 import java.util.List;
@@ -22,14 +22,12 @@ public class EnemyTurnSystem {
 
 
     private void subscribe() {
-        eventBus.subscribe(PhaseStartEvent.class, event -> {
-            if (event.getRoundPhase() == RoundPhase.ENEMY_TURN) {
-                enemyTurn(event.getDuration());
-            }
+        eventBus.subscribe(EnemyTurnStartEvent.class, event -> {
+            enemyTurn();
         });
     }
 
-    private void enemyTurn(float timeGoal) {
+    private void enemyTurn() {
 
         System.out.println("enemyturn is running");
         List<Opponent> opponents = gameState.getOpponents();
@@ -44,9 +42,10 @@ public class EnemyTurnSystem {
         Timer.Task task = new Timer.Task() {
             @Override
             public void run() {
-                eventBus.emit(new PhaseStartEvent(RoundPhase.SPELL_PHASE));
+                eventBus.emit(new PlayerTurnBeginEvent());
             }
         };
+        float timeGoal = 2f;
         Timer.schedule(task, timeGoal);
 
 
