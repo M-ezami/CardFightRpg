@@ -14,6 +14,10 @@ public class Cards {
     private final List<Card> discardPile;
     private final List<Card> cardDeck;
 
+
+    // its called  cards because its not only deck well it is the deck split up into hand, drawpile and so on
+    // so all logic for cards is in here
+
     public Cards(List<Card> deck) {
         this.cardDeck = new ArrayList<>(deck);
         this.hand = new ArrayList<>();
@@ -37,6 +41,10 @@ public class Cards {
             Card card = drawPile.remove(0);
             hand.add(card);
         }
+        System.out.println(discardPile.size() +"discardPileSIze");
+        System.out.println(cardDeck.size() +"cardDeckSIze");
+        System.out.println(drawPile.size() +"drawPileSIze");
+        System.out.println(hand.size() +"handSIze");
     }
 
     public void discard(Card card) {

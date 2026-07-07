@@ -9,7 +9,7 @@ import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.events.event.MonsterPlayedEvent;
+import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
 
 public class CardPlaySystem {
     private final EventBus eventBus;

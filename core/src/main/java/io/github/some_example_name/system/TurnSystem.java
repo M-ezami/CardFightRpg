@@ -1,7 +1,10 @@
 package io.github.some_example_name.system;
 
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.events.event.*;
+import io.github.some_example_name.events.event.phaseEvents.EnemyTurnStartEvent;
+import io.github.some_example_name.events.event.phaseEvents.FightEvent;
+import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
+import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.ui.ChooseCardsToDiscardEvent;

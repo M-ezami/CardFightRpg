@@ -27,7 +27,6 @@ public class Hud {
 
     private final float barOverlayPositionX = 80;
     private final float barOverlayPositionY = 1200;
-    private float bannerTime = 2;
     private float bannerTimer = 0;
 
     private float stateTime;
@@ -195,6 +194,7 @@ public class Hud {
         turnBanner.setVisible(true);
 
 
+        float bannerTime = 2;
         if (bannerTimer >= bannerTime) {
             bannerTimer = 0;
             turnBanner.setVisible(false);

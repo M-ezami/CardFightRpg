@@ -13,10 +13,7 @@ import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.EasyEnemy;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.system.CardPlaySystem;
-import io.github.some_example_name.system.DiscardSystem;
-import io.github.some_example_name.system.EnemyTurnSystem;
-import io.github.some_example_name.system.TurnSystem;
+import io.github.some_example_name.system.*;
 import io.github.some_example_name.ui.AnimationDirector;
 import io.github.some_example_name.ui.Assets;
 
@@ -31,14 +28,11 @@ import java.util.List;
  */
 public class GameScreen extends ScreenAdapter {
 
-    // ---- Fields ----
-
     private final GdxGame game;
     private Player player;
     private final List<Opponent> opponents;
     private final Viewport viewport;
     private final BitmapFont font;
-    // ---- Constructor ----
 
     public GameScreen(GdxGame game, Assets assets) {
 
@@ -47,17 +41,11 @@ public class GameScreen extends ScreenAdapter {
         this.font = assets.getButtonFont();
         this.viewport = new ExtendViewport(16f, 9f);
 
-
     }
-
-    // ---- Setup ----
-
 
     private void createOpponents() {
         opponents.add(new EasyEnemy(12, 12, game.getAssets()));
     }
-
-    // ---- Encounter ----
 
     private void startCombat() {
         this.player = new Player();
@@ -68,16 +56,14 @@ public class GameScreen extends ScreenAdapter {
         initilizeSystems(gameState);
     }
 
-
     private void initilizeSystems(GameState gameState ) {
         new CardPlaySystem(gameState);
         new AnimationDirector(opponents);
         new TurnSystem(gameState);
         new EnemyTurnSystem(gameState);
         new DiscardSystem(gameState);
+        new PlayerSystem(gameState.getPlayer());
     }
-
-    // ---- Render ----
 
     @Override
     public void render(float delta) {

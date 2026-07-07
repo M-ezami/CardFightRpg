@@ -1,8 +1,8 @@
 package io.github.some_example_name.system;
 
 import com.badlogic.gdx.utils.Timer;
-import io.github.some_example_name.events.event.EnemyTurnStartEvent;
-import io.github.some_example_name.events.event.PlayerTurnBeginEvent;
+import io.github.some_example_name.events.event.phaseEvents.EnemyTurnStartEvent;
+import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.events.event.EnemyEffectAppliedEvent;
