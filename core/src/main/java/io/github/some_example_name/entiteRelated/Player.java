@@ -34,10 +34,13 @@ public class Player implements Targatable {
     private List<Card> setupPlayerDeck() {
         List<Card> playerDeck = new  ArrayList<>();
         playerDeck.add(new FireCard("Card 1"));
-        playerDeck.add(new FireCard("Card 2"));
-        playerDeck.add(new FireCard("Card 3"));
-        playerDeck.add(new FireCard("Card 4"));
         playerDeck.add(new SimpleMonsterCard());
+        playerDeck.add(new SimpleMonsterCard());
+        playerDeck.add(new SimpleMonsterCard());
+        playerDeck.add(new SimpleMonsterCard());
+        playerDeck.add(new SimpleMonsterCard());
+
+
         return playerDeck;
     }
 

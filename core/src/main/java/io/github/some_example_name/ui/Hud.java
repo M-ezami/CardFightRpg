@@ -45,7 +45,7 @@ public class Hud {
     private Label turnBanner;
     private ProgressBar healthBar;
     private ProgressBar manaBar;
-
+    private ProgressBar enemyHealthBar;
 
     public Hud(Assets assets, GameState gameState) {
         this.uiViewport = new ScreenViewport();
@@ -61,10 +61,11 @@ public class Hud {
     }
 
 
-    public void setupHud() {
+    private void setupHud() {
         createBars();
         setupTurnBanner();
         setupGodButton();
+        CreateEnemyHealthBar();
     }
 
     private void createHealthBar() {
@@ -75,30 +76,35 @@ public class Hud {
         this.manaBar = addBar(assets.getBarBackground(), assets.getManaBarForeground(), player.getMaxMana(), player.getMana(), barOverlayPositionX + 1, barOverlayPositionY + healthBar.getHeight() + 8);
     }
 
-    public void createBars() {
+    private void createBars() {
         createHealthBar();
         createManaBar();
     }
 
+    private void CreateEnemyHealthBar(){
+        this.enemyHealthBar = addBar(assets.getBarBackground(), assets.getHealthBarForeground(), gameState.getOpponents().get(0).getMaxHealth(), gameState.getOpponents().get(0).getHealth(), barOverlayPositionX + 2200, barOverlayPositionY + 100);
+    }
 
-    public void onPhaseChange() {
+
+
+
+    private void onPhaseChange() {
 
         this.godButton.setDisabled(false);
         switch (gameState.getRoundPhase()) {
             // if we are in spell, fight or play phase the button click enters the discard phase, changes inbetween these states does not need a
             // phaseStartRequest it happens automatically in turnsystem based on game logic f.i if a monster card gets played in spellphase we automatically swithc to playPhase
-            case SPELL_PHASE, FIGHT_PHASE, PLAY_PHASE -> eventBus.emit(new ChooseCardsToDiscardEvent());
+            case SPELL_PHASE, FIGHT_PHASE, MONSTER_PHASE -> eventBus.emit(new ChooseCardsToDiscardEvent());
             case DISCARD_PHASE -> eventBus.emit(new DiscardEvent());
             case ENEMY_TURN -> this.godButton.setDisabled(true);
 
         }
     }
 
-    public String ButtonString() {
+    private String ButtonString() {
         return switch (gameState.getRoundPhase()) {
-            case DRAW_PHASE -> "draw phase";
             case SPELL_PHASE -> "Discard Phase";
-            case PLAY_PHASE -> "Play Phase";
+            case MONSTER_PHASE -> "Play Phase";
             case FIGHT_PHASE -> "fight Phase";
             case DISCARD_PHASE -> "Discard cards & End turn ";
             case ENEMY_TURN -> "Enemy Turn";
@@ -106,7 +112,7 @@ public class Hud {
     }
 
 
-    public void setupGodButton() {
+    private void setupGodButton() {
         float buttonScaleWidth = 6f;
         float buttonScaleHeight = 2f;
         TextureRegion buttonTextureRegion = assets.getButtonTextureRegion();
@@ -161,13 +167,13 @@ public class Hud {
         stage.draw();
     }
 
-    public TextureRegion getCurrentFrame(float delta) {
+    private TextureRegion getCurrentFrame(float delta) {
         stateTime += delta;
         return (TextureRegion) progressAnimationBar.getKeyFrame(stateTime);
 
     }
 
-    public void drawBarOveralay(SpriteBatch batch, float delta) {
+    private void drawBarOveralay(SpriteBatch batch, float delta) {
         TextureRegion currentFrame = getCurrentFrame(delta);
         TextureRegion overlay = assets.getBarOverlayTextureRegion();
 

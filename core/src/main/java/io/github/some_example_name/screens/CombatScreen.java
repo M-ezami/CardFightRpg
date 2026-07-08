@@ -2,6 +2,7 @@ package io.github.some_example_name.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -46,7 +47,7 @@ public class CombatScreen extends ScreenAdapter {
 
 
     public void update(float delta) {
-        boardView.updateHand();
+        boardView.update();
         inputRouter.update();
     }
 
@@ -65,6 +66,9 @@ public class CombatScreen extends ScreenAdapter {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         update(delta);
         batch.begin();
+        batch.enableBlending();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         drawWorld(delta);
         batch.end();
 

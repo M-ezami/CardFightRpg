@@ -43,7 +43,7 @@ public class TurnSystem {
         table.put(ChooseCardsToDiscardEvent.class, Map.of(
             RoundPhase.SPELL_PHASE, RoundPhase.DISCARD_PHASE,
             RoundPhase.FIGHT_PHASE, RoundPhase.DISCARD_PHASE,
-            RoundPhase.PLAY_PHASE, RoundPhase.DISCARD_PHASE
+            RoundPhase.MONSTER_PHASE, RoundPhase.DISCARD_PHASE
         ));
 
         table.put(DiscardEvent.class, Map.of(
@@ -51,11 +51,11 @@ public class TurnSystem {
         ));
 
         table.put(MonsterPlayedEvent.class, Map.of(
-            RoundPhase.SPELL_PHASE, RoundPhase.PLAY_PHASE
+            RoundPhase.SPELL_PHASE, RoundPhase.MONSTER_PHASE
         ));
 
         table.put(FightEvent.class, Map.of(
-            RoundPhase.PLAY_PHASE, RoundPhase.FIGHT_PHASE,
+            RoundPhase.MONSTER_PHASE, RoundPhase.FIGHT_PHASE,
             RoundPhase.SPELL_PHASE, RoundPhase.FIGHT_PHASE
         ));
 
@@ -78,6 +78,9 @@ public class TurnSystem {
     private boolean tryTransition(Class<?> eventType) {
         RoundPhase current = gameState.getRoundPhase();
         RoundPhase next = transitions.get(eventType).get(current);
+        if(next == current) {
+            return false;
+        }
         if (next == null) {
             return false;
         }

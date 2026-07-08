@@ -9,16 +9,15 @@ import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.CardView;
 
-public class CardPhaseInputHandler extends InputHandler {
+public class SpellPhaseInputHandler extends InputHandler {
 
     private CardView selectedCard = null;
 
     // i think this shouldnt talk to boardview boardview should only be rendering
     // this should talk to some layoutData class about positions and update them and boardview shuld read it
     //but aint that bad
-    public CardPhaseInputHandler(BoardView boardView, Viewport viewport) {
+    public SpellPhaseInputHandler(BoardView boardView, Viewport viewport) {
         super(boardView, viewport);
-
     }
 
 
@@ -53,10 +52,10 @@ public class CardPhaseInputHandler extends InputHandler {
 
         Card card = selectedCard.getCard();
         Opponent opponent = boardView.getOpponentView().getOpponentAt(touchPos.x, touchPos.y);
-        boolean isMonsterClicked = boardView.monsterViewDimensions().contains(touchPos.x, touchPos.y);
+        boolean isInMonsterField = boardView.monsterViewDimensions().contains(touchPos.x, touchPos.y);
 
         eventBus.emit(new CardPlayedEvent(
-            new CardContext(isMonsterClicked, opponent, card)));
+            new CardContext(isInMonsterField, opponent, card)));
         boardView.setDraggedCard(null);
         selectedCard = null;
         return true;

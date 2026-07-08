@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class Assets implements Disposable {
 
-
     private TextureAtlas cardAtlas;
     private TextureAtlas slimeAtlas;
     private TextureRegion cardOverlay;
@@ -31,11 +30,11 @@ public class Assets implements Disposable {
     private TextureRegionDrawable drawable;
 
     private Texture buttonSkin;
-    private TextButton.TextButtonStyle textButtonStyle;
     private Texture barBackgroundTexture;
     private Texture barForegroundTexture;
     private Texture barOverlayTexture;
-
+    private Texture arrow;
+    private TextureRegion arrowRegion;
 
     private TextureRegion barBackground;
     private TextureRegion healthBarForeground;
@@ -47,12 +46,12 @@ public class Assets implements Disposable {
     private Texture buttonTextures;
     private TextureRegion buttonTextureRegion;
 
-
-
     AssetManager assetManger = new AssetManager();
 
 
     public void load() {
+        this.arrow = new Texture(Gdx.files.internal("HUD/arrow.png"));
+        this.arrowRegion = new TextureRegion(this.arrow,35,64,294,200);
         loadAtlas();
         loadCardTextures();
         createFonts();
@@ -63,6 +62,7 @@ public class Assets implements Disposable {
         loadBarAssets();
         loadButtonTextures();
     }
+
 
     private void loadBarAssets() {
         this.barBackgroundTexture = new Texture(Gdx.files.internal("HUD/HealthBarBackground.png"));
@@ -105,11 +105,10 @@ public class Assets implements Disposable {
     }
 
     public void loadTextButtonStyle(TextureRegionDrawable drawable) {
-        this.textButtonStyle = new TextButton.TextButtonStyle();
-        this.textButtonStyle.up = drawable;
-        this.textButtonStyle.down = drawable;
-        this.textButtonStyle.font = getButtonFont();
-
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = drawable;
+        textButtonStyle.down = drawable;
+        textButtonStyle.font = getButtonFont();
     }
 
 
@@ -216,6 +215,13 @@ public class Assets implements Disposable {
         return (float) texture.getRegionHeight() / texture.getRegionWidth();
     }
 
+    public Texture getArrow() {
+        return arrow;
+    }
+
+    public TextureRegion getArrowRegion() {
+        return arrowRegion;
+    }
 
     public TextureAtlas getCardAtlas() {
         return cardAtlas;
@@ -297,6 +303,9 @@ public class Assets implements Disposable {
         this.cardAtlas.dispose();
         this.buttonFont.dispose();
         this.cardFont.dispose();
+        this.arrow.dispose();
+        this.buttonTextures.dispose();
+
     }
 
     public Texture getButtonSkin() {

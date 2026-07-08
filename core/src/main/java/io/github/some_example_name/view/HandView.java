@@ -63,7 +63,7 @@ public class HandView {
             float baseX = x + i * (cardWidth + spacing);
             float baseY = y;
 
-            boolean isDragged = draggedCard != null && card.getCard() == draggedCard.draggedCard().getCard();
+            boolean isDragged = draggedCard != null && card.getCard() == draggedCard.draggedCardView().getCard();
             if (isDiscardPhase) {
                 baseY = y + 2f;
                 isDragged = false;

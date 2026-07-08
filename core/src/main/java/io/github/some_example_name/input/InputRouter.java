@@ -84,11 +84,9 @@ public class InputRouter {
         // inputhandlers shouldnt know boardview the only reason they do right now is because of detecting where cards are
         // instead they should talk to the higher level which is card via gamestate
     private InputHandler createHandler(RoundPhase phase) {
-        CardPhaseInputHandler cardPhaseInputHandler = new CardPhaseInputHandler(boardView, viewport);
         return switch (phase) {
-            case DRAW_PHASE -> cardPhaseInputHandler;
-            case SPELL_PHASE -> cardPhaseInputHandler;
-            case PLAY_PHASE -> cardPhaseInputHandler;
+            case SPELL_PHASE -> new SpellPhaseInputHandler(boardView,viewport);
+            case MONSTER_PHASE ->  new MonsterPhaseInputHandler(boardView, viewport);
             case FIGHT_PHASE -> new FightInputHandler(boardView,viewport);
             case DISCARD_PHASE -> new DiscardInputHandler(boardView, viewport, gameState);
             case ENEMY_TURN -> new EnemyTurnInputHandler(boardView,viewport);

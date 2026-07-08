@@ -63,6 +63,7 @@ public class GameScreen extends ScreenAdapter {
         new EnemyTurnSystem(gameState);
         new DiscardSystem(gameState);
         new PlayerSystem(gameState.getPlayer());
+        new CombatSystem(gameState);
     }
 
     @Override

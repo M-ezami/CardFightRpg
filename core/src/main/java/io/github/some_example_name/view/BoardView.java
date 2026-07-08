@@ -2,6 +2,7 @@ package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -21,7 +22,7 @@ public class BoardView {
     private final MonsterFieldView monsterFieldView;
     private final Assets assets;
     private final GameState gameState;
-
+    private DraggedMonster draggedMonster;
     private DraggedCard draggedCard;
 
     // I really think this should be refactored into a seperate view for drawing and layout and saaame for all child classes
@@ -33,8 +34,10 @@ public class BoardView {
         this.handView = new HandView(assets, gameState);
         this.boardLayout = new BoardLayout(viewport);
         this.monsterFieldView = new MonsterFieldView(game.getMonsterAssets());
+    }
 
-
+    public TextureRegion getPointingMonsterArrow(){
+        return this.assets.getArrowRegion();
     }
 
     public HandView getHandView() {
@@ -95,6 +98,11 @@ public class BoardView {
         monsterFieldView.update(gameState.getMonsters());
     }
 
+    public void update(){
+        onUpdateMonsterField();
+        updateHand();
+    }
+
     public List<CardView> getCards() {
         return handView.getCardViews();
     }
@@ -103,9 +111,12 @@ public class BoardView {
         this.draggedCard = draggedCard;
     }
 
+    public void setDraggedMonster(DraggedMonster dragedMonster){
+        this.draggedMonster = dragedMonster;
+    }
+
 
     public void draw(SpriteBatch batch, float delta) {
-        onUpdateMonsterField();
         handView.draw(batch,
             boardLayout.getPlayerHand().x,
             boardLayout.getPlayerHand().y,
@@ -125,6 +136,14 @@ public class BoardView {
             boardLayout.getPlayerMonsters().y,
             boardLayout.getPlayerMonsters().width,
             boardLayout.getPlayerMonsters().height, batch);
+
+        if(draggedMonster != null){
+            batch.draw(getPointingMonsterArrow(),draggedMonster.x(),draggedMonster.y(), (float) (getPointingMonsterArrow().getRegionHeight()*0.01), (float) (getPointingMonsterArrow().getRegionWidth()*0.01));
+        }
+
     }
+
+
+
 
 }
