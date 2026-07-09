@@ -11,7 +11,6 @@ import io.github.some_example_name.view.CardView;
 
 public class SpellPhaseInputHandler extends InputHandler {
 
-    private CardView selectedCard = null;
 
     // i think this shouldnt talk to boardview boardview should only be rendering
     // this should talk to some layoutData class about positions and update them and boardview shuld read it
@@ -22,42 +21,19 @@ public class SpellPhaseInputHandler extends InputHandler {
 
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        pixelsToWorld(screenX, screenY);
-        CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView == null) return false;
-        selectedCard = cardView;
-        return true;
+    public boolean touchDown() {
+        return touchDownOnCard() || touchDownOnMonster();
     }
 
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        pixelsToWorld(screenX, screenY);
-        if (selectedCard == null) return false;
-        System.out.println("touchDragged: " + touchPos.x + ", " + touchPos.y);
-
-
-        boardView.setDraggedCard(
-            new DraggedCard(selectedCard, touchPos.x, touchPos.y)
-        );
-
-        return true;
+    public boolean touchDragged() {
+        return dragCard() || dragAttack();
     }
 
 
     @Override
     protected boolean touchUp() {
-        if (selectedCard == null) return false;
-
-        Card card = selectedCard.getCard();
-        Opponent opponent = boardView.getOpponentView().getOpponentAt(touchPos.x, touchPos.y);
-        boolean isInMonsterField = boardView.monsterViewDimensions().contains(touchPos.x, touchPos.y);
-
-        eventBus.emit(new CardPlayedEvent(
-            new CardContext(isInMonsterField, opponent, card)));
-        boardView.setDraggedCard(null);
-        selectedCard = null;
-        return true;
+        return touchUpOnCard() || touchUpOnMonster();
     }
 }

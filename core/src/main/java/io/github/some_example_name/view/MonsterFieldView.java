@@ -21,7 +21,7 @@ public class MonsterFieldView {
     public void update(List<Monster> monsters) {
         monsterViews.keySet().removeIf(m -> !monsters.contains(m));
         for (Monster monster : monsters) {
-            monsterViews.computeIfAbsent(monster, m -> new MonsterView(monsterAsset.get(monster.getType())));
+            monsterViews.computeIfAbsent(monster, m -> new MonsterView(monsterAsset.get(monster.getType()),monster));
         }
     }
 
@@ -37,7 +37,6 @@ public class MonsterFieldView {
 
             view.setPosition(mx, my);
             view.setSize(width / 4, height / 4);
-            System.out.println(monster.getType());
 
             view.draw(batch);
         }

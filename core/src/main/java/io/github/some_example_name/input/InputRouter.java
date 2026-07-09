@@ -88,7 +88,7 @@ public class InputRouter {
             case SPELL_PHASE -> new SpellPhaseInputHandler(boardView,viewport);
             case MONSTER_PHASE ->  new MonsterPhaseInputHandler(boardView, viewport);
             case FIGHT_PHASE -> new FightInputHandler(boardView,viewport);
-            case DISCARD_PHASE -> new DiscardInputHandler(boardView, viewport, gameState);
+            case DISCARD_PHASE -> new DiscardInputHandler(boardView, viewport);
             case ENEMY_TURN -> new EnemyTurnInputHandler(boardView,viewport);
         };
 

@@ -20,6 +20,22 @@ public abstract class Monster implements MonsterEffect {
         return type;
     }
 
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public TargetingStrategy getTargetingStrategy() {
+        return targetingStrategy;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void onStartTurn() {
 

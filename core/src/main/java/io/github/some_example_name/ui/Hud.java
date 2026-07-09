@@ -65,7 +65,7 @@ public class Hud {
         createBars();
         setupTurnBanner();
         setupGodButton();
-        CreateEnemyHealthBar();
+
     }
 
     private void createHealthBar() {
@@ -79,13 +79,12 @@ public class Hud {
     private void createBars() {
         createHealthBar();
         createManaBar();
+        CreateEnemyHealthBar();
     }
 
     private void CreateEnemyHealthBar(){
         this.enemyHealthBar = addBar(assets.getBarBackground(), assets.getHealthBarForeground(), gameState.getOpponents().get(0).getMaxHealth(), gameState.getOpponents().get(0).getHealth(), barOverlayPositionX + 2200, barOverlayPositionY + 100);
     }
-
-
 
 
     private void onPhaseChange() {
@@ -241,6 +240,9 @@ public class Hud {
 
         if (manaBar != null) {
             manaBar.setValue(player.getMana());
+        }
+        if (enemyHealthBar!=null){
+            enemyHealthBar.setValue(gameState.getOpponents().get(0).getHealth());
         }
     }
 

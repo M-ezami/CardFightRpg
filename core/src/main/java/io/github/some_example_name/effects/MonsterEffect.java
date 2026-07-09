@@ -1,6 +1,8 @@
 package io.github.some_example_name.effects;
 
-public interface MonsterEffect {
+import io.github.some_example_name.entiteRelated.Targatable;
+
+public interface MonsterEffect extends Targatable {
 
 
     void onStartTurn();

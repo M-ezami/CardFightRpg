@@ -96,7 +96,6 @@ public abstract class Opponent implements Targatable {
         this.y = y;
     }
 
-
     public float getX() {
         return x;
     }

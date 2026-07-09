@@ -10,12 +10,12 @@ public class EnemyTurnInputHandler extends InputHandler {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    public boolean touchDown() {
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public boolean touchDragged() {
         return false;
     }
 

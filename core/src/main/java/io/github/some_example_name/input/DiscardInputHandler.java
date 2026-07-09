@@ -20,14 +20,13 @@ public class DiscardInputHandler extends InputHandler {
 
     private final List<Card> selectedCards;
 
-    public DiscardInputHandler(BoardView boardView, Viewport viewport, GameState gameState) {
+    public DiscardInputHandler(BoardView boardView, Viewport viewport) {
         super(boardView, viewport);
         selectedCards = boardView.getSelectedCards();
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        pixelsToWorld(screenX, screenY);
+    public boolean touchDown() {
         CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
 
         if (cardView == null) return false;
@@ -45,7 +44,7 @@ public class DiscardInputHandler extends InputHandler {
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public boolean touchDragged() {
         return false;
     }
 

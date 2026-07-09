@@ -15,7 +15,13 @@ public class SimpleMonster extends Monster {
     }
 
 
+    @Override
+    public void takeDamage(int amount) {
 
+    }
 
-
+    @Override
+    public boolean contains(float x, float y) {
+        return false;
+    }
 }
