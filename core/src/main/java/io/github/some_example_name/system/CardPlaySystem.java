@@ -7,6 +7,7 @@ import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Player;
+import io.github.some_example_name.entiteRelated.targets.Targatable;
 import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
 import io.github.some_example_name.events.utilities.EventBus;
@@ -48,7 +49,7 @@ public class CardPlaySystem {
         switch (card.getCardType()) {
             case SPELL -> {
                 if (ctx.target() != null) {
-                    onSpellCardPlayed((SpellCard) card);
+                    onSpellCardPlayed((SpellCard) card, ctx.target() );
                 }
             }
             case MONSTER -> {
@@ -73,20 +74,21 @@ public class CardPlaySystem {
     public void onMonsterCardPlayed(MonsterCard card) {
         //could maybe emit a new monstercardplayed event
         // perhaps pass in monster
-        if(player.getCurrentMana() < card.getManaCost()) return;
-        if(card.getMonster().getHealth()<=0) card.getMonster().setHealth(card.getMonster().getMaxHealth());
+        if (player.getCurrentMana() < card.getManaCost()) return;
+        if (card.getMonster().getHealth() <= 0) card.getMonster().setHealth(card.getMonster().getMaxHealth());
         player.getMonsters().add(card.getMonster());
         player.playCard(card);
         eventBus.emit(new MonsterPlayedEvent());
 
     }
 
-    public void onSpellCardPlayed(SpellCard card) {
-        if(player.getCurrentMana() < card.getManaCost()) return;
+    public void onSpellCardPlayed(SpellCard card, Targatable target) {
+        if (player.getCurrentMana() < card.getManaCost()) return;
 
         for (Effect effect : card.getEffects()) {
             System.out.println("Applying effect: " + effect.getClass().getSimpleName());
             effect.apply(gameState);
+            eventBus.emit(new EnemyTakesDamageEvent(target));
         }
 
         player.playCard(card);
