@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
@@ -31,16 +33,15 @@ public class GameScreen extends ScreenAdapter {
     private final GdxGame game;
     private Player player;
     private final List<Opponent> opponents;
-    private final Viewport viewport;
     private final BitmapFont font;
+    private Viewport uiViewport;
 
     public GameScreen(GdxGame game, Assets assets) {
 
         this.game = game;
         this.opponents = new ArrayList<>();
         this.font = assets.getButtonFont();
-        this.viewport = new ExtendViewport(16f, 9f);
-
+        this.uiViewport = new ScreenViewport();
     }
 
     private void createOpponents() {
@@ -60,7 +61,6 @@ public class GameScreen extends ScreenAdapter {
         new CardPlaySystem(gameState);
         new AnimationDirector(opponents);
         new TurnSystem(gameState);
-        new EnemyTurnSystem(gameState);
         new DiscardSystem(gameState);
         new PlayerSystem(gameState.getPlayer());
         new CombatSystem(gameState);
@@ -73,17 +73,16 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             startCombat();
         }
-
-        viewport.apply();
-        game.getBatch().setProjectionMatrix(viewport.getCamera().combined);
+        uiViewport.apply(true);
+        game.getBatch().setProjectionMatrix(uiViewport.getCamera().combined);
         game.getBatch().begin();
-        font.draw(game.getBatch(), "Press SPACE to start combat", 4f, 7f);
+        font.draw(game.getBatch(), "Press SPACE to start combat", 20, uiViewport.getWorldHeight() - 20);
 
         game.getBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        uiViewport.update(width, height, true);
     }
 }

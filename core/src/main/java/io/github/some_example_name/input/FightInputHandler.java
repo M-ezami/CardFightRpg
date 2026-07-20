@@ -1,6 +1,7 @@
 package io.github.some_example_name.input;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.view.BoardView;
 
 public class FightInputHandler extends InputHandler {

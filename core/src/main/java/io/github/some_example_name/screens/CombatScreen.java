@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.input.InputRouter;
@@ -22,24 +23,27 @@ public class CombatScreen extends ScreenAdapter {
 
     private final SpriteBatch batch;
     private final ExtendViewport viewport;
+    private final ScreenViewport uiViewport;
     private final ShapeRenderer shapeRenderer;
     private final Hud hud;
     private final BoardView boardView;
     private final InputRouter inputRouter;
+
     // this can be further decoupled it shouldnt know about targets
 
     public CombatScreen(GameState gameState, GdxGame game) {
         this.batch = game.getBatch();
         this.shapeRenderer = new ShapeRenderer();
+        this.uiViewport = new ScreenViewport();
         this.viewport = new ExtendViewport(16f, 9f);
         this.boardView = new BoardView(this.viewport, game, gameState);
-        this.hud = new Hud(game.getAssets(), gameState);
+        this.hud = new Hud(game.getAssets(), gameState, boardView, uiViewport);
         this.inputRouter = new InputRouter(viewport, boardView, hud, gameState);
     }
 
     @Override
     public void resize(int width, int height) {
-        hud.getUiViewport().update(width, height, true);
+        uiViewport.update(width, height, true);
         viewport.update(width, height, true);
         boardView.rebuild();
     }
@@ -53,7 +57,7 @@ public class CombatScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
+        ScreenUtils.clear(Color.CLEAR);
 
         viewport.apply();
         viewport.getCamera().update();
@@ -71,7 +75,8 @@ public class CombatScreen extends ScreenAdapter {
 
         drawWorld(delta);
         batch.end();
-
+        uiViewport.apply();
+        batch.setProjectionMatrix(uiViewport.getCamera().combined);
         hud.draw(batch, delta);
 
 

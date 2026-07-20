@@ -1,47 +1,28 @@
 package io.github.some_example_name.cards.cardRelated.parents;
 
 
-import io.github.some_example_name.cards.Card;
 import io.github.some_example_name.cards.Monster;
+import io.github.some_example_name.cards.SimpleMonster;
 import io.github.some_example_name.cards.cardRelated.CardType;
 
-public abstract class MonsterCard implements Card {
+public abstract class MonsterCard extends AbstractCard {
 
-    private int manaCost;
-    private String name;
+
     protected Monster monster;
-    protected CardType cardType;
-    private String description;
 
 
-    public MonsterCard() {
+    public MonsterCard(String name, String description, int manaCost, Monster monster) {
+        super(name, description, manaCost);
+        this.monster = monster;
         this.cardType = CardType.MONSTER;
+
     }
-
-
-
 
     public Monster getMonster() {
         return monster;
     }
 
-    @Override
-    public int getManaCost() {
-        return manaCost;
-    }
 
-    @Override
-    public CardType getCardType() {
-        return cardType;
-    }
 
-    @Override
-    public String getDescription() {
-        return "";
-    }
-
-    public String getName() {
-        return name;
-    }
 
 }

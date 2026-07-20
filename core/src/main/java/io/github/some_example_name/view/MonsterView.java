@@ -17,6 +17,10 @@ public class MonsterView {
         this.monster = monster;
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
     public Monster getMonster() {
         return monster;
     }

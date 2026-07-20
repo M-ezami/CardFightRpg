@@ -1,15 +1,15 @@
 package io.github.some_example_name.system;
 
-import io.github.some_example_name.data.CardContext;
-import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
 import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
+import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.events.event.CardPlayedEvent;
-import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
+import io.github.some_example_name.events.utilities.EventBus;
 
 public class CardPlaySystem {
     private final EventBus eventBus;
@@ -24,22 +24,22 @@ public class CardPlaySystem {
     }
 
     public void subscribe() {
-        eventBus.<CardPlayedEvent>subscribe(CardPlayedEvent.class, event -> onCardPlayed(event.cardContext()));
+        eventBus.subscribe(CardPlayedEvent.class, event -> onCardPlayed(event.cardContext()));
     }
 
     public void onCardPlayed(CardContext ctx) {
         Card card = ctx.card();
-        if(!ctx.isMonsterField()) System.out.println("monster is empty");
+        if (!ctx.isMonsterField()) System.out.println("monster is empty");
 
-        if(ctx.target() == null){
+        if (ctx.target() == null) {
             System.out.println("target is empty");
         }
 
-        if(manaCheck(card)){
+        if (manaCheck(card)) {
             System.out.println("mana is empty");
         }
 
-        if (!ctx.isMonsterField() && ctx.target() == null || manaCheck(card)){
+        if (!ctx.isMonsterField() && ctx.target() == null || manaCheck(card)) {
             System.out.println("something is wrong");
             return;
         }
@@ -73,23 +73,22 @@ public class CardPlaySystem {
     public void onMonsterCardPlayed(MonsterCard card) {
         //could maybe emit a new monstercardplayed event
         // perhaps pass in monster
+        if(player.getCurrentMana() < card.getManaCost()) return;
         player.getMonsters().add(card.getMonster());
-        player.spendMana(card.getManaCost());
-        player.discardCard(card);
-        eventBus.<MonsterPlayedEvent>emit(new MonsterPlayedEvent());
+        player.playCard(card);
+        eventBus.emit(new MonsterPlayedEvent());
 
     }
 
     public void onSpellCardPlayed(SpellCard card) {
-        Player player = gameState.getPlayer();
+        if(player.getCurrentMana() < card.getManaCost()) return;
 
         for (Effect effect : card.getEffects()) {
             System.out.println("Applying effect: " + effect.getClass().getSimpleName());
             effect.apply(gameState);
         }
 
-        player.spendMana(card.getManaCost());
-        player.getDeck().discard(card);
+        player.playCard(card);
     }
 
 

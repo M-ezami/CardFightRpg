@@ -3,8 +3,8 @@ package io.github.some_example_name.effects;
 
 import io.github.some_example_name.data.GameState;
 
-import io.github.some_example_name.entiteRelated.Targatable;
-import io.github.some_example_name.entiteRelated.TargetingStrategy;
+import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.entiteRelated.targets.TargetingStrategy;
 
 public class DamageEffect extends Effect {
 
@@ -19,13 +19,14 @@ public class DamageEffect extends Effect {
 
     @Override
     public String getDescription() {
-        return amount + " damage effect";
+        return amount + "damage effect";
     }
 
 
     @Override
     public void apply(GameState state) {
         for (Targatable target : targetingStrategy.getTargets(state)) {
+            System.out.println("Damaging: " + target);
             target.takeDamage(amount);
         }
 

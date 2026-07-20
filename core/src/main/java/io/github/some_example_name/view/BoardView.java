@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.GdxGame;
-import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.ui.Assets;
@@ -24,16 +25,22 @@ public class BoardView {
     private final GameState gameState;
     private DraggedMonster draggedMonster;
     private DraggedCard draggedCard;
+    private final Viewport viewport;
 
     // I really think this should be refactored into a seperate view for drawing and layout and saaame for all child classes
     // another good thing would be if this doesnt know its children it just knows it has a list of children to call update and render but also not that important rn
     public BoardView(ExtendViewport viewport, GdxGame game, GameState gameState) {
+        this.viewport = viewport;
         this.gameState = gameState;
         this.opponentView = new OpponentView(gameState);
         this.assets = game.getAssets();
         this.handView = new HandView(assets, gameState);
         this.boardLayout = new BoardLayout(viewport);
         this.monsterFieldView = new MonsterFieldView(game.getMonsterAssets());
+    }
+
+    public Viewport getViewport() {
+        return viewport;
     }
 
     public TextureRegion getPointingMonsterArrow(){

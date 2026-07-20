@@ -3,27 +3,19 @@ package io.github.some_example_name.cards;
 
 import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.effects.DamageEffect;
-import io.github.some_example_name.entiteRelated.SingleTarget;
+import io.github.some_example_name.entiteRelated.targets.SingleTarget;
+import io.github.some_example_name.entiteRelated.targets.TargetingStrategy;
 
 public class FireCard extends SpellCard {
 
-    private final DamageEffect damageEffect;
-    private static String name = FireCard.class.getSimpleName();
-    private String description;
+    private static final String name = FireCard.class.getSimpleName();
 
-
-
-    public FireCard(String description) {
-        super(name,1);
-        this.description = description;
-        this.targetingStrategy = new SingleTarget();
-        this.damageEffect= new DamageEffect(3, targetingStrategy);
+    public FireCard() {
+        super(name, "spell card deals x damage",1);
+        TargetingStrategy damageTargetingStrategy = new SingleTarget();
+        DamageEffect damageEffect = new DamageEffect(3, damageTargetingStrategy);
         this.addEffect(damageEffect);
-
     }
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
+
 }

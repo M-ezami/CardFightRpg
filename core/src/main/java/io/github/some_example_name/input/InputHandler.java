@@ -3,10 +3,11 @@ package io.github.some_example_name.input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.data.DraggedCard;
+import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.FightEvent;
@@ -23,7 +24,7 @@ public abstract class InputHandler extends InputAdapter {
     protected MonsterFieldView monsterFieldView;
     public CardView selectedCard;
     public MonsterView selectedMonster;
-
+    public GameState gameState;
 
     public InputHandler(BoardView boardView, Viewport viewport) {
         this.viewport = viewport;
@@ -59,13 +60,24 @@ public abstract class InputHandler extends InputAdapter {
 
     protected boolean touchDownOnCard() {
         CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView != null && cardView.getCardType() != CardType.SPELL) {
+        if (cardView != null  ) {
             selectedCard = cardView;
             selectedMonster = null;
             return true;
         }
         return false;
     }
+
+    protected boolean touchDownOnSpellPhaseCard() {
+        CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
+        if (cardView != null && cardView.getCardType() == CardType.SPELL  ) {
+            selectedCard = cardView;
+            selectedMonster = null;
+            return true;
+        }
+        return false;
+    }
+
 
     protected boolean touchDownOnMonster() {
         MonsterView monsterView = monsterFieldView.getMonsterAtPosition(touchPos.x, touchPos.y);
@@ -96,9 +108,9 @@ public abstract class InputHandler extends InputAdapter {
 
     protected boolean touchUpOnCard() {
         if (selectedCard == null) return false;
-
         Card card = selectedCard.getCard();
         Opponent opponent = boardView.getOpponentView().getOpponentAt(touchPos.x, touchPos.y);
+        if(opponent != null && selectedCard.getCardType() == CardType.MONSTER) return false;
         boolean isInMonsterField = boardView.monsterViewDimensions().contains(touchPos.x, touchPos.y);
 
         eventBus.emit(new CardPlayedEvent(

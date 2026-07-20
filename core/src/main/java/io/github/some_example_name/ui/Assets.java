@@ -168,19 +168,22 @@ public class Assets implements Disposable {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CherryCreamSoda-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 16;
-
         buttonFont = generator.generateFont(parameter);
         generator.dispose();
     }
 
     public void createCardFont() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("BitcountGridDoubleInk-VariableFont_CRSV,ELSH,ELXP,SZP1,SZP2,XPN1,XPN2,YPN1,YPN2,slnt,wght.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("CherryCreamSoda-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 16;
-
+        parameter.size = 32;
+        parameter.genMipMaps = true;
+        parameter.minFilter = Texture.TextureFilter.MipMapLinearLinear;
+        parameter.magFilter = Texture.TextureFilter.Linear;
         cardFont = generator.generateFont(parameter);
-        generator.dispose();
 
+
+
+        generator.dispose();
     }
 
     public void createFonts(){

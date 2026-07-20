@@ -1,13 +1,7 @@
 package io.github.some_example_name.input;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.data.CardContext;
-import io.github.some_example_name.cards.Card;
-import io.github.some_example_name.data.DraggedCard;
-import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.view.BoardView;
-import io.github.some_example_name.view.CardView;
 
 public class SpellPhaseInputHandler extends InputHandler {
 
@@ -22,7 +16,7 @@ public class SpellPhaseInputHandler extends InputHandler {
 
     @Override
     public boolean touchDown() {
-        return touchDownOnCard() || touchDownOnMonster();
+        return touchDownOnMonster() || touchDownOnCard();
     }
 
 

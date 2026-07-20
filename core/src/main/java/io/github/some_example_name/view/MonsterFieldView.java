@@ -25,20 +25,25 @@ public class MonsterFieldView {
         }
     }
 
+    public HashMap<Monster, MonsterView> getMonsterViews() {
+        return monsterViews;
+    }
+
     public void draw(float x, float y, float width, float height,
                      SpriteBatch batch) {
-
+        int i = 0;
         for (Monster monster : monsterViews.keySet()) {
 
             MonsterView view = monsterViews.get(monster);
 
-            float mx = x + width / 2f;
+            float mx = x + width / 2f *i ;
             float my = y + height / 2f;
 
             view.setPosition(mx, my);
             view.setSize(width / 4, height / 4);
 
             view.draw(batch);
+            i++;
         }
     }
 

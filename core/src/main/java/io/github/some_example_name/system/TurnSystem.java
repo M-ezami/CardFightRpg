@@ -62,6 +62,7 @@ public class TurnSystem {
         return table;
     }
 
+
     private void subscribe() {
         eventBus.subscribe(PlayerTurnBeginEvent.class, e -> tryTransition(PlayerTurnBeginEvent.class));
         eventBus.subscribe(ChooseCardsToDiscardEvent.class, e -> tryTransition(ChooseCardsToDiscardEvent.class));
@@ -73,6 +74,7 @@ public class TurnSystem {
                 eventBus.emit(new EnemyTurnStartEvent());
             }
         });
+
     }
 
     private boolean tryTransition(Class<?> eventType) {

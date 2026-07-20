@@ -1,4 +1,4 @@
-package io.github.some_example_name.cards;
+package io.github.some_example_name.cards.cardRelated.parents;
 
 import io.github.some_example_name.cards.cardRelated.CardType;
 

@@ -1,6 +1,6 @@
 package io.github.some_example_name.data;
 
-import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +35,14 @@ public class Cards {
         System.out.println(discardPile.size() +"");
         if (HANDSIZE <= 0) return;
         if (drawPile.isEmpty()) reshuffle();
-        int cardsToDraw = Math.min(HANDSIZE, drawPile.size());
 
-        for (int i = 0; i < cardsToDraw; i++) {
+        for (int i = hand.size(); i < HANDSIZE; i++) {
+            if(drawPile.isEmpty()) reshuffle();
+            System.out.println(drawPile.size() +"drawPileSize");
             Card card = drawPile.remove(0);
             hand.add(card);
         }
+
         System.out.println(discardPile.size() +"discardPileSIze");
         System.out.println(cardDeck.size() +"cardDeckSIze");
         System.out.println(drawPile.size() +"drawPileSIze");
@@ -64,7 +66,6 @@ public class Cards {
             Card card = discardPile.remove(discardPile.size() - 1);
             drawPile.add(card);
         }
-
     }
 
     public List<Card> getHand() {

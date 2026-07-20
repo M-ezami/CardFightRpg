@@ -3,23 +3,16 @@ package io.github.some_example_name.entiteRelated;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import io.github.some_example_name.effects.Effect;
+import io.github.some_example_name.entiteRelated.targets.Targatable;
 
 
 import java.util.Map;
 
-public abstract class Opponent implements Targatable {
-    private int health;
-    int maxHealth;
-    protected float x;
-    protected float y;
-    protected float width;
-    protected float height;
+public abstract class Opponent extends Targatable {
 
 
     public Opponent(int health, int maxHealth) {
-        this.health = health;
-        this.maxHealth = maxHealth;
-
+       super(health, maxHealth);
     }
 
     public abstract void setAnimationState(EnemyAnimationState state);
@@ -50,17 +43,6 @@ public abstract class Opponent implements Targatable {
         return null;
     }
 
-
-    public boolean contains(float worldX, float worldY) {
-        return worldX >= x && worldX <= x + width &&
-            worldY >= y && worldY <= y + height;
-    }
-
-    public void takeDamage(int amount) {
-        if (health <= 0) return;
-        this.health -= amount;
-
-    }
 
 
     public boolean isDead() {

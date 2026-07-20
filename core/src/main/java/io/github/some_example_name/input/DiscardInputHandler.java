@@ -2,8 +2,7 @@ package io.github.some_example_name.input;
 
 
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.cards.Card;
-import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.CardView;
 

@@ -2,31 +2,31 @@ package io.github.some_example_name.cards;
 
 import io.github.some_example_name.cards.cardRelated.MonsterType;
 import io.github.some_example_name.effects.MonsterEffect;
-import io.github.some_example_name.entiteRelated.TargetingStrategy;
+import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.entiteRelated.targets.TargetingStrategy;
 
-public abstract class Monster implements MonsterEffect {
+public abstract class Monster extends Targatable implements MonsterEffect {
 
     protected int attack;
-    protected int health;
+
     protected TargetingStrategy targetingStrategy;
     protected String name;
     protected MonsterType type;
 
-    public Monster() {
-
+    public Monster(int health, int maxHealth) {
+        super(health, maxHealth);
     }
 
     public MonsterType getType() {
         return type;
     }
 
+
     public int getAttack() {
         return attack;
     }
 
-    public int getHealth() {
-        return health;
-    }
+
 
     public TargetingStrategy getTargetingStrategy() {
         return targetingStrategy;

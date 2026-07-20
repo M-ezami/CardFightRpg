@@ -1,25 +1,25 @@
 package io.github.some_example_name.entiteRelated;
 
-import io.github.some_example_name.cards.Card;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.cards.FireCard;
 import io.github.some_example_name.cards.Monster;
 import io.github.some_example_name.data.Cards;
+import io.github.some_example_name.entiteRelated.targets.Targatable;
 import io.github.some_example_name.screens.SimpleMonsterCard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player implements Targatable {
+public class Player extends Targatable {
 
     private final Cards cards;
     private final List<Monster> monsters;
 
-    private float health;
     private int mana;
-    public float maxHealth = 10;
     private int maxMana = 3;
 
     public Player() {
+        super(10,10);
         this.monsters = new ArrayList<>();
         this.health = maxHealth;
         this.mana = maxMana;
@@ -29,11 +29,16 @@ public class Player implements Targatable {
     public void discardCard(Card card) {
         cards.discard(card);
     }
+    public void playCard(Card card) {
+        spendMana(card.getManaCost());
+        discardCard(card);
+
+    }
 
 
     private List<Card> setupPlayerDeck() {
         List<Card> playerDeck = new  ArrayList<>();
-        playerDeck.add(new FireCard("Card 1"));
+        playerDeck.add(new FireCard());
         playerDeck.add(new SimpleMonsterCard());
         playerDeck.add(new SimpleMonsterCard());
         playerDeck.add(new SimpleMonsterCard());
@@ -56,9 +61,7 @@ public class Player implements Targatable {
         return monsters;
     }
 
-    public float getMaxHealth() {
-        return maxHealth;
-    }
+
 
     public int getMaxMana() {
         return maxMana;
@@ -78,22 +81,6 @@ public class Player implements Targatable {
 
     public void spendMana(int mana) {
         this.mana -= mana;
-    }
-
-
-    @Override
-    public void takeDamage(int amount) {
-        this.health -= amount;
-    }
-
-
-    public float getHealth() {
-        return this.health;
-    }
-
-    @Override
-    public boolean contains(float x, float y) {
-        return false;
     }
 
 

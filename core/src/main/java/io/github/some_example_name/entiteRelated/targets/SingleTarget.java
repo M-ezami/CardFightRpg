@@ -1,4 +1,4 @@
-package io.github.some_example_name.entiteRelated;
+package io.github.some_example_name.entiteRelated.targets;
 
 import io.github.some_example_name.data.GameState;
 
@@ -8,6 +8,6 @@ public class SingleTarget implements TargetingStrategy {
 
     @Override
     public List<Targatable> getTargets(GameState state) {
-        return List.of(state.getTargetOpponent());
+        return List.of(state.getOpponents().get(0));
     }
 }

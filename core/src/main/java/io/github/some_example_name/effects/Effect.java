@@ -1,9 +1,10 @@
 package io.github.some_example_name.effects;
 
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.TargetingStrategy;
+import io.github.some_example_name.entiteRelated.targets.TargetingStrategy;
 
 public abstract class Effect {
+
     protected TargetingStrategy targetingStrategy;
     protected int amount;
 
@@ -12,6 +13,9 @@ public abstract class Effect {
         this.amount = amount;
     }
 
+    public TargetingStrategy getTargetingStrategy() {
+        return targetingStrategy;
+    }
 
     @Override
     public String toString() {
@@ -21,4 +25,6 @@ public abstract class Effect {
     public abstract String getDescription();
 
     public abstract void apply(GameState state);
+
+
 }

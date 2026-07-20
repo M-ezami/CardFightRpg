@@ -28,6 +28,7 @@ public class PlayerSystem {
 
     private void atStartTurn(){
         this.cards.drawHand();
+        this.player.resetMana();
     }
 
 }

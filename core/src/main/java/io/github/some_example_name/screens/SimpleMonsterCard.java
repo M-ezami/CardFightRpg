@@ -6,13 +6,12 @@ import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
 public class SimpleMonsterCard extends MonsterCard {
 
     public SimpleMonsterCard() {
-        this.monster = new SimpleMonster();
+        super("joesMAMA",  "Play a  simple monster", 1, new SimpleMonster());
     }
-
 
     @Override
     public int getManaCost() {
-        return 0;
+        return 1;
     }
 
     @Override
