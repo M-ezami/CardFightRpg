@@ -74,6 +74,7 @@ public class CardPlaySystem {
         //could maybe emit a new monstercardplayed event
         // perhaps pass in monster
         if(player.getCurrentMana() < card.getManaCost()) return;
+        if(card.getMonster().getHealth()<=0) card.getMonster().setHealth(card.getMonster().getMaxHealth());
         player.getMonsters().add(card.getMonster());
         player.playCard(card);
         eventBus.emit(new MonsterPlayedEvent());

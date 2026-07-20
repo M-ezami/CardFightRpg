@@ -13,6 +13,14 @@ public abstract class Targatable {
         this.maxHealth = maxHealth;
     }
 
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public boolean isDead() {
         return health <= 0;
     }

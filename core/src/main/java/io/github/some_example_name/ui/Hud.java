@@ -227,6 +227,7 @@ public class Hud {
 
     private TextureRegion getCurrentFrame(float delta) {
         stateTime += delta;
+        stateTime += delta;
         return (TextureRegion) progressAnimationBar.getKeyFrame(stateTime);
 
     }
@@ -302,17 +303,18 @@ public class Hud {
             manaBar.setValue(player.getMana());
         }
 
-        if (!gameState.getOpponents().isEmpty()) {
+        if(!gameState.getOpponents().isEmpty()){
             if (enemyHealthBar != null) {
                 enemyHealthBar.setValue(gameState.getOpponents().get(0).getHealth());
 
-                if (gameState.getOpponents().get(0).getHealth() <= 0) {
-                    enemyHealthBar.setVisible(false);
-                    enemyHealthBar.remove();
-                    enemyHealthBar = null;
-                }
             }
+                }
+        if(gameState.getOpponents().isEmpty()) {
+            enemyHealthBar.setVisible(false);
+            enemyHealthBar.remove();
+
         }
+
         updateMonsterBars();
     }
 

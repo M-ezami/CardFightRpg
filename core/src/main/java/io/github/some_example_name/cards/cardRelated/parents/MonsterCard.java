@@ -7,9 +7,7 @@ import io.github.some_example_name.cards.cardRelated.CardType;
 
 public abstract class MonsterCard extends AbstractCard {
 
-
     protected Monster monster;
-
 
     public MonsterCard(String name, String description, int manaCost, Monster monster) {
         super(name, description, manaCost);

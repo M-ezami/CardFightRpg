@@ -17,6 +17,8 @@ public abstract class Monster extends Targatable implements MonsterEffect {
         super(health, maxHealth);
     }
 
+
+
     public MonsterType getType() {
         return type;
     }
