@@ -15,10 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Player;
+import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.MonsterView;
@@ -257,7 +259,14 @@ public class Hud {
         turnBanner.setColor(color);
         turnBanner.setText(text);
         turnBanner.setVisible(true);
-
+        Timer.Task task = new Timer.Task() {
+            @Override
+            public void run() {
+                eventBus.emit(new PlayerTurnBeginEvent());
+            }
+        };
+        float timeGoal = 2f;
+        Timer.schedule(task, timeGoal);
 
         float bannerTime = 2;
         if (bannerTimer >= bannerTime) {

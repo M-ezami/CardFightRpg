@@ -3,6 +3,7 @@ package io.github.some_example_name.screens;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -28,7 +29,7 @@ public class CombatScreen extends ScreenAdapter {
     private final Hud hud;
     private final BoardView boardView;
     private final InputRouter inputRouter;
-
+    private final Texture bgdTexture;
     // this can be further decoupled it shouldnt know about targets
 
     public CombatScreen(GameState gameState, GdxGame game) {
@@ -39,6 +40,7 @@ public class CombatScreen extends ScreenAdapter {
         this.boardView = new BoardView(this.viewport, game, gameState);
         this.hud = new Hud(game.getAssets(), gameState, boardView, uiViewport);
         this.inputRouter = new InputRouter(viewport, boardView, hud, gameState);
+        this.bgdTexture = new Texture("background.png");
     }
 
     @Override
@@ -61,6 +63,10 @@ public class CombatScreen extends ScreenAdapter {
 
         viewport.apply();
         viewport.getCamera().update();
+        batch.setProjectionMatrix(viewport.getCamera().combined);
+        batch.begin();
+        batch.draw(bgdTexture, 0, 0, 16f, 9f);
+        batch.end();
 
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

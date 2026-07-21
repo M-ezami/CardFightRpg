@@ -3,13 +3,14 @@ package io.github.some_example_name.system;
 import com.badlogic.gdx.utils.Timer;
 import io.github.some_example_name.cards.Monster;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.effects.Effect;
 import io.github.some_example_name.entiteRelated.Opponent;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.entiteRelated.targets.Targatable;
-import io.github.some_example_name.events.event.EnemyEffectAppliedEvent;
 import io.github.some_example_name.events.event.phaseEvents.EnemyTurnStartEvent;
 import io.github.some_example_name.events.event.phaseEvents.FightEvent;
 import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
+import io.github.some_example_name.events.event.spellEffect;
 import io.github.some_example_name.events.utilities.EventBus;
 
 import java.util.List;
@@ -42,8 +43,20 @@ public class CombatSystem {
         });
     }
 
+
+    private void startPlayerTurn() {
+        Timer.Task task = new Timer.Task() {
+            @Override
+            public void run() {
+                eventBus.emit(new PlayerTurnBeginEvent());
+            }
+        };
+
+        float timeGoal = 2f;
+        Timer.schedule(task, timeGoal);
+    }
+
     private void enemyTurn() {
-        System.out.println("enemys turn is running");
         List<Opponent> opponents = gameState.getOpponents();
         int i = 0;
         for (Opponent opponent : opponents) {
@@ -58,21 +71,14 @@ public class CombatSystem {
             deathCheck(opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState));
             for (Targatable target : opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState)) {
                 System.out.println("after" + target.getHealth());
+                Effect effect = opponent.getRandomEffect();
+                effect.damageOrSpellEvent(target);
             }
-            eventBus.emit(new EnemyEffectAppliedEvent());
-
         }
-        Timer.Task task = new Timer.Task() {
-            @Override
-            public void run() {
-                eventBus.emit(new PlayerTurnBeginEvent());
-            }
-        };
-        float timeGoal = 2f;
-        Timer.schedule(task, timeGoal);
 
-
+        startPlayerTurn();
     }
+
 
     private void attack() {
         System.out.println("opponent health before" + targetOpponent.getHealth());
@@ -81,7 +87,7 @@ public class CombatSystem {
             System.out.println("our monster damage amount" + this.playerMonster.getAttack());
             System.out.println("opponent health after" + targetOpponent.getHealth());
             this.player.spendMana(1);
-            eventBus.emit(new EnemyTakesDamageEvent(targetOpponent));
+            eventBus.emit(new DamageEvent(targetOpponent));
             deathCheck(List.of(this.targetOpponent));
             this.targetOpponent = null;
             this.playerMonster = null;

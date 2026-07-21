@@ -2,10 +2,11 @@ package io.github.some_example_name.ui;
 
 import io.github.some_example_name.entiteRelated.EnemyAnimationState;
 import io.github.some_example_name.entiteRelated.Opponent;
+import io.github.some_example_name.entiteRelated.targets.Targatable;
 import io.github.some_example_name.events.event.EnemyDiedEvent;
-import io.github.some_example_name.events.event.EnemyEffectAppliedEvent;
+import io.github.some_example_name.events.event.spellEffect;
 import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.system.EnemyTakesDamageEvent;
+import io.github.some_example_name.system.DamageEvent;
 
 import java.util.List;
 
@@ -19,20 +20,20 @@ public class AnimationDirector {
         subscribe();
     }
 
+    //could possibly rewrite into working for all targets
+    private void hurtOrAttack(Targatable target) {
+        if (target.isOpponent()) opponents.get(0).setAnimationState(EnemyAnimationState.HURT);
+        else opponents.get(0).setAnimationState(EnemyAnimationState.ATTACK);
+    }
+
     private void subscribe() {
 
-        eventBus.subscribe(EnemyTakesDamageEvent.class, e -> {
-            opponents.get(0).setAnimationState(EnemyAnimationState.HURT);
+        eventBus.subscribe(DamageEvent.class, e -> {
+            hurtOrAttack(e.target());
         });
-
-
-        eventBus.subscribe(EnemyEffectAppliedEvent.class, e -> {
-
-            System.out.println("reaching enemyeffect");
-
-            opponents.get(0).setAnimationState(EnemyAnimationState.ATTACK);
+        eventBus.subscribe(spellEffect.class, e -> {
+            hurtOrAttack(e.target());
         });
-
 
         eventBus.subscribe(EnemyDiedEvent.class, e -> {
             opponents.get(0).setAnimationState(EnemyAnimationState.DEATH);

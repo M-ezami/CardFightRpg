@@ -1,5 +1,7 @@
 package io.github.some_example_name.entiteRelated.targets;
 
+import io.github.some_example_name.entiteRelated.Opponent;
+
 public abstract class Targatable {
     protected int health;
     protected int maxHealth;
@@ -19,6 +21,10 @@ public abstract class Targatable {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public boolean isOpponent(){
+        return this instanceof Opponent;
     }
 
     public boolean isDead() {

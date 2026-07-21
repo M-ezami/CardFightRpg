@@ -70,7 +70,7 @@ public class Assets implements Disposable {
         this.barOverlayTexture = new Texture(Gdx.files.internal("HUD/HealthBarOverlay.png"));
         loadOverlayAnimations();
         this.barBackground = new TextureRegion(this.barBackgroundTexture, 27, 17, 61, 9);
-        this.healthBarForeground = new TextureRegion(this.barForegroundTexture, 27, 5, 61, 9);
+        this.healthBarForeground = new TextureRegion(this.barForegroundTexture, 27, 7, 61, 9);
         this.manaBarForeground = new TextureRegion(this.barForegroundTexture, 27, 17, 61, 9);
         this.barOverlayTextureRegion = new TextureRegion(this.barOverlayTexture, 27, 5, 64, 23);
 

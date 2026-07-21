@@ -87,8 +87,8 @@ public class CardPlaySystem {
 
         for (Effect effect : card.getEffects()) {
             System.out.println("Applying effect: " + effect.getClass().getSimpleName());
+            effect.damageOrSpellEvent(target);
             effect.apply(gameState);
-            eventBus.emit(new EnemyTakesDamageEvent(target));
         }
 
         player.playCard(card);
