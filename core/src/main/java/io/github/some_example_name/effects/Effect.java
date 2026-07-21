@@ -33,7 +33,7 @@ public abstract class Effect {
     }
     public void damageOrSpellEvent( Targatable target) {
         if (this.dealsDamage()) {
-            eventBus.emit(new DamageEvent(target));
+            eventBus.emit(new DamageEvent(target, this.amount));
         } else {
             eventBus.emit(new spellEffect(target));
         }

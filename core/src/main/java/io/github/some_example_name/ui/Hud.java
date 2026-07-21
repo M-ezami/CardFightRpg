@@ -22,6 +22,7 @@ import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.entiteRelated.Player;
 import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
 import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.system.DamageEvent;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.MonsterView;
 
@@ -68,7 +69,14 @@ public class Hud {
         this.table = new Table();
         this.monsterHealthBar = new HashMap<>();
         setupHud();
+        subscribe();
     }
+    private void subscribe(){
+        eventBus.subscribe(DamageEvent.class, event -> {
+            showBanner("damage " +  event.amount(),Color.RED,2f);
+        });
+    }
+
 
     private void updateMonsterBars() {
 
@@ -254,26 +262,21 @@ public class Hud {
 //    }
 
 
-    private void showBanner(String text, Color color, float delta) {
-        bannerTimer += delta;
-        turnBanner.setColor(color);
-        turnBanner.setText(text);
-        turnBanner.setVisible(true);
-        Timer.Task task = new Timer.Task() {
-            @Override
-            public void run() {
-                eventBus.emit(new PlayerTurnBeginEvent());
-            }
-        };
-        float timeGoal = 2f;
-        Timer.schedule(task, timeGoal);
 
-        float bannerTime = 2;
-        if (bannerTimer >= bannerTime) {
-            bannerTimer = 0;
-            turnBanner.setVisible(false);
+        private void showBanner(String text, Color color, float duration) {
+            turnBanner.setColor(color);
+            turnBanner.setText(text);
+            turnBanner.setVisible(true);
+
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    turnBanner.setVisible(false);
+                }
+            }, duration);
         }
-    }
+
+
 
     private void setupTurnBanner() {
         Label.LabelStyle bannerStyle = new Label.LabelStyle();

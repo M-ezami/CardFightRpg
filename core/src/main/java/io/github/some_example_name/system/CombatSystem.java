@@ -87,7 +87,7 @@ public class CombatSystem {
             System.out.println("our monster damage amount" + this.playerMonster.getAttack());
             System.out.println("opponent health after" + targetOpponent.getHealth());
             this.player.spendMana(1);
-            eventBus.emit(new DamageEvent(targetOpponent));
+            eventBus.emit(new DamageEvent(targetOpponent,this.playerMonster.getAttack() ) );
             deathCheck(List.of(this.targetOpponent));
             this.targetOpponent = null;
             this.playerMonster = null;
