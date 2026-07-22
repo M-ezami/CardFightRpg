@@ -287,7 +287,7 @@ public class Hud {
 
         Table bannerTable = new Table();
         bannerTable.setFillParent(true);
-        bannerTable.center();
+        bannerTable.top();
         bannerTable.add(turnBanner);
 
         stage.addActor(bannerTable);

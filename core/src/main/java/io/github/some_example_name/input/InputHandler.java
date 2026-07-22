@@ -68,9 +68,9 @@ public abstract class InputHandler extends InputAdapter {
         return false;
     }
 
-    protected boolean touchDownOnSpellPhaseCard() {
+    protected boolean touchDownOnMonsterPhaseCard() {
         CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView != null && cardView.getCardType() == CardType.SPELL  ) {
+        if (cardView != null && cardView.getCardType() == CardType.MONSTER  ) {
             selectedCard = cardView;
             selectedMonster = null;
             return true;
