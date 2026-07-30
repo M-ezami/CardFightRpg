@@ -2,10 +2,10 @@ package io.github.some_example_name.data;
 
 import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.cards.cardRelated.parents.Card;
-import io.github.some_example_name.cards.Monster;
-import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.enitites.Monster;
+import io.github.some_example_name.enitites.Opponent;
+import io.github.some_example_name.enitites.Player;
+import io.github.some_example_name.target.Targatable;
 
 import java.util.ArrayList;
 import java.util.List;

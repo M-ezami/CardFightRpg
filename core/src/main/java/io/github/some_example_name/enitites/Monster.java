@@ -1,9 +1,9 @@
-package io.github.some_example_name.cards;
+package io.github.some_example_name.enitites;
 
 import io.github.some_example_name.cards.cardRelated.MonsterType;
 import io.github.some_example_name.effects.MonsterEffect;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
-import io.github.some_example_name.entiteRelated.targets.TargetingStrategy;
+import io.github.some_example_name.target.Targatable;
+import io.github.some_example_name.target.TargetingStrategy;
 
 public abstract class Monster extends Targatable implements MonsterEffect {
 

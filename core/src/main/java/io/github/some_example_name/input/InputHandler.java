@@ -8,7 +8,7 @@ import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.Opponent;
+import io.github.some_example_name.enitites.Opponent;
 import io.github.some_example_name.events.event.CardPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.FightEvent;
 import io.github.some_example_name.events.utilities.EventBus;

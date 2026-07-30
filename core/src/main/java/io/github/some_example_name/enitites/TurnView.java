@@ -1,4 +1,4 @@
-package io.github.some_example_name.entiteRelated;
+package io.github.some_example_name.enitites;
 
 
 interface TurnView {

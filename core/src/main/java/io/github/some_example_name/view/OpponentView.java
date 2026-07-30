@@ -2,7 +2,7 @@ package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.Opponent;
+import io.github.some_example_name.enitites.Opponent;
 
 import java.util.List;
 

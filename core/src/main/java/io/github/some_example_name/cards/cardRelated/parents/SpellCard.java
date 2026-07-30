@@ -1,7 +1,7 @@
 package io.github.some_example_name.cards.cardRelated.parents;
 
 import io.github.some_example_name.cards.cardRelated.CardType;
-import io.github.some_example_name.effects.Effect;
+import io.github.some_example_name.effects.parents.Effect;
 
 import java.util.ArrayList;
 import java.util.List;

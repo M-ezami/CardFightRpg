@@ -1,8 +1,8 @@
-package io.github.some_example_name.effects;
+package io.github.some_example_name.effects.parents;
 
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
-import io.github.some_example_name.entiteRelated.targets.TargetingStrategy;
+import io.github.some_example_name.target.Targatable;
+import io.github.some_example_name.target.TargetingStrategy;
 import io.github.some_example_name.events.event.spellEffect;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.system.DamageEvent;

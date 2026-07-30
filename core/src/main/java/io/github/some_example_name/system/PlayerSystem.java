@@ -1,7 +1,7 @@
 package io.github.some_example_name.system;
 
 import io.github.some_example_name.data.Cards;
-import io.github.some_example_name.entiteRelated.Player;
+import io.github.some_example_name.enitites.Player;
 import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 

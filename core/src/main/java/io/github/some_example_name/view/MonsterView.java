@@ -3,7 +3,7 @@ package io.github.some_example_name.view;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import io.github.some_example_name.cards.Monster;
+import io.github.some_example_name.enitites.Monster;
 
 public class MonsterView {
 

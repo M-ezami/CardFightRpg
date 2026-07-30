@@ -2,7 +2,7 @@ package io.github.some_example_name.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.some_example_name.ui.MonsterAsset;
-import io.github.some_example_name.cards.Monster;
+import io.github.some_example_name.enitites.Monster;
 
 import java.util.HashMap;
 import java.util.List;

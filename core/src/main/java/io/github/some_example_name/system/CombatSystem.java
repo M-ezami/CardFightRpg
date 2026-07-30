@@ -1,16 +1,15 @@
 package io.github.some_example_name.system;
 
 import com.badlogic.gdx.utils.Timer;
-import io.github.some_example_name.cards.Monster;
+import io.github.some_example_name.enitites.Monster;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.effects.Effect;
-import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.entiteRelated.Player;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.effects.parents.Effect;
+import io.github.some_example_name.enitites.Opponent;
+import io.github.some_example_name.enitites.Player;
+import io.github.some_example_name.target.Targatable;
 import io.github.some_example_name.events.event.phaseEvents.EnemyTurnStartEvent;
 import io.github.some_example_name.events.event.phaseEvents.FightEvent;
 import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
-import io.github.some_example_name.events.event.spellEffect;
 import io.github.some_example_name.events.utilities.EventBus;
 
 import java.util.List;

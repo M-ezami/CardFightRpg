@@ -1,6 +1,6 @@
-package io.github.some_example_name.entiteRelated.targets;
+package io.github.some_example_name.target;
 
-import io.github.some_example_name.entiteRelated.Opponent;
+import io.github.some_example_name.enitites.Opponent;
 
 public abstract class Targatable {
     protected int health;

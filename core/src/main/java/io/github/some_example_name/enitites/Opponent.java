@@ -1,9 +1,9 @@
-package io.github.some_example_name.entiteRelated;
+package io.github.some_example_name.enitites;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import io.github.some_example_name.effects.Effect;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.effects.parents.Effect;
+import io.github.some_example_name.target.Targatable;
 
 
 import java.util.Map;

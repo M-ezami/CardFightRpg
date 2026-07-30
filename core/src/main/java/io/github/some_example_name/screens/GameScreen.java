@@ -4,17 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.entiteRelated.EasyEnemy;
-import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.entiteRelated.Player;
+import io.github.some_example_name.enitites.EasyEnemy;
+import io.github.some_example_name.enitites.Opponent;
+import io.github.some_example_name.enitites.Player;
 import io.github.some_example_name.system.*;
 import io.github.some_example_name.ui.AnimationDirector;
 import io.github.some_example_name.ui.Assets;
@@ -26,7 +24,6 @@ import java.util.List;
  * Entry point for a combat encounter.
  * Responsible for constructing and wiring the object graph:
  * GameState → CombatSystem → TurnDirector
- * → CombatScreen → TurnDirector (back-ref)
  */
 public class GameScreen extends ScreenAdapter {
 
@@ -45,7 +42,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void createOpponents() {
-        opponents.add(new EasyEnemy(12, 12, game.getAssets()));
+        opponents.add(new EasyEnemy(game.getAssets()));
     }
 
     private void startCombat() {
@@ -57,7 +54,7 @@ public class GameScreen extends ScreenAdapter {
         initilizeSystems(gameState);
     }
 
-    private void initilizeSystems(GameState gameState ) {
+    private void initilizeSystems(GameState gameState) {
         new CardPlaySystem(gameState);
         new AnimationDirector(opponents);
         new TurnSystem(gameState);

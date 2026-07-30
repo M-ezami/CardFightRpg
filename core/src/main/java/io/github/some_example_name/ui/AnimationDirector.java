@@ -1,8 +1,8 @@
 package io.github.some_example_name.ui;
 
-import io.github.some_example_name.entiteRelated.EnemyAnimationState;
-import io.github.some_example_name.entiteRelated.Opponent;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.enitites.EnemyAnimationState;
+import io.github.some_example_name.enitites.Opponent;
+import io.github.some_example_name.target.Targatable;
 import io.github.some_example_name.events.event.EnemyDiedEvent;
 import io.github.some_example_name.events.event.spellEffect;
 import io.github.some_example_name.events.utilities.EventBus;

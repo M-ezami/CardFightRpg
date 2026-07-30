@@ -1,13 +1,12 @@
-package io.github.some_example_name.entiteRelated;
+package io.github.some_example_name.enitites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import io.github.some_example_name.effects.DamageEffect;
-import io.github.some_example_name.effects.Effect;
-import io.github.some_example_name.entiteRelated.targets.PlayerOrMonsterTarget;
-import io.github.some_example_name.entiteRelated.targets.PlayerTarget;
+import io.github.some_example_name.effects.SimpleDamageEffect;
+import io.github.some_example_name.effects.parents.Effect;
+import io.github.some_example_name.target.PlayerOrMonsterTarget;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.Map;
@@ -19,8 +18,8 @@ public class EasyEnemy extends Opponent {
     private Animation animation;
     private EnemyAnimationState enemyAnimationState;
 
-    public EasyEnemy(int health, int maxHealth, Assets assets) {
-        super(health, maxHealth);
+    public EasyEnemy( Assets assets) {
+        super(20, 20);
         this.width = 2.5f;
         this.assets = assets;
         setAnimationState(EnemyAnimationState.IDLE);
@@ -43,18 +42,10 @@ public class EasyEnemy extends Opponent {
         return enemyAnimationState;
     }
 
-    public float getHeight() {
-        return height;
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
     @Override
     protected Map<Effect, Integer> createEffectPool() {
         return Map.of(
-             new DamageEffect(MathUtils.random(0, 5), new PlayerOrMonsterTarget()), 70
+             new SimpleDamageEffect(MathUtils.random(0, 5), new PlayerOrMonsterTarget()), 70
         );
 
     }

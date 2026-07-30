@@ -1,4 +1,4 @@
-package io.github.some_example_name.entiteRelated.targets;
+package io.github.some_example_name.target;
 
 import io.github.some_example_name.data.GameState;
 

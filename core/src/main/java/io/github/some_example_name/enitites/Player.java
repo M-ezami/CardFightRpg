@@ -1,10 +1,10 @@
-package io.github.some_example_name.entiteRelated;
+package io.github.some_example_name.enitites;
 
+import io.github.some_example_name.cards.SpellCards.SlowBurn;
 import io.github.some_example_name.cards.cardRelated.parents.Card;
-import io.github.some_example_name.cards.FireCard;
-import io.github.some_example_name.cards.Monster;
+import io.github.some_example_name.cards.SpellCards.FireCard;
 import io.github.some_example_name.data.Cards;
-import io.github.some_example_name.entiteRelated.targets.Targatable;
+import io.github.some_example_name.target.Targatable;
 import io.github.some_example_name.screens.SimpleMonsterCard;
 
 import java.util.ArrayList;
@@ -39,9 +39,9 @@ public class Player extends Targatable {
     private List<Card> setupPlayerDeck() {
         List<Card> playerDeck = new  ArrayList<>();
         playerDeck.add(new FireCard());
-        playerDeck.add(new SimpleMonsterCard());
-        playerDeck.add(new SimpleMonsterCard());
-        playerDeck.add(new SimpleMonsterCard());
+        playerDeck.add(new SlowBurn());
+        playerDeck.add(new SlowBurn());
+        playerDeck.add(new SlowBurn());
         playerDeck.add(new SimpleMonsterCard());
         playerDeck.add(new SimpleMonsterCard());
 
