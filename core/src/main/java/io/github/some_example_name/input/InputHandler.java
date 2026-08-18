@@ -3,15 +3,20 @@ package io.github.some_example_name.input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.cards.cardRelated.CardType;
-import io.github.some_example_name.data.CardContext;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
+import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
+import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.data.DraggedCard;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.effects.parents.Effect;
 import io.github.some_example_name.enitites.Opponent;
-import io.github.some_example_name.events.event.CardPlayedEvent;
+import io.github.some_example_name.events.event.MonsterCardPlayedEvent;
+import io.github.some_example_name.events.event.SpellCardPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.FightEvent;
 import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 import io.github.some_example_name.view.*;
 
 public abstract class InputHandler extends InputAdapter {
@@ -60,7 +65,7 @@ public abstract class InputHandler extends InputAdapter {
 
     protected boolean touchDownOnCard() {
         CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView != null  ) {
+        if (cardView != null) {
             selectedCard = cardView;
             selectedMonster = null;
             return true;
@@ -70,7 +75,7 @@ public abstract class InputHandler extends InputAdapter {
 
     protected boolean touchDownOnMonsterPhaseCard() {
         CardView cardView = handView.getCardAtPosition(touchPos.x, touchPos.y);
-        if (cardView != null && cardView.getCardType() == CardType.MONSTER  ) {
+        if (cardView != null && cardView.getCardType() == CardType.MONSTER) {
             selectedCard = cardView;
             selectedMonster = null;
             return true;
@@ -87,6 +92,27 @@ public abstract class InputHandler extends InputAdapter {
             return true;
         }
         return false;
+    }
+
+    private Targatable getTargetAtPosition() {
+
+        MonsterView monsterView =
+            boardView.getMonsterFieldView()
+                .getMonsterAtPosition(touchPos.x, touchPos.y);
+
+        if (monsterView != null) {
+            return monsterView.getMonster();
+        }
+
+        Opponent opponent =
+            boardView.getOpponentView()
+                .getOpponentAt(touchPos.x, touchPos.y);
+
+        if (opponent != null) {
+            return opponent;
+        }
+
+        return null;
     }
 
     protected boolean touchUpOnMonster() {
@@ -106,18 +132,63 @@ public abstract class InputHandler extends InputAdapter {
         return false;
     }
 
+    private boolean playSpellBasedOnTarget(SpellCard spellCard) {
+        if (spellCard == null) return false;
+
+        Targatable target = getTargetAtPosition();
+
+        for (Effect effect : spellCard.getEffects()) {
+
+            TargetingStrategy strategy =
+                effect.getTargetingStrategy();
+
+            if (strategy.requiresTarget()) {
+
+                if (target == null ||
+                    !strategy.isValidTarget(target)) {
+
+                    return false;
+                }
+            }
+        }
+
+        eventBus.emit(
+            new SpellCardPlayedEvent(spellCard, target)
+        );
+
+        return true;
+    }
+
+
+
+
     protected boolean touchUpOnCard() {
         if (selectedCard == null) return false;
-        Card card = selectedCard.getCard();
-        Opponent opponent = boardView.getOpponentView().getOpponentAt(touchPos.x, touchPos.y);
-        if(opponent != null && selectedCard.getCardType() == CardType.MONSTER) return false;
-        boolean isInMonsterField = boardView.monsterViewDimensions().contains(touchPos.x, touchPos.y);
 
-        eventBus.emit(new CardPlayedEvent(
-            new CardContext(isInMonsterField, opponent, card)));
+        Card card = selectedCard.getCard();
+        boolean played = false;
+
+        if (card instanceof MonsterCard monsterCard) {
+
+            boolean isInMonsterField =
+                boardView.monsterViewDimensions()
+                    .contains(touchPos.x, touchPos.y);
+
+            if (isInMonsterField) {
+                eventBus.emit(new MonsterCardPlayedEvent(monsterCard));
+                played = true;
+            }
+
+        } else if (card instanceof SpellCard spellCard) {
+
+            played = playSpellBasedOnTarget(spellCard);
+        }
+
         boardView.setDraggedCard(null);
+
         selectedCard = null;
-        return true;
+
+        return played;
     }
 
 

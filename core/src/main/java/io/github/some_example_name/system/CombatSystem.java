@@ -6,7 +6,7 @@ import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.parents.Effect;
 import io.github.some_example_name.enitites.Opponent;
 import io.github.some_example_name.enitites.Player;
-import io.github.some_example_name.target.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.events.event.phaseEvents.EnemyTurnStartEvent;
 import io.github.some_example_name.events.event.phaseEvents.FightEvent;
 import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
@@ -63,15 +63,15 @@ public class CombatSystem {
             if (opponent.isDead()) {
                 System.out.println("no opponent" + i);
             }
-            for (Targatable target : opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState)) {
+            for (Targatable target : opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState,null)) {
                 System.out.println("before" + target.getHealth());
             }
-            opponent.getRandomEffect().apply(gameState);
-            deathCheck(opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState));
-            for (Targatable target : opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState)) {
+            opponent.getRandomEffect().apply(gameState,player);
+            deathCheck(opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState,null));
+            for (Targatable target : opponent.getRandomEffect().getTargetingStrategy().getTargets(gameState,null)) {
                 System.out.println("after" + target.getHealth());
                 Effect effect = opponent.getRandomEffect();
-                effect.damageOrSpellEvent(target);
+               // effect.damageOrSpellEvent(target);
             }
         }
 
@@ -82,11 +82,11 @@ public class CombatSystem {
     private void attack() {
         System.out.println("opponent health before" + targetOpponent.getHealth());
         if (this.player.getMana() > 0) {
-            this.targetOpponent.takeDamage(this.playerMonster.getAttack());
-            System.out.println("our monster damage amount" + this.playerMonster.getAttack());
+            this.targetOpponent.takeDamage(this.playerMonster.getDamage());
+            System.out.println("our monster damage amount" + this.playerMonster.getDamage());
             System.out.println("opponent health after" + targetOpponent.getHealth());
             this.player.spendMana(1);
-            eventBus.emit(new DamageEvent(targetOpponent,this.playerMonster.getAttack() ) );
+            eventBus.emit(new DamageEvent(targetOpponent,this.playerMonster.getDamage() ) );
             deathCheck(List.of(this.targetOpponent));
             this.targetOpponent = null;
             this.playerMonster = null;

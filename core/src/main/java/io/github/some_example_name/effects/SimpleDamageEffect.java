@@ -2,11 +2,9 @@ package io.github.some_example_name.effects;
 
 
 import io.github.some_example_name.data.GameState;
-
 import io.github.some_example_name.effects.parents.DamageEffect;
-import io.github.some_example_name.effects.parents.Effect;
-import io.github.some_example_name.target.Targatable;
-import io.github.some_example_name.target.TargetingStrategy;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 public class SimpleDamageEffect extends DamageEffect {
 
@@ -16,15 +14,11 @@ public class SimpleDamageEffect extends DamageEffect {
     }
 
 
-
     @Override
-    public void apply(GameState state) {
-        for (Targatable target : targetingStrategy.getTargets(state)) {
-            System.out.println("Damaging: " + target);
-            target.takeDamage(amount);
-        }
+    public void applyEffectToTarget(Targatable target, GameState state) {
+        target.takeDamage(amount);
     }
-
-
 }
+
+
 

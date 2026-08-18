@@ -3,8 +3,8 @@ package io.github.some_example_name.cards.SpellCards;
 
 import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.effects.SimpleDamageEffect;
-import io.github.some_example_name.target.SingleTarget;
-import io.github.some_example_name.target.TargetingStrategy;
+import io.github.some_example_name.target.cardRelated.SingleEnemyTarget;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 public class FireCard extends SpellCard {
 
@@ -12,7 +12,7 @@ public class FireCard extends SpellCard {
 
     public FireCard() {
         super(name, "spell card deals x damage",1);
-        TargetingStrategy damageTargetingStrategy = new SingleTarget();
+        TargetingStrategy damageTargetingStrategy = new SingleEnemyTarget();
         SimpleDamageEffect simpleDamageEffect = new SimpleDamageEffect(3, damageTargetingStrategy);
         this.addEffect(simpleDamageEffect);
     }

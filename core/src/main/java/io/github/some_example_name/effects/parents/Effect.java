@@ -1,48 +1,33 @@
 package io.github.some_example_name.effects.parents;
 
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.target.Targatable;
-import io.github.some_example_name.target.TargetingStrategy;
-import io.github.some_example_name.events.event.spellEffect;
-import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.system.DamageEvent;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 public abstract class Effect {
 
     protected TargetingStrategy targetingStrategy;
     protected int amount;
-    private EventBus eventBus;
 
     public Effect(int amount, TargetingStrategy targetingStrategy) {
         this.targetingStrategy = targetingStrategy;
         this.amount = amount;
-        this.eventBus = EventBus.getInstance();
     }
 
     public TargetingStrategy getTargetingStrategy() {
         return targetingStrategy;
     }
 
-    public boolean dealsDamage() {
-        return this instanceof DamageEffect;
-    }
+    public abstract String getDescription();
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName();
-    }
-    public void damageOrSpellEvent( Targatable target) {
-        if (this.dealsDamage()) {
-            eventBus.emit(new DamageEvent(target, this.amount));
-        } else {
-            eventBus.emit(new spellEffect(target));
+    public final void apply(GameState state, Targatable selectedTarget) {
+        for (Targatable target : targetingStrategy.getTargets(state, selectedTarget)) {
+            applyEffectToTarget(target, state);
         }
     }
 
-
-    public abstract String getDescription();
-
-    public abstract void apply(GameState state);
-
-
+    public abstract void applyEffectToTarget(
+        Targatable target,
+        GameState state
+    );
 }

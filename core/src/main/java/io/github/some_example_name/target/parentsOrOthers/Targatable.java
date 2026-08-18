@@ -1,4 +1,4 @@
-package io.github.some_example_name.target;
+package io.github.some_example_name.target.parentsOrOthers;
 
 import io.github.some_example_name.enitites.Opponent;
 

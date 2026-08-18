@@ -1,13 +1,13 @@
 package io.github.some_example_name.enitites;
 
 import io.github.some_example_name.cards.cardRelated.MonsterType;
-import io.github.some_example_name.effects.MonsterEffect;
-import io.github.some_example_name.target.Targatable;
-import io.github.some_example_name.target.TargetingStrategy;
+import io.github.some_example_name.effects.parents.MonsterEffect;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 public abstract class Monster extends Targatable implements MonsterEffect {
 
-    protected int attack;
+    protected int damage;
 
     protected TargetingStrategy targetingStrategy;
     protected String name;
@@ -24,11 +24,13 @@ public abstract class Monster extends Targatable implements MonsterEffect {
     }
 
 
-    public int getAttack() {
-        return attack;
+    public int getDamage() {
+        return damage;
     }
 
-
+    public void addDamage(int addDamage) {
+        this.damage += addDamage;
+    }
 
     public TargetingStrategy getTargetingStrategy() {
         return targetingStrategy;

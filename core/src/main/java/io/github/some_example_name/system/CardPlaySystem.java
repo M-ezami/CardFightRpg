@@ -1,14 +1,12 @@
 package io.github.some_example_name.system;
 
-import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
 import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
-import io.github.some_example_name.data.CardContext;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.effects.parents.Effect;
 import io.github.some_example_name.enitites.Player;
-import io.github.some_example_name.target.Targatable;
-import io.github.some_example_name.events.event.CardPlayedEvent;
+import io.github.some_example_name.events.event.SpellCardPlayedEvent;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.events.event.MonsterCardPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 
@@ -25,51 +23,22 @@ public class CardPlaySystem {
     }
 
     public void subscribe() {
-        eventBus.subscribe(CardPlayedEvent.class, event -> onCardPlayed(event.cardContext()));
+        eventBus.subscribe(MonsterCardPlayedEvent.class, event -> onMonsterCardPlayed(event.monsterCard()));
+        eventBus.subscribe(SpellCardPlayedEvent.class, event -> playSpellCard(event.spellCard(), event.target()));
     }
 
-    public void onCardPlayed(CardContext ctx) {
-        Card card = ctx.card();
-        if (!ctx.isMonsterField()) System.out.println("monster is empty");
-
-        if (ctx.target() == null) {
-            System.out.println("target is empty");
-        }
-
-        if (manaCheck(card)) {
-            System.out.println("mana is empty");
-        }
-
-        if (!ctx.isMonsterField() && ctx.target() == null || manaCheck(card)) {
-            System.out.println("something is wrong");
-            return;
-        }
-
-
-        switch (card.getCardType()) {
-            case SPELL -> {
-                if (ctx.target() != null) {
-                    onSpellCardPlayed((SpellCard) card, ctx.target() );
-                }
-            }
-            case MONSTER -> {
-                if (ctx.isMonsterField()) {
-                    onMonsterCardPlayed((MonsterCard) card);
-                }
-            }
-            default -> System.out.println(CardPlaySystem.class + " : card needs a type");
-        }
+    private void playCard(SpellCard spellCard, Targatable target) {
+        if (player.getCurrentMana() < spellCard.getManaCost()) return;
+        spellCard.emitEffects(gameState, target);
+        player.playCard(spellCard);
 
     }
 
-
-    public boolean manaCheck(Card card) {
-        if (player.getCurrentMana() < card.getManaCost()) {
-            System.out.println("Not enough mana!");
-            return true;
+    private void playSpellCard(SpellCard spellCard, Targatable target) {
+       playCard(spellCard, target);
         }
-        return false;
-    }
+
+
 
     public void onMonsterCardPlayed(MonsterCard card) {
         //could maybe emit a new monstercardplayed event
@@ -81,18 +50,9 @@ public class CardPlaySystem {
         eventBus.emit(new MonsterPlayedEvent());
 
     }
-
-    public void onSpellCardPlayed(SpellCard card, Targatable target) {
-        if (player.getCurrentMana() < card.getManaCost()) return;
-
-        for (Effect effect : card.getEffects()) {
-            System.out.println("Applying effect: " + effect.getClass().getSimpleName());
-            effect.damageOrSpellEvent(target);
-            effect.apply(gameState);
-        }
-
-        player.playCard(card);
-    }
+// perhaps if there is a single target then we pass the target otherwise we try to play the
+// card simply and this works if card isnt played in a specific field
+    //current rewreting
 
 
 }

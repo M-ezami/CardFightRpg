@@ -5,8 +5,8 @@ import io.github.some_example_name.effects.parents.DamageEffect;
 import io.github.some_example_name.events.event.phaseEvents.EnemyTurnStartEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.events.utilities.EventListener;
-import io.github.some_example_name.target.Targatable;
-import io.github.some_example_name.target.TargetingStrategy;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 public class DelayedDamageEffect extends DamageEffect {
 
@@ -30,12 +30,12 @@ public class DelayedDamageEffect extends DamageEffect {
         this.eventBus = EventBus.getInstance();
     }
 
-    private void subscribe(GameState state) {
+    private void subscribe(Targatable target) {
 
         listener = e -> {
 
             turnCounter++;
-            dealDamage(state);
+            dealDamage(target);
 
             if (turnCounter >= specifiedTurns) {
                 done = true;
@@ -47,18 +47,16 @@ public class DelayedDamageEffect extends DamageEffect {
         eventBus.subscribe(EnemyTurnStartEvent.class, listener);
     }
 
-    private void dealDamage(GameState state) {
-        for (Targatable target : targetingStrategy.getTargets(state)) {
-            System.out.println("Damaging: " + target);
+    private void dealDamage(Targatable target) {
             target.takeDamage(damagePerTurn);
-        }
+
     }
 
     @Override
-    public void apply(GameState state) {
+    public void applyEffectToTarget(Targatable target, GameState state) {
         done = false;
         turnCounter = 0;
-        subscribe(state);
+        subscribe(target);
     }
 
 

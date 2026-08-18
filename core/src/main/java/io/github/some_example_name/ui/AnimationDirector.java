@@ -2,9 +2,8 @@ package io.github.some_example_name.ui;
 
 import io.github.some_example_name.enitites.EnemyAnimationState;
 import io.github.some_example_name.enitites.Opponent;
-import io.github.some_example_name.target.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.events.event.EnemyDiedEvent;
-import io.github.some_example_name.events.event.spellEffect;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.system.DamageEvent;
 
@@ -31,9 +30,7 @@ public class AnimationDirector {
         eventBus.subscribe(DamageEvent.class, e -> {
             hurtOrAttack(e.target());
         });
-        eventBus.subscribe(spellEffect.class, e -> {
-            hurtOrAttack(e.target());
-        });
+
 
         eventBus.subscribe(EnemyDiedEvent.class, e -> {
             opponents.get(0).setAnimationState(EnemyAnimationState.DEATH);

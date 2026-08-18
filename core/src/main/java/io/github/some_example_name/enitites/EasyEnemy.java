@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import io.github.some_example_name.effects.SimpleDamageEffect;
 import io.github.some_example_name.effects.parents.Effect;
-import io.github.some_example_name.target.PlayerOrMonsterTarget;
+import io.github.some_example_name.target.enemy.PlayerOrMonsterTarget;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.Map;
