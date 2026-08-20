@@ -2,10 +2,10 @@ package io.github.some_example_name.ui;
 
 import io.github.some_example_name.enitites.EnemyAnimationState;
 import io.github.some_example_name.enitites.Opponent;
-import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.events.event.EnemyDiedEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.system.DamageEvent;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
 
 import java.util.List;
 

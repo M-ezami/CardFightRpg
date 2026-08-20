@@ -108,11 +108,7 @@ public abstract class InputHandler extends InputAdapter {
             boardView.getOpponentView()
                 .getOpponentAt(touchPos.x, touchPos.y);
 
-        if (opponent != null) {
-            return opponent;
-        }
-
-        return null;
+        return opponent;
     }
 
     protected boolean touchUpOnMonster() {
@@ -158,8 +154,6 @@ public abstract class InputHandler extends InputAdapter {
 
         return true;
     }
-
-
 
 
     protected boolean touchUpOnCard() {

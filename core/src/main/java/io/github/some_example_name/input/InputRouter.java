@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.events.utilities.RoundPhase;
 import io.github.some_example_name.ui.Hud;
 import io.github.some_example_name.view.BoardView;

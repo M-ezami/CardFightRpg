@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
-import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.cards.cardRelated.CardType;
+import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.ui.Assets;
 
 public class CardView {

@@ -28,7 +28,7 @@ public abstract class Monster extends Targatable implements MonsterEffect {
         return damage;
     }
 
-    public void addDamage(int addDamage) {
+    public void gainDamageAmount(int addDamage) {
         this.damage += addDamage;
     }
 

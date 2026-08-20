@@ -1,7 +1,7 @@
 package io.github.some_example_name.screens;
 
-import io.github.some_example_name.enitites.SimpleMonster;
 import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
+import io.github.some_example_name.enitites.SimpleMonster;
 
 public class SimpleMonsterCard extends MonsterCard {
 

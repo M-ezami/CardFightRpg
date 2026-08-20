@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import io.github.some_example_name.effects.SimpleDamageEffect;
+import io.github.some_example_name.effects.parents.DamageEffect;
 import io.github.some_example_name.effects.parents.Effect;
 import io.github.some_example_name.target.enemy.PlayerOrMonsterTarget;
 import io.github.some_example_name.ui.Assets;
@@ -45,7 +45,7 @@ public class EasyEnemy extends Opponent {
     @Override
     protected Map<Effect, Integer> createEffectPool() {
         return Map.of(
-             new SimpleDamageEffect(MathUtils.random(0, 5), new PlayerOrMonsterTarget()), 70
+             new DamageEffect(MathUtils.random(0, 5), new PlayerOrMonsterTarget(),3), 70
         );
 
     }

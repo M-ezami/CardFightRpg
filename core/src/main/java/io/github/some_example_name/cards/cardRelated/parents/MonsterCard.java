@@ -1,8 +1,8 @@
 package io.github.some_example_name.cards.cardRelated.parents;
 
 
-import io.github.some_example_name.enitites.Monster;
 import io.github.some_example_name.cards.cardRelated.CardType;
+import io.github.some_example_name.enitites.Monster;
 
 public abstract class MonsterCard extends AbstractCard {
 

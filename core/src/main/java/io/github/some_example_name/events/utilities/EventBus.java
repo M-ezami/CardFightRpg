@@ -20,7 +20,7 @@ public class EventBus {
 
         // subscribe takes basically a eventclass as key and the value is a list of listeners
     public <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
-        listeners.computeIfAbsent((Class<?>) eventType, k -> new ArrayList<>())
+        listeners.computeIfAbsent(eventType, k -> new ArrayList<>())
             .add(listener);
     }
         // remove a specified listener from the list of the event class key

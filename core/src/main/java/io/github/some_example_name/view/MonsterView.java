@@ -7,7 +7,7 @@ import io.github.some_example_name.enitites.Monster;
 
 public class MonsterView {
 
-    private Rectangle rectangle;
+    private final Rectangle rectangle;
     private final Texture texture;
     private final Monster monster;
 

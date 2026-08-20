@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private final List<Opponent> opponents;
     private final BitmapFont font;
-    private Viewport uiViewport;
+    private final Viewport uiViewport;
 
     public GameScreen(GdxGame game, Assets assets) {
 

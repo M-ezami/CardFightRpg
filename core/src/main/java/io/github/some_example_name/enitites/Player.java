@@ -17,7 +17,7 @@ public class Player extends Targatable {
     private final List<Monster> monsters;
 
     private int mana;
-    private int maxMana = 3;
+    private final int maxMana = 3;
 
     public Player() {
         super(10, 10);

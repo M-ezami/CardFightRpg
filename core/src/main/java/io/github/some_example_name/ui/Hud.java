@@ -33,7 +33,7 @@ public class Hud {
 
     private final float barOverlayPositionX = 80;
     private final float barOverlayPositionY = 1200;
-    private float bannerTimer = 0;
+    private final float bannerTimer = 0;
 
     private float stateTime;
     private final Viewport uiViewport;

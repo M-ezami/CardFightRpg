@@ -1,14 +1,13 @@
 package io.github.some_example_name.target.enemy;
 
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.enitites.Monster;
-import io.github.some_example_name.enitites.Opponent;
 import io.github.some_example_name.enitites.Player;
 import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class PlayerOrMonsterTarget implements TargetingStrategy {
 
     @Override

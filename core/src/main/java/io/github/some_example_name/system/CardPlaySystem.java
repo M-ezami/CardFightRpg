@@ -4,11 +4,11 @@ import io.github.some_example_name.cards.cardRelated.parents.MonsterCard;
 import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.enitites.Player;
-import io.github.some_example_name.events.event.SpellCardPlayedEvent;
-import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.events.event.MonsterCardPlayedEvent;
+import io.github.some_example_name.events.event.SpellCardPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
 import io.github.some_example_name.events.utilities.EventBus;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
 
 public class CardPlaySystem {
     private final EventBus eventBus;
