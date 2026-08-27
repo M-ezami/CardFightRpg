@@ -71,7 +71,7 @@ public class Hud {
     }
     private void subscribe(){
         eventBus.subscribe(DamageEvent.class, event -> {
-            showBanner("damage " +  event.amount(),Color.RED,2f);
+            showBanner("damage " + event.amount(), Color.RED,2f);
         });
     }
 

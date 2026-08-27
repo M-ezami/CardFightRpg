@@ -27,7 +27,7 @@ public class CardPlaySystem {
         eventBus.subscribe(SpellCardPlayedEvent.class, event -> playSpellCard(event.spellCard(), event.target()));
     }
 
-    private void playCard(SpellCard spellCard, Targatable target) {
+    private void spellCardHelper(SpellCard spellCard, Targatable target) {
         if (player.getCurrentMana() < spellCard.getManaCost()) return;
         spellCard.emitEffects(gameState, target);
         player.playCard(spellCard);
@@ -35,9 +35,16 @@ public class CardPlaySystem {
     }
 
     private void playSpellCard(SpellCard spellCard, Targatable target) {
-       playCard(spellCard, target);
-        }
+        spellCardHelper(spellCard, target);
+        if (spellCard.isOverMultipleRounds()) {
+            if (spellCard.isMonsterBuff()) {
+                gameState.getCards().addTempFieldMonsterSpellCards(spellCard);
 
+            } else {
+                gameState.getCards().addTempFieldSpellCards(spellCard);
+            }
+        }
+    }
 
 
     public void onMonsterCardPlayed(MonsterCard card) {

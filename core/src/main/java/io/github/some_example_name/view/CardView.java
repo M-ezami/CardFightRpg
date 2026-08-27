@@ -8,22 +8,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.ui.Assets;
 
-public class CardView {
+public class CardView extends Table {
 
     private final Card card;
-    private final Assets assets;
 
     private final TextureRegion cardOverlay;
     private final TextureRegion textBox;
     private final TextureRegion nameRegion;
 
     private final BitmapFont font;
-    private final GlyphLayout glyphLayout;
 
     private float x, y, width, height;
 
@@ -36,11 +36,23 @@ public class CardView {
     private final Matrix4 originalMatrix = new Matrix4();
     private final Matrix4 screenMatrix = new Matrix4();
 
+
+
     public CardView(Card card, Assets assets) {
         this.card = card;
-        this.assets = assets;
         this.font = assets.getCardFont();
-        this.glyphLayout = new GlyphLayout();
+        this.cardOverlay = assets.getCardOverlay();
+        this.textBox = assets.getTextBox();
+        this.nameRegion = assets.getNameRegion();
+
+        this.name = card.getName() != null ? card.getName() : "Unknown";
+        this.description = card.getDescription() != null ? card.getDescription() : "";
+    }
+
+    public CardView(Card card, Assets assets, float scale) {
+        this.card = card;
+
+        this.font = assets.getCardFont();
 
         this.cardOverlay = assets.getCardOverlay();
         this.textBox = assets.getTextBox();
@@ -48,6 +60,25 @@ public class CardView {
 
         this.name = card.getName() != null ? card.getName() : "Unknown";
         this.description = card.getDescription() != null ? card.getDescription() : "";
+
+        this.width *= scale;
+        this.height *= scale;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     public CardType getCardType() {
@@ -61,6 +92,11 @@ public class CardView {
         this.height = height;
     }
 
+    public void scaleCardDown(float scaleValue){
+        this.width *= scaleValue;
+        this.height *= scaleValue;
+    }
+
     private float toWorldY(float pixelOffsetFromBottom) {
         return y + (pixelOffsetFromBottom / cardOverlay.getRegionHeight()) * height;
     }
@@ -68,6 +104,7 @@ public class CardView {
     private float toWorldH(TextureRegion region) {
         return (region.getRegionHeight() / (float) cardOverlay.getRegionHeight()) * height;
     }
+
 
     public void draw(SpriteBatch batch) {
         // 1. Draw your card textures in World Space normally
@@ -144,6 +181,11 @@ public class CardView {
         batch.end();
         batch.setProjectionMatrix(originalMatrix);
         batch.begin();
+    }
+
+
+    public void draw(){
+
     }
 
     public boolean contains(float worldX, float worldY) {

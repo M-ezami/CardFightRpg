@@ -5,7 +5,7 @@ import io.github.some_example_name.cards.SpellCards.MonsterGainDamageCard;
 import io.github.some_example_name.cards.SpellCards.SlowBurn;
 import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.data.Cards;
-import io.github.some_example_name.screens.SimpleMonsterCard;
+import io.github.some_example_name.cards.MonsterCards.SimpleMonsterCard;
 import io.github.some_example_name.target.parentsOrOthers.Targatable;
 
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ public class Player extends Targatable {
 
     }
 
-
     private List<Card> setupPlayerDeck() {
         List<Card> playerDeck = new ArrayList<>();
         playerDeck.add(new FireCard());
@@ -50,11 +49,9 @@ public class Player extends Targatable {
         return playerDeck;
     }
 
-    public Cards getCards() {
-        return cards;
-    }
 
     public List<Card> getCardDeck() {
+
         return cards.getCardDeck();
     }
 
@@ -71,7 +68,7 @@ public class Player extends Targatable {
         return mana;
     }
 
-    public Cards getDeck() {
+    public Cards getCards() {
         return cards;
     }
 

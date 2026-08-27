@@ -7,9 +7,11 @@ public class BoardLayout {
 
     private final ExtendViewport viewport;
 
-    private Rectangle playerHand;
-    private Rectangle playerMonsters;
-    private Rectangle enemyMonster;
+    private Rectangle playerHandArea;
+    private Rectangle playerMonsterArea;
+    private Rectangle enemyMonsterArea;
+    private Rectangle tempSpellCardsArea;
+    private Rectangle tempMonsterSpellCardsArea;
 
     public BoardLayout(ExtendViewport viewport) {
         this.viewport = viewport;
@@ -19,38 +21,46 @@ public class BoardLayout {
     public void rebuild() {
         float w = viewport.getWorldWidth();
         float h = viewport.getWorldHeight();
-
-        playerHand = new Rectangle(
+        float marginToTempCards = (float) (w * 0.05);
+        playerHandArea = new Rectangle(
             0,
             0,
             w / 1.5f,
             h / 3f
         );
 
-        playerMonsters = new Rectangle(
+        playerMonsterArea = new Rectangle(
             w / 3f,
-            playerHand.height,
+            playerHandArea.height,
             w / 3f,
             h / 4f
         );
 
-        enemyMonster = new Rectangle(
+        enemyMonsterArea = new Rectangle(
             w * 0.6f,
             h * 0.6f,
             w / 3f,
             h / 4f
         );
+
+        tempSpellCardsArea = new Rectangle(playerHandArea.width + marginToTempCards, 0, w- playerHandArea.width, playerHandArea.height);
     }
 
-    public Rectangle getPlayerHand() {
-        return playerHand;
+    public Rectangle getPlayerHandArea() {
+        return playerHandArea;
     }
 
-    public Rectangle getPlayerMonsters() {
-        return playerMonsters;
+    public Rectangle getPlayerMonsterArea() {
+        return playerMonsterArea;
     }
 
-    public Rectangle getEnemyMonster() {
-        return enemyMonster;
+    public Rectangle getEnemyMonsterArea() {
+        return enemyMonsterArea;
     }
+
+    public Rectangle getTempSpellCardsArea() {
+        return tempSpellCardsArea;
+    }
+
+
 }

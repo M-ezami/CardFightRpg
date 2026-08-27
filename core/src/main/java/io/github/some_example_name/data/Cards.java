@@ -1,6 +1,7 @@
 package io.github.some_example_name.data;
 
 import io.github.some_example_name.cards.cardRelated.parents.Card;
+import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +9,14 @@ import java.util.List;
 public class Cards {
 
     public static int HANDSIZE = 5;
+    public static int TEMP_SPELL_CARD_LIMIT = 2;
 
     private final List<Card> hand;
     private final List<Card> drawPile;
     private final List<Card> discardPile;
     private final List<Card> cardDeck;
-
+    private final List<Card> tempFieldSpellCards;
+    private final List<Card> tempFieldMonsterSpellCards;
 
     // its called  cards because its not only deck well it is the deck split up into hand, drawpile and so on
     // so all logic for cards is in here
@@ -23,7 +26,30 @@ public class Cards {
         this.hand = new ArrayList<>();
         this.drawPile = new ArrayList<>(cardDeck);
         this.discardPile = new ArrayList<>();
+        this.tempFieldSpellCards = new ArrayList<>();
+        this.tempFieldMonsterSpellCards = new ArrayList<>();
         drawHand();
+    }
+
+    private void addSpellCard(SpellCard spellCard, List<Card> list){
+        list.add(spellCard);
+        System.out.println(list.size());
+    }
+
+    public void addTempFieldSpellCards(SpellCard spellCard){
+       addSpellCard(spellCard, tempFieldSpellCards);
+    }
+
+    public void addTempFieldMonsterSpellCards(SpellCard spellCard){
+        addSpellCard(spellCard,tempFieldMonsterSpellCards);
+    }
+
+    public List<Card> getTempFieldSpellCards() {
+        return tempFieldSpellCards;
+    }
+
+    public List<Card> getTempFieldMonsterSpellCards() {
+        return tempFieldMonsterSpellCards;
     }
 
     public void addCard(final Card card) {

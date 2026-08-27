@@ -45,7 +45,10 @@ public class HandView {
             cardViews.add(cv);
         }
         updateRoundPhase();
+
     }
+
+
 
 
     // this method is so ugly it makes me cry and needs refactoring

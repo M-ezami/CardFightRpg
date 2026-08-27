@@ -2,6 +2,7 @@ package io.github.some_example_name.cards.cardRelated.parents;
 
 import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.effects.MonsterBuff;
 import io.github.some_example_name.effects.parents.Effect;
 import io.github.some_example_name.target.cardRelated.AllEnemysTarget;
 import io.github.some_example_name.target.cardRelated.AllMonstersTarget;
@@ -29,44 +30,29 @@ public abstract class SpellCard extends AbstractCard {
     public void addEffect(Effect effect) {
         effects.add(effect);
     }
+
     public void emitEffects(GameState state, Targatable target) {
         for (Effect effect : effects) {
             effect.apply(state, target);
-            //effect.damageOrSpellEvent(target);
         }
     }
-    //definetly needs a rewrite becaue every targetingmode will nned modfiying this method not good architecture
 
-    public TargetingMode getTargetingMode() {
-        boolean hasSingleTarget = false;
-        boolean hasMultipleTargets = false;
-
+    public boolean isMonsterBuff(){
         for (Effect effect : effects) {
-            TargetingStrategy targets = effect.getTargetingStrategy();
-
-            if (targets instanceof AllEnemysTarget ||
-                targets instanceof AllMonstersTarget) {
-                hasMultipleTargets = true;
-            }
-
-            if (targets instanceof SingleMonsterTarget) {
-                hasSingleTarget = true;
+            if(effect instanceof MonsterBuff){
+                return true;
             }
         }
+        return false;
+    }
 
-        if (hasSingleTarget && hasMultipleTargets) {
-            return TargetingMode.SINGLE_AND_MULTIPLE;
+    public boolean isOverMultipleRounds(){
+        for (Effect effect : effects) {
+            if(effect.isOverMultipleRounds()){
+                return true;
+            }
         }
-
-        if (hasMultipleTargets) {
-            return TargetingMode.MULTIPLE;
-        }
-
-        if (hasSingleTarget) {
-            return TargetingMode.SINGLE_OWN_MONSTER;
-        }
-
-        return TargetingMode.NO_TARGET;
+        return false;
     }
 
     public List<Effect> getEffects() {

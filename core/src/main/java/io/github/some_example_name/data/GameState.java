@@ -24,7 +24,6 @@ public class GameState {
         this.opponents = opponents;
     }
 
-
     public RoundPhase getRoundPhase() {
         return roundPhase;
     }
@@ -51,7 +50,6 @@ public class GameState {
         }
     }
 
-
     public Player getPlayer() {
         return player;
     }
@@ -61,16 +59,20 @@ public class GameState {
     }
 
 
-    public List<Targatable> getTargets() {
-        return new ArrayList<>(opponents); // computed on the fly
-    }
-
-
-    public Cards getDeck() {
-        return player.getDeck();
+    public Cards getCards() {
+        return player.getCards();
     }
 
     public List<Card> getHand() {
-        return player.getDeck().getHand();
+        return player.getCards().getHand();
     }
+
+    public List<Card> getTempSpellFieldCards(){
+        return player.getCards().getTempFieldSpellCards();
+    }
+
+    public List<Card> getTempMonsterFieldSpellCards(){
+        return player.getCards().getTempFieldMonsterSpellCards();
+    }
+
 }
