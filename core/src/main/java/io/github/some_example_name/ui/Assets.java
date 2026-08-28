@@ -196,7 +196,7 @@ public class Assets implements Disposable {
         return cardFont;
     }
 
-    public TextureRegion getNameRegion() {
+    public TextureRegion getTitleAreaAsset() {
         return nameRegion;
     }
 
