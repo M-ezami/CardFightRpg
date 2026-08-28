@@ -1,16 +1,27 @@
 package io.github.some_example_name.view;
 
-import io.github.some_example_name.ui.Assets;
+
+import java.util.List;
 
 public class HandView2 extends BaseView {
+    private final List<CardView> cardViews;
 
+    public HandView2(List<CardView> cardViews) {
+        this.cardViews = cardViews;
 
-    public HandView2(Assets assets) {
-        super(assets);
     }
+
 
     @Override
     public void refresh() {
 
     }
+
+    @Override
+    public void createUI() {
+        left();
+        for (CardView cardView : cardViews)
+            this.add(cardView).spaceRight(10);
+    }
 }
+

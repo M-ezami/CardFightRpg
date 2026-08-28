@@ -16,4 +16,9 @@ public class BoardView2 extends BaseView {
     public void refresh() {
 
     }
+
+    @Override
+    public void createUI() {
+
+    }
 }

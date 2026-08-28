@@ -11,13 +11,6 @@ import io.github.some_example_name.ui.Assets;
 
 public class CardView extends BaseView {
     private final Card card;
-    private final Label titleLabel;
-    private final Label descriptionLabel;
-
-    private final Table titleTable;
-    private final Table descriptionTable;
-
-
 
     // CardView is a table scence2D component which acts as the first layer and on top/below whatever u want to call it is the second layer.
     // this layer consists of the things that are on top of the background of a card which is our cardlayout.
@@ -26,37 +19,44 @@ public class CardView extends BaseView {
         public CardView(Card card, Assets assets) {
         super(assets);
         this.card = card;
+
+    }
+
+    @Override
+    public void createUI() {
+
         Label.LabelStyle labelStyle = new Label.LabelStyle(assets.getCardFont(), Color.BLACK);
 
         setBackground(new TextureRegionDrawable(assets.getCardOverlay()));
         setSize(0.7f,1.4f);
 
-        titleLabel = new Label(card.getName() != null ? card.getName() : "Unknown", labelStyle);
+        Label titleLabel = new Label(card.getName() != null ? card.getName() : "Unknown", labelStyle);
         titleLabel.setAlignment(Align.center);
 
-        descriptionLabel = new Label(card.getDescription() != null ? card.getDescription() : "Unknown", labelStyle);
+        Label descriptionLabel = new Label(card.getDescription() != null ? card.getDescription() : "Unknown", labelStyle);
         descriptionLabel.setAlignment(Align.left);
         descriptionLabel.setWrap(true);
 
-        titleTable = new Table();
+        Table titleTable = new Table();
         add(titleTable).center().expandX().fillX();
         titleTable.setBackground(new TextureRegionDrawable(assets.getTitleAreaAsset()));
         titleTable.add(titleLabel).center();
 
 
-        descriptionTable = new Table();
+        Table descriptionTable = new Table();
         row();
         add(descriptionTable).expandX().fillX().expandY().fillY();
         descriptionTable.setBackground(new TextureRegionDrawable(assets.getTextBox()));
         descriptionTable.add(descriptionLabel);
 
-
+        setDebug(true);
     }
 
     @Override
     public void refresh() {
 
     }
+
 
     public Card getCard() {
         return card;
