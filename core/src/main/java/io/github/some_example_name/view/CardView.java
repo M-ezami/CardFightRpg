@@ -9,7 +9,7 @@ import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.ui.Assets;
 
-public class CardView extends Table {
+public class CardView extends BaseView {
     private final Card card;
     private final Label titleLabel;
     private final Label descriptionLabel;
@@ -24,32 +24,39 @@ public class CardView extends Table {
     // so on the first layer/background there are other tables in the second layer.
     // for example the titletable which consists also of a background a label which is the name.
         public CardView(Card card, Assets assets) {
+        super(assets);
         this.card = card;
         Label.LabelStyle labelStyle = new Label.LabelStyle(assets.getCardFont(), Color.BLACK);
 
         setBackground(new TextureRegionDrawable(assets.getCardOverlay()));
+        setSize(0.7f,1.4f);
 
         titleLabel = new Label(card.getName() != null ? card.getName() : "Unknown", labelStyle);
         titleLabel.setAlignment(Align.center);
 
-        descriptionLabel = new Label(card.getDescription() != null ? card.getName() : "Unknown", labelStyle);
+        descriptionLabel = new Label(card.getDescription() != null ? card.getDescription() : "Unknown", labelStyle);
         descriptionLabel.setAlignment(Align.left);
+        descriptionLabel.setWrap(true);
 
         titleTable = new Table();
-        titleTable.center();
+        add(titleTable).center().expandX().fillX();
         titleTable.setBackground(new TextureRegionDrawable(assets.getTitleAreaAsset()));
         titleTable.add(titleLabel).center();
 
+
         descriptionTable = new Table();
-        descriptionTable.bottom();
+        row();
+        add(descriptionTable).expandX().fillX().expandY().fillY();
         descriptionTable.setBackground(new TextureRegionDrawable(assets.getTextBox()));
         descriptionTable.add(descriptionLabel);
 
 
-
     }
 
+    @Override
+    public void refresh() {
 
+    }
 
     public Card getCard() {
         return card;
@@ -58,4 +65,6 @@ public class CardView extends Table {
     public CardType getCardType() {
         return card.getCardType();
     }
+
+
 }

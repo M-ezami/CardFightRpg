@@ -3,7 +3,7 @@ package io.github.some_example_name.system;
 import io.github.some_example_name.cards.cardRelated.parents.Card;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.ui.DiscardEvent;
+import io.github.some_example_name.events.DiscardEvent;
 
 public class DiscardSystem {
     private final EventBus eventBus;

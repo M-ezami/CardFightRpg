@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.enitites.Player;
+import io.github.some_example_name.events.ChooseCardsToDiscardEvent;
+import io.github.some_example_name.events.DiscardEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.system.DamageEvent;
 import io.github.some_example_name.view.BoardView;

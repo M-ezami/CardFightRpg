@@ -7,8 +7,8 @@ import io.github.some_example_name.events.event.phaseEvents.MonsterPlayedEvent;
 import io.github.some_example_name.events.event.phaseEvents.PlayerTurnBeginEvent;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.events.utilities.RoundPhase;
-import io.github.some_example_name.ui.ChooseCardsToDiscardEvent;
-import io.github.some_example_name.ui.DiscardEvent;
+import io.github.some_example_name.events.ChooseCardsToDiscardEvent;
+import io.github.some_example_name.events.DiscardEvent;
 
 import java.util.EnumMap;
 import java.util.HashMap;
