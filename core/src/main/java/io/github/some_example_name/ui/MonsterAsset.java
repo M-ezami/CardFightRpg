@@ -10,10 +10,20 @@ import java.util.Map;
 public class MonsterAsset implements Disposable {
 
     private final Map<MonsterType, Texture> textures = new HashMap<>();
+    private final Texture mageTexture = new Texture("/home/mosa/Storage/projects/petProjects/games/cardFightSystem2/assets/slime/slime-idle-0.png");
+
+    private final static MonsterAsset monsterAsset = new MonsterAsset();
+
+    public MonsterAsset(){
+        load();
+    }
+
+    public static MonsterAsset getMonsterAsset(){
+        return monsterAsset;
+    }
 
     public void load() {
         textures.put(MonsterType.MAGE, new Texture("/home/mosa/Storage/projects/petProjects/games/cardFightSystem2/assets/slime/slime-idle-0.png"));
-
     }
 
     public Texture get(MonsterType type) {
@@ -25,4 +35,10 @@ public class MonsterAsset implements Disposable {
             t.dispose();
         }
     }
+
+    public Texture  getCurrentTexture(){
+        return mageTexture;
+
+    }
+
 }
