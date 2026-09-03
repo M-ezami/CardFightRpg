@@ -22,6 +22,7 @@ public class Player extends Targatable {
     public Player() {
         super(10, 10);
         this.monsters = new ArrayList<>();
+        this.monsters.add(new SimpleMonster());
         this.health = maxHealth;
         this.mana = maxMana;
         this.cards = new Cards(setupPlayerDeck());

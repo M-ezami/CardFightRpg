@@ -6,8 +6,8 @@ import java.util.List;
 
 public class OpponentView2 extends ContainerView{
 
-    public OpponentView2(List<Opponent> opponentViews) {
-        super(opponentViews);
+    public OpponentView2(List<Opponent> opponents) {
+        super(opponents);
     }
 
     @Override

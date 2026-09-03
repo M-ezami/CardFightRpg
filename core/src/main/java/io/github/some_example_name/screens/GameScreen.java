@@ -34,7 +34,6 @@ public class GameScreen extends ScreenAdapter {
     private final Viewport uiViewport;
 
     public GameScreen(GdxGame game, Assets assets) {
-
         this.game = game;
         this.opponents = new ArrayList<>();
         this.font = assets.getButtonFont();

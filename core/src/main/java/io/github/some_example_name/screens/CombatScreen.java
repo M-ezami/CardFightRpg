@@ -2,18 +2,16 @@ package io.github.some_example_name.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.input.InputRouter;
-import io.github.some_example_name.ui.Hud;
-import io.github.some_example_name.view.BoardView;
+import io.github.some_example_name.view.BoardView2;
 
 /**
  * Visuals and input only. No game rules live here.
@@ -22,39 +20,31 @@ import io.github.some_example_name.view.BoardView;
  */
 public class CombatScreen extends ScreenAdapter {
 
+    private static final float MIN_WORLD_WIDTH = 1920f;
+    private static final float MIN_WORLD_HEIGHT = 1080f;
+
     private final SpriteBatch batch;
-    private final ExtendViewport viewport;
-    private final ScreenViewport uiViewport;
-    private final ShapeRenderer shapeRenderer;
-    private final Hud hud;
-    private final BoardView boardView;
-    private final InputRouter inputRouter;
+    private final FitViewport viewport; // guarantees at least 1920x1080 visible, extends beyond that on mismatched aspect ratios
+    private final BoardView2 boardView;
     private final Texture bgdTexture;
-    // this can be further decoupled it shouldnt know about targets
+    private final Stage stage;
 
     public CombatScreen(GameState gameState, GdxGame game) {
         this.batch = game.getBatch();
-        this.shapeRenderer = new ShapeRenderer();
-        this.uiViewport = new ScreenViewport();
-        this.viewport = new ExtendViewport(16f, 9f);
-        this.boardView = new BoardView(this.viewport, game, gameState);
-        this.hud = new Hud(game.getAssets(), gameState, boardView, uiViewport);
-        this.inputRouter = new InputRouter(viewport, boardView, hud, gameState);
+        this.viewport = new FitViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT, new OrthographicCamera());
+        this.boardView = new BoardView2(game.getAssets(), gameState, viewport);
         this.bgdTexture = new Texture("background.png");
+        this.stage = new Stage(viewport, batch);
+        stage.addActor(boardView);
+        stage.setDebugAll(true);
     }
 
     @Override
     public void resize(int width, int height) {
-        uiViewport.update(width, height, true);
         viewport.update(width, height, true);
-        boardView.rebuild();
-    }
-
-
-
-    public void update(float delta) {
-        boardView.update();
-        inputRouter.update();
+        boardView.setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
+        boardView.setPosition(0, 0);
+        boardView.invalidateHierarchy();
     }
 
     @Override
@@ -62,36 +52,12 @@ public class CombatScreen extends ScreenAdapter {
         ScreenUtils.clear(Color.CLEAR);
 
         viewport.apply();
-        viewport.getCamera().update();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        batch.draw(bgdTexture, 0, 0, 16f, 9f);
+        batch.draw(bgdTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         batch.end();
 
-        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        boardView.debugDraw(shapeRenderer);
-        shapeRenderer.end();
-
-        batch.setProjectionMatrix(viewport.getCamera().combined);
-        update(delta);
-        batch.begin();
-        batch.enableBlending();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        drawWorld(delta);
-        batch.end();
-        uiViewport.apply();
-        batch.setProjectionMatrix(uiViewport.getCamera().combined);
-        hud.draw(batch, delta);
-
-
+        stage.act(delta);
+        stage.draw();
     }
-
-    private void drawWorld(float delta) {
-        batch.setColor(Color.WHITE);
-        boardView.draw(batch, delta);
-    }
-
-
 }

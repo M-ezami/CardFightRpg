@@ -12,8 +12,8 @@ public abstract class BaseView extends Table {
         this.assets = assets;
         createUI();
     }
-    public BaseView(){}
-
+    public BaseView() {
+    }
     /**
      * Every view must implement a way to refresh its display
      * when the underlying model data changes.

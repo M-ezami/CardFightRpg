@@ -19,12 +19,15 @@ public class CardAssets {
 
     private BitmapFont cardFont;
 
-    private static final CardAssets cardAssets = new CardAssets();
+    private static CardAssets cardAssets = new CardAssets();
 
     public CardAssets() {
         load();
     }
     public static CardAssets getCardAssets(){
+       if(cardAssets == null){
+        cardAssets = new CardAssets();
+       }
         return cardAssets;
     }
 
@@ -53,7 +56,7 @@ public class CardAssets {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
             new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        parameter.size = 32;
+        parameter.size = 18;
         parameter.genMipMaps = true;
         parameter.minFilter = Texture.TextureFilter.MipMapLinearLinear;
         parameter.magFilter = Texture.TextureFilter.Linear;

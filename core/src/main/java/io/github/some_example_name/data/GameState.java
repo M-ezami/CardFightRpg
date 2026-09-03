@@ -22,6 +22,7 @@ public class GameState {
         this.selectedCards = new ArrayList<>();
         this.player = player;
         this.opponents = opponents;
+
     }
 
     public RoundPhase getRoundPhase() {
