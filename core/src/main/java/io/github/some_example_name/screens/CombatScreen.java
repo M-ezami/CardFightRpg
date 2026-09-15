@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.view.BoardView2;
+import io.github.some_example_name.view.BoardView;
 
 /**
  * Visuals and input only. No game rules live here.
@@ -25,14 +24,14 @@ public class CombatScreen extends ScreenAdapter {
 
     private final SpriteBatch batch;
     private final FitViewport viewport; // guarantees at least 1920x1080 visible, extends beyond that on mismatched aspect ratios
-    private final BoardView2 boardView;
+    private final BoardView boardView;
     private final Texture bgdTexture;
     private final Stage stage;
 
     public CombatScreen(GameState gameState, GdxGame game) {
         this.batch = game.getBatch();
         this.viewport = new FitViewport(MIN_WORLD_WIDTH, MIN_WORLD_HEIGHT, new OrthographicCamera());
-        this.boardView = new BoardView2(game.getAssets(), gameState, viewport);
+        this.boardView = new BoardView(game.getAssets(), gameState, viewport);
         this.bgdTexture = new Texture("background.png");
         this.stage = new Stage(viewport, batch);
         stage.addActor(boardView);

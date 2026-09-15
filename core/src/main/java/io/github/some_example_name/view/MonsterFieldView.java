@@ -1,60 +1,22 @@
-//package io.github.some_example_name.view;
-//
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-//import io.github.some_example_name.enitites.Monster;
-//import io.github.some_example_name.ui.MonsterAsset;
-//
-//import java.util.HashMap;
-//import java.util.List;
-//
-//public class MonsterFieldView {
-//
-//    private final HashMap<Monster, MonsterView> monsterViews;
-//    //hashmap with monstertype and monsterassets
-//    private final MonsterAsset monsterAsset;
-//
-//    public MonsterFieldView(MonsterAsset monsterAsset) {
-//        this.monsterAsset = monsterAsset;
-//        monsterViews = new HashMap<>();
-//    }
-//
-//    public void update(List<Monster> monsters) {
-//        monsterViews.keySet().removeIf(m -> !monsters.contains(m));
-//        for (Monster monster : monsters) {
-//            monsterViews.computeIfAbsent(monster, m -> new MonsterView(monsterAsset.get(monster.getType()),monster));
-//        }
-//    }
-//
-//    public HashMap<Monster, MonsterView> getMonsterViews() {
-//        return monsterViews;
-//    }
-//
-//    public void draw(float x, float y, float width, float height,
-//                     SpriteBatch batch) {
-//        int i = 0;
-//        for (Monster monster : monsterViews.keySet()) {
-//
-//            MonsterView view = monsterViews.get(monster);
-//
-//            float mx = x + width / 2f *i ;
-//            float my = y + height / 2f;
-//
-//            view.setPosition(mx, my);
-//            view.setSize(width / 4, height / 4);
-//
-//            view.draw(batch);
-//            i++;
-//        }
-//    }
-//
-//
-//    public MonsterView getMonsterAtPosition(float x, float y) {
-//        for (Monster monster : monsterViews.keySet()) {
-//            MonsterView view = monsterViews.get(monster);
-//            if (view.contains(x, y)) {
-//                return view;
-//            }
-//        }
-//        return null;
-//    }
-//}
+package io.github.some_example_name.view;
+
+
+import io.github.some_example_name.enitites.Monster;
+
+import java.util.List;
+
+public class MonsterFieldView extends ContainerView{
+
+    public MonsterFieldView(List<Monster> monsters) {
+        super(createViews(monsters, MonsterView :: new));
+    }
+
+
+
+
+
+    @Override
+    public void refresh() {
+
+    }
+}
