@@ -13,3 +13,4 @@ public class HandView2 extends ContainerView<CardView> {
     public void refresh() {
     }
 }
+g

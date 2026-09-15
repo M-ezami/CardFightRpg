@@ -8,7 +8,7 @@ import io.github.some_example_name.target.parentsOrOthers.Targatable;
 
 import java.util.Map;
 
-public abstract class Opponent extends Targatable {
+public abstract class Opponent extends Monster {
 
 
     public Opponent(int health, int maxHealth) {
