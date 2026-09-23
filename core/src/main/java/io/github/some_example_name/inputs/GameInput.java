@@ -1,23 +1,28 @@
 package io.github.some_example_name.inputs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.inputs.InputController.CardController;
 import io.github.some_example_name.inputs.InputController.Controller;
 import io.github.some_example_name.view.CardView;
+import io.github.some_example_name.view.MonsterView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameInput {
 
-    private final Map<Class<? extends Actor>, Controller> controllers = new HashMap<>();
+    private final Map<Class<? extends Actor>, Controller<? extends Actor>> controllers =
+        new HashMap<>();
 
-    public GameInput(Stage stage, CardController cardController) {
+    public GameInput(Stage stage) {
 
-        controllers.put(CardView.class, cardController);
+        controllers.put(CardView.class, new CardController());
+        controllers.put(MonsterView.class, new MonsterController());
 
         stage.addListener(new InputListener() {
 
@@ -29,13 +34,18 @@ public class GameInput {
                 int pointer,
                 int button
             ) {
-                Actor actor = event.getTarget();
-
+                Actor actor = event.getTarget().getParent();
+                if(actor == null ) return false;
                 Controller controller = controllers.get(actor.getClass());
 
+                System.out.println("touch down was pressed on " + actor.getClass());
+
+
+
                 if (controller != null) {
-                    controller.onClick(actor);
+                    controller.touchDown(actor, x, y);
                 }
+
 
                 return true;
             }
@@ -47,12 +57,12 @@ public class GameInput {
                 float y,
                 int pointer
             ) {
-                Actor actor = event.getTarget();
+                Actor actor = event.getTarget().getParent();
 
                 Controller controller = controllers.get(actor.getClass());
 
                 if (controller != null) {
-                    controller.onDrag(actor, x, y);
+                    controller.touchDragged(actor, x, y);
                 }
             }
 
@@ -64,7 +74,7 @@ public class GameInput {
                 int pointer,
                 int button
             ) {
-                Actor actor = event.getTarget();
+                Actor actor = event.getTarget().getParent();
 
                 Controller controller = controllers.get(actor.getClass());
 
@@ -74,4 +84,7 @@ public class GameInput {
             }
         });
     }
+
+
+
 }

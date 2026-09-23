@@ -35,7 +35,7 @@ public class MonsterView extends BaseView {
     public void createUI() {
         monsterImage = new Image(texture);
         add(monsterImage).height(MONSTER_HEIGHT).width(MONSTER_WIDTH);
-        ;
+
         setDebug(true);
     }
 

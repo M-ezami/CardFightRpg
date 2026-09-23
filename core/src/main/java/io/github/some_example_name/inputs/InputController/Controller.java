@@ -2,10 +2,11 @@ package io.github.some_example_name.inputs.InputController;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public interface Controller {
+public interface Controller<T extends Actor> {
 
-    void onClick(Actor actor);
-    void onDrag(Actor actor, float x, float y);
-    void touchUp(Actor actor, float x, float y);
-    void touchDown(Actor actor);
+    void touchDown(T actor, float x, float y);
+
+    void touchDragged(T actor, float x, float y);
+
+    void touchUp(T actor, float x, float y);
 }

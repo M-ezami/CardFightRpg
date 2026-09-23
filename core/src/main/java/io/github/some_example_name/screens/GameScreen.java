@@ -13,6 +13,7 @@ import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.enitites.EasyEnemy;
 import io.github.some_example_name.enitites.Opponent;
 import io.github.some_example_name.enitites.Player;
+import io.github.some_example_name.inputs.GameInput;
 import io.github.some_example_name.system.*;
 import io.github.some_example_name.ui.AnimationDirector;
 import io.github.some_example_name.ui.Assets;
@@ -60,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
         new DiscardSystem(gameState);
         new PlayerSystem(gameState.getPlayer());
         new CombatSystem(gameState);
+
     }
 
     @Override

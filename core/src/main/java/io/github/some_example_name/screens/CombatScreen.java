@@ -1,5 +1,7 @@
 package io.github.some_example_name.screens;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.inputs.GameInput;
 import io.github.some_example_name.view.BoardView;
 
 /**
@@ -36,6 +39,8 @@ public class CombatScreen extends ScreenAdapter {
         this.stage = new Stage(viewport, batch);
         stage.addActor(boardView);
         stage.setDebugAll(true);
+        new GameInput(stage);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
