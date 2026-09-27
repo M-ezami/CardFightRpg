@@ -17,6 +17,7 @@ public class GameState {
     private final List<Opponent> opponents;
     private final List<Card> selectedCards;
     private RoundPhase roundPhase = RoundPhase.SPELL_PHASE;
+    private static GameState instance;
 
     public GameState(Player player, List<Opponent> opponents) {
         this.selectedCards = new ArrayList<>();
@@ -50,6 +51,26 @@ public class GameState {
             opponents.remove((Opponent) targatable);
         }
     }
+
+    public static void start() {
+        if (instance != null) {
+            throw new IllegalStateException("GameState is already active");
+        }
+
+    }
+
+    public static GameState get() {
+        if (instance == null) {
+            throw new IllegalStateException("GameState has not been started");
+        }
+
+        return instance;
+    }
+
+    public static void end() {
+        instance = null;
+    }
+
 
     public Player getPlayer() {
         return player;

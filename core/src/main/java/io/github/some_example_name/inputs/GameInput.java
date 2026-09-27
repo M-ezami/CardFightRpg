@@ -1,11 +1,9 @@
 package io.github.some_example_name.inputs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.inputs.InputController.CardController;
 import io.github.some_example_name.inputs.InputController.Controller;
 import io.github.some_example_name.view.CardView;
@@ -50,21 +48,7 @@ public class GameInput {
                 return true;
             }
 
-            @Override
-            public void touchDragged(
-                InputEvent event,
-                float x,
-                float y,
-                int pointer
-            ) {
-                Actor actor = event.getTarget().getParent();
 
-                Controller controller = controllers.get(actor.getClass());
-
-                if (controller != null) {
-                    controller.touchDragged(actor, x, y);
-                }
-            }
 
             @Override
             public void touchUp(

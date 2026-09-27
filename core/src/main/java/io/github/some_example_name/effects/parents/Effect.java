@@ -1,6 +1,7 @@
 package io.github.some_example_name.effects.parents;
 
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.effects.MonsterBuff;
 import io.github.some_example_name.effects.MultipleRoundsEffect;
 import io.github.some_example_name.events.utilities.EventBus;
 import io.github.some_example_name.target.parentsOrOthers.Targatable;

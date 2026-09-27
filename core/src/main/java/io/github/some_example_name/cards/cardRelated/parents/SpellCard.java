@@ -2,28 +2,26 @@ package io.github.some_example_name.cards.cardRelated.parents;
 
 import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.data.GameState;
-import io.github.some_example_name.effects.MonsterBuff;
 import io.github.some_example_name.effects.parents.Effect;
-import io.github.some_example_name.target.cardRelated.AllEnemysTarget;
-import io.github.some_example_name.target.cardRelated.AllMonstersTarget;
-import io.github.some_example_name.target.cardRelated.SingleMonsterTarget;
 import io.github.some_example_name.target.parentsOrOthers.Targatable;
-import io.github.some_example_name.target.parentsOrOthers.TargetingMode;
-import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+//should move the stuff into effect maybe
 public abstract class SpellCard extends AbstractCard {
     /*private Mood mood;
     private int age;
     */
 
     private final List<Effect> effects;
+    private final List<List<Targatable>> targets;
 
     protected SpellCard(String name, String description, int manaCost) {
         super(name, description, manaCost);
         this.effects = new ArrayList<>();
+        this.targets = new ArrayList<>();
         this.cardType = CardType.SPELL;
     }
 
@@ -37,14 +35,7 @@ public abstract class SpellCard extends AbstractCard {
         }
     }
 
-    public boolean isMonsterBuff(){
-        for (Effect effect : effects) {
-            if(effect instanceof MonsterBuff){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     public boolean isOverMultipleRounds(){
         for (Effect effect : effects) {
@@ -57,6 +48,18 @@ public abstract class SpellCard extends AbstractCard {
 
     public List<Effect> getEffects() {
         return effects;
+    }
+
+    public List<List<Targatable>> getTargets() {
+        List<List<Targatable>> targets = new ArrayList<>();
+
+        for (Effect effect : effects) {
+            if (effect.getTargetingStrategy().requiresTarget()) {
+                targets.add(effect.getTargetingStrategy().getTargets());
+            }
+        }
+
+        return targets;
     }
 
 }

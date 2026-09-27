@@ -3,14 +3,16 @@ package io.github.some_example_name.target.parentsOrOthers;
 import io.github.some_example_name.data.GameState;
 
 import java.util.List;
-public interface TargetingStrategy {
+public abstract class TargetingStrategy {
 
-    List<Targatable> getTargets(
-        GameState state,
-        Targatable selectedTarget
-    );
+    private final GameState gameState;
 
-    boolean isValidTarget(Targatable target);
+    public TargetingStrategy(){
+        this.gameState = GameState.get();
+    }
+    public abstract List<Targatable> getTargets();
 
-    boolean requiresTarget();
+    protected abstract boolean isValidTarget(Targatable target);
+
+    public abstract boolean requiresTarget();
 }

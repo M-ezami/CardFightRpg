@@ -3,6 +3,7 @@ package io.github.some_example_name.view;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.some_example_name.data.GameState;
+import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.ArrayList;
@@ -35,6 +36,11 @@ public class BoardView extends BaseView {
         addExistingChildren();
         createUI();
     }
+
+    public void highlight(List<Targatable> validTargets) {
+
+    }
+
 
     private void addExistingChildren(){
         childrenViews.add(opponentView2);
@@ -72,4 +78,5 @@ public class BoardView extends BaseView {
             .bottom()
             .left();
     }
+
 }

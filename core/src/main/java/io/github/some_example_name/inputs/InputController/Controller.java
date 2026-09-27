@@ -6,7 +6,7 @@ public interface Controller<T extends Actor> {
 
     void touchDown(T actor, float x, float y);
 
-    void touchDragged(T actor, float x, float y);
+
 
     void touchUp(T actor, float x, float y);
 }

@@ -13,6 +13,8 @@ public abstract class SingleTargetStrategy implements TargetingStrategy {
     ) {
         return List.of(selectedTarget);
     }
+
+    //maybe if gettargets != null return true
     @Override
     public boolean requiresTarget() {
         return true;

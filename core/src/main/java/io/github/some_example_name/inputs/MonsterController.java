@@ -13,10 +13,6 @@ public class MonsterController implements Controller {
 
     }
 
-    @Override
-    public void touchDragged(Actor actor, float x, float y) {
-
-    }
 
     @Override
     public void touchUp(Actor actor, float x, float y) {

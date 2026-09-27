@@ -9,6 +9,9 @@ public class HandView extends ContainerView<CardView> {
         super(createViews(hand, CardView::new));
     }
 
+
+
+
     @Override
     public void refresh() {
     }
