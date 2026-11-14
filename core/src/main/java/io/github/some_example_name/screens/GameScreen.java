@@ -14,7 +14,8 @@ import io.github.some_example_name.enitites.EasyEnemy;
 import io.github.some_example_name.enitites.Opponent;
 import io.github.some_example_name.enitites.Player;
 import io.github.some_example_name.inputs.GameInput;
-import io.github.some_example_name.system.*;
+
+import io.github.some_example_name.systems.GameSystems;
 import io.github.some_example_name.ui.AnimationDirector;
 import io.github.some_example_name.ui.Assets;
 
@@ -34,6 +35,7 @@ public class GameScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final Viewport uiViewport;
 
+
     public GameScreen(GdxGame game, Assets assets) {
         this.game = game;
         this.opponents = new ArrayList<>();
@@ -46,23 +48,16 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void startCombat() {
+        // worth reconsidering self contained combatscreen
         this.player = new Player();
         createOpponents();
         GameState gameState = new GameState(player, opponents);
         CombatScreen combatScreen = new CombatScreen(gameState, game);
         game.setScreen(combatScreen);
-        initilizeSystems(gameState);
-    }
-
-    private void initilizeSystems(GameState gameState) {
-        new CardPlaySystem(gameState);
-        new AnimationDirector(opponents);
-        new TurnSystem(gameState);
-        new DiscardSystem(gameState);
-        new PlayerSystem(gameState.getPlayer());
-        new CombatSystem(gameState);
 
     }
+
+
 
     @Override
     public void render(float delta) {

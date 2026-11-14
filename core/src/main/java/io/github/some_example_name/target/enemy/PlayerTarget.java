@@ -11,11 +11,11 @@ public class PlayerTarget implements TargetingStrategy {
 
     @Override
     public List<Targatable> getTargets(
-        GameState state,
-        Targatable selectedTarget) {
-
+        GameState state) {
         return List.of(state.getPlayer());
     }
+
+
 
     @Override
     public boolean isValidTarget(Targatable target) {

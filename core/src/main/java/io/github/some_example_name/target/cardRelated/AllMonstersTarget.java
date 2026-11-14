@@ -9,13 +9,10 @@ import java.util.List;
 
 public class AllMonstersTarget implements TargetingStrategy {
 
+
     @Override
-    public List<Targatable> getTargets(GameState state, Targatable target) {
-        System.out.println("MONSTER COUNT: " + state.getMonsters().size());
-        if (state.getMonsters() != null && !state.getMonsters().isEmpty()) {
-            return new ArrayList<>(state.getMonsters());
-        }
-        return new ArrayList<>();
+    public List<Targatable> getTargets(GameState gameState) {
+        return List.of();
     }
 
     @Override

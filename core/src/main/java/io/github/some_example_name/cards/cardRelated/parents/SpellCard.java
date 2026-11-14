@@ -4,6 +4,7 @@ import io.github.some_example_name.cards.cardRelated.CardType;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.parents.Effect;
 import io.github.some_example_name.target.parentsOrOthers.Targatable;
+import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +30,15 @@ public abstract class SpellCard extends AbstractCard {
         effects.add(effect);
     }
 
-    public void emitEffects(GameState state, Targatable target) {
+//    public void emitEffects(GameState state, Targatable target) {
+//        for (Effect effect : effects) {
+//            effect.apply(state, target);
+//        }
+//    }
+
+    public boolean isOverMultipleRounds() {
         for (Effect effect : effects) {
-            effect.apply(state, target);
-        }
-    }
-
-
-
-    public boolean isOverMultipleRounds(){
-        for (Effect effect : effects) {
-            if(effect.isOverMultipleRounds()){
+            if (effect.isOverMultipleRounds()) {
                 return true;
             }
         }
@@ -50,16 +49,16 @@ public abstract class SpellCard extends AbstractCard {
         return effects;
     }
 
-    public List<List<Targatable>> getTargets() {
-        List<List<Targatable>> targets = new ArrayList<>();
 
+
+
+    public List<TargetingStrategy> getTargetingStrategies() {
+        List<TargetingStrategy> targetingStrategies = new ArrayList<>();
         for (Effect effect : effects) {
-            if (effect.getTargetingStrategy().requiresTarget()) {
-                targets.add(effect.getTargetingStrategy().getTargets());
-            }
+            targetingStrategies.add(effect.getTargetingStrategy());
         }
-
-        return targets;
+        return targetingStrategies;
     }
+
 
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.some_example_name.GdxGame;
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.inputs.GameInput;
+import io.github.some_example_name.systems.GameSystems;
 import io.github.some_example_name.view.BoardView;
 
 /**
@@ -30,6 +31,7 @@ public class CombatScreen extends ScreenAdapter {
     private final BoardView boardView;
     private final Texture bgdTexture;
     private final Stage stage;
+    private final GameSystems gameSystems;
 
     public CombatScreen(GameState gameState, GdxGame game) {
         this.batch = game.getBatch();
@@ -37,10 +39,13 @@ public class CombatScreen extends ScreenAdapter {
         this.boardView = new BoardView(game.getAssets(), gameState, viewport);
         this.bgdTexture = new Texture("background.png");
         this.stage = new Stage(viewport, batch);
+        this.gameSystems = new GameSystems();
+
         stage.addActor(boardView);
         stage.setDebugAll(true);
-        new GameInput(stage);
+        new GameInput(stage, gameSystems, boardView);
         Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override

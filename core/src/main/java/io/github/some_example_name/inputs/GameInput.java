@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import io.github.some_example_name.inputs.InputController.CardController;
 import io.github.some_example_name.inputs.InputController.Controller;
+import io.github.some_example_name.systems.GameSystems;
+import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.CardView;
 import io.github.some_example_name.view.MonsterView;
 
@@ -14,12 +16,12 @@ import java.util.Map;
 
 public class GameInput {
 
+
     private final Map<Class<? extends Actor>, Controller<? extends Actor>> controllers =
         new HashMap<>();
 
-    public GameInput(Stage stage) {
-
-        controllers.put(CardView.class, new CardController());
+    public GameInput(Stage stage, GameSystems gameSystems, BoardView boardView) {
+        controllers.put(CardView.class, new CardController(gameSystems.getCardSystem(), boardView));
         controllers.put(MonsterView.class, new MonsterController());
 
         stage.addListener(new InputListener() {
@@ -33,7 +35,7 @@ public class GameInput {
                 int button
             ) {
                 Actor actor = event.getTarget().getParent();
-                if(actor == null ) return false;
+                if(actor == null) return false;
                 Controller controller = controllers.get(actor.getClass());
 
                 System.out.println("touch down was pressed on " + actor.getClass());
@@ -46,6 +48,11 @@ public class GameInput {
 
 
                 return true;
+            }
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                Actor actor = event.getTarget().getParent();
+                actor.setPosition(x, y);
             }
 
 

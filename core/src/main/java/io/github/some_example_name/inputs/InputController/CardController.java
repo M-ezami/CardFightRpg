@@ -1,7 +1,9 @@
 package io.github.some_example_name.inputs.InputController;
 
 import io.github.some_example_name.cards.cardRelated.parents.Card;
-import io.github.some_example_name.system.CardSystem;
+
+import io.github.some_example_name.cards.cardRelated.parents.SpellCard;
+import io.github.some_example_name.systems.CardSystem;
 import io.github.some_example_name.view.BoardView;
 import io.github.some_example_name.view.CardView;
 
@@ -29,7 +31,11 @@ public class CardController implements Controller<CardView> {
 
         selectedCardView = cardView;
         this.selectedCard = selectedCardView.getCard();
-        boardView.highlight(cardSystem.getValidTargets(selectedCard));
+        if (selectedCard instanceof SpellCard spellCard) {
+//            boardView.highlight(cardSystem.getValidTargets(spellCard));
+        }
+
+
 
         startX = cardView.getX();
         startY = cardView.getY();

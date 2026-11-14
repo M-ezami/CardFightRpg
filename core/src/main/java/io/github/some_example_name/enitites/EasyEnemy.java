@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import io.github.some_example_name.effects.parents.DamageEffect;
 import io.github.some_example_name.effects.parents.Effect;
-import io.github.some_example_name.target.enemy.PlayerOrMonsterTarget;
 import io.github.some_example_name.ui.Assets;
 
 import java.util.Map;
@@ -38,17 +37,22 @@ public class EasyEnemy extends Opponent {
         }
     }
 
+    @Override
+    protected Map<Effect, Integer> createEffectPool() {
+        return Map.of();
+    }
+
     public EnemyAnimationState getEnemyAnimationState() {
         return enemyAnimationState;
     }
 
-    @Override
-    protected Map<Effect, Integer> createEffectPool() {
-        return Map.of(
-             new DamageEffect(MathUtils.random(0, 5), new PlayerOrMonsterTarget(),3), 70
-        );
-
-    }
+//    @Override
+//    protected Map<Effect, Integer> createEffectPool() {
+//        return Map.of(
+//             new DamageEffect(MathUtils.random(0, 5), new PlayerOrMonsterTarget(),3), 70
+//        );
+//
+//    }
 
     @Override
     public void draw(SpriteBatch batch, float delta) {

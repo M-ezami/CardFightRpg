@@ -3,19 +3,18 @@ package io.github.some_example_name.effects.parents;
 
 import io.github.some_example_name.data.GameState;
 import io.github.some_example_name.effects.MultipleRoundsEffect;
-import io.github.some_example_name.system.DamageEvent;
 import io.github.some_example_name.target.parentsOrOthers.Targatable;
 import io.github.some_example_name.target.parentsOrOthers.TargetingStrategy;
 
 public class DamageEffect extends Effect {
 protected int damageAmount;
 
-public DamageEffect(int amount, TargetingStrategy targetingStrategy,int damageAmount) {
+public DamageEffect(int amount, TargetingStrategy targetingStrategy, int damageAmount) {
         super(amount, targetingStrategy);
         this.damageAmount = damageAmount;
 }
 
-    public DamageEffect(int amount, TargetingStrategy targetingStrategy, int damage,MultipleRoundsEffect multipleRoundsEffect ) {
+    public DamageEffect(int amount, TargetingStrategy targetingStrategy, int damage, MultipleRoundsEffect multipleRoundsEffect ) {
         super(amount, targetingStrategy,multipleRoundsEffect);
         this.damageAmount = damage;
     }
@@ -24,7 +23,6 @@ public DamageEffect(int amount, TargetingStrategy targetingStrategy,int damageAm
 
     private void dealDamage(Targatable target) {
         target.takeDamage(damageAmount);
-        this.eventBus.emit(new DamageEvent(target, damageAmount));
     }
 
     @Override

@@ -1,7 +1,8 @@
 package io.github.some_example_name.enitites;
 
+import io.github.some_example_name.cards.SpellCards.SingleEnemyTarget;
 import io.github.some_example_name.cards.cardRelated.MonsterType;
-import io.github.some_example_name.target.cardRelated.SingleEnemyTarget;
+
 
 public class SimpleMonster extends Monster {
 

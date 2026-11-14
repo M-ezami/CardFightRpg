@@ -2,9 +2,8 @@ package io.github.some_example_name.ui;
 
 import io.github.some_example_name.enitites.EnemyAnimationState;
 import io.github.some_example_name.enitites.Opponent;
-import io.github.some_example_name.events.event.EnemyDiedEvent;
 import io.github.some_example_name.events.utilities.EventBus;
-import io.github.some_example_name.system.DamageEvent;
+
 import io.github.some_example_name.target.parentsOrOthers.Targatable;
 
 import java.util.List;
@@ -16,7 +15,6 @@ public class AnimationDirector {
     public AnimationDirector(List<Opponent> opponents) {
         this.eventBus = EventBus.getInstance();
         this.opponents = opponents;
-        subscribe();
     }
 
     //could possibly rewrite into working for all targets
@@ -24,17 +22,19 @@ public class AnimationDirector {
         if (target.isOpponent()) opponents.get(0).setAnimationState(EnemyAnimationState.HURT);
         else opponents.get(0).setAnimationState(EnemyAnimationState.ATTACK);
     }
-
-    private void subscribe() {
-
-        eventBus.subscribe(DamageEvent.class, e -> {
-            hurtOrAttack(e.target());
-        });
-
-
-        eventBus.subscribe(EnemyDiedEvent.class, e -> {
-            opponents.get(0).setAnimationState(EnemyAnimationState.DEATH);
-        });
-    }
 }
+
+
+////    private void subscribe() {
+////
+////        eventBus.subscribe(DamageEvent.class, e -> {
+////            hurtOrAttack(e.target());
+////        });
+//
+//
+//        eventBus.subscribe(EnemyDiedEvent.class, e -> {
+//            opponents.get(0).setAnimationState(EnemyAnimationState.DEATH);
+//        });
+//    }
+//}
 

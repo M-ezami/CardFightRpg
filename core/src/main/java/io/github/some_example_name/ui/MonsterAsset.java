@@ -11,7 +11,7 @@ import java.util.Map;
 public class MonsterAsset implements Disposable {
 
     private final Map<MonsterType, Texture> textures = new HashMap<>();
-    private final Texture mageTexture = new Texture("/home/mosa/Storage/projects/petProjects/games/cardFightSystem2/assets/slime/slime-idle-0.png");
+    private final Texture mageTexture = new Texture("slime/slime-idle-0.png");
 
     private static MonsterAsset monsterAsset = new MonsterAsset();
 
@@ -27,7 +27,7 @@ public class MonsterAsset implements Disposable {
     }
 
     public void load() {
-        textures.put(MonsterType.MAGE, new Texture("/home/mosa/Storage/projects/petProjects/games/cardFightSystem2/assets/slime/slime-idle-0.png"));
+        textures.put(MonsterType.MAGE, new Texture("slime/slime-idle-0.png"));
     }
 
     public Texture get(MonsterType type) {

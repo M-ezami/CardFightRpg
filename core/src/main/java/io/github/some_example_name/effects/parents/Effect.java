@@ -36,16 +36,16 @@ public abstract class Effect {
     public abstract String getDescription();
 
     //this gets the actual target and it also sort of sets the target if its a single target like a signle enemy
-    public final void apply(GameState state, Targatable selectedTarget) {
-        for (Targatable target : targetingStrategy.getTargets(state, selectedTarget)) {
-            if (isOverMultipleRounds()) {
-                multipleRoundsEffect.subscribe(
-                    ()-> applyEffectToTarget(target, state));
-            }else{
-                applyEffectToTarget(target, state);
-            }
-        }
-    }
+//    public final void apply(GameState state, Targatable selectedTarget) {
+//        for (Targatable target : targetingStrategy.getTargets(state, selectedTarget)) {
+//            if (isOverMultipleRounds()) {
+//                multipleRoundsEffect.subscribe(
+//                    ()-> applyEffectToTarget(target, state));
+//            }else{
+//                applyEffectToTarget(target, state);
+//            }
+//        }
+//    }
 
     public abstract void applyEffectToTarget(Targatable target, GameState state);
 }

@@ -6,13 +6,7 @@ import java.util.List;
 
 public abstract class SingleTargetStrategy implements TargetingStrategy {
 
-    @Override
-    public List<Targatable> getTargets(
-        GameState state,
-        Targatable selectedTarget
-    ) {
-        return List.of(selectedTarget);
-    }
+
 
     //maybe if gettargets != null return true
     @Override
